@@ -118,7 +118,7 @@ if(($arID = $lAdmin->GroupAction()) && $SEARCH_RIGHT=="W")
 	{
 		if(strlen($ID)<=0)
 			continue;
-	   	$ID = IntVal($ID);
+		$ID = IntVal($ID);
 		switch($_REQUEST['action'])
 		{
 		case "delete":
@@ -132,7 +132,6 @@ if(($arID = $lAdmin->GroupAction()) && $SEARCH_RIGHT=="W")
 			$DB->Commit();
 			break;
 		}
-
 	}
 }
 

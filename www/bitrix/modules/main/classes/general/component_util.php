@@ -664,7 +664,7 @@ class CComponentUtil
 			{
 				//Create directories
 				$help_lang_path = $_SERVER["DOCUMENT_ROOT"].$componentPath."/lang";
-				if(!file_exists($help_lang_path)) 
+				if(!file_exists($help_lang_path))
 					mkdir($help_lang_path);
 				$help_lang_path .= "/ru";
 				if(!file_exists($help_lang_path))
@@ -1163,7 +1163,7 @@ class CComponentUtil
 				return true;
 		return false;
 	}
-	
+
 	function GetDefaultNameTemplates()
 	{
 		return array(
@@ -1179,9 +1179,10 @@ class CComponentUtil
 			'#NOBR##LAST_NAME#, #NAME_SHORT# #SECOND_NAME_SHORT##/NOBR#' => GetMessage('COMP_NAME_TEMPLATE_SMITH_COMMA_J_L'),
 			'#NOBR##NAME# #LAST_NAME##/NOBR#' => GetMessage('COMP_NAME_TEMPLATE_JOHN_SMITH'),
 			'#NOBR##NAME# #SECOND_NAME_SHORT# #LAST_NAME##/NOBR#' => GetMessage('COMP_NAME_TEMPLATE_JOHN_L_SMITH'),
+			'' => GetMessage('COMP_PARAM_NAME_FORMAT_SITE')
 		);
 	}
-	
+
 	function GetDateFormatField($name="", $parent="", $no_year = false)
 	{
 		$timestamp = mktime(0,0,0,2,6,2010);
@@ -1220,12 +1221,12 @@ class CComponentUtil
 			"ADDITIONAL_VALUES" => "Y",
 		);
 	}
-	
+
 	function GetDateFormatDefault($no_year = false)
 	{
 		return $GLOBALS["DB"]->DateFormatToPHP($no_year ? preg_replace('/[\-\.\/]*[Y]{2,4}[\-\.\/]*/', '', CSite::GetDateFormat('SHORT')) : CSite::GetDateFormat("SHORT"));
 	}
-	
+
 	function GetDateTimeFormatField($name="", $parent="")
 	{
 		$timestamp = mktime(16,10,45,2,6,2010);
@@ -1248,19 +1249,19 @@ class CComponentUtil
 				"d.M.Y g:i:s a" => FormatDate("d.M.Y g:i:s a", $timestamp),//"22.Ôåâ.2007 1:30 pm",
 				"d.m.y G:i" => FormatDate("d.m.y G:i", $timestamp),//"22.02.07 7:30",
 				"d.m.Y H:i:s" => FormatDate("d.m.Y H:i:s", $timestamp),//"22.02.2007 07:30",
-				"j F Y H:i" => FormatDate("j F Y H:i", $timestamp),//"ZHL cool RUS",
-			    "j F Y g:i a" => FormatDate("j F Y g:i a", $timestamp),//"ZHL cool Burzh",
+				"j F Y G:i" => FormatDate("j F Y G:i", $timestamp),//"ZHL cool RUS",
+				"j F Y g:i a" => FormatDate("j F Y g:i a", $timestamp),//"ZHL cool Burzh",
 				"FULL" => GetMessage('COMP_PARAM_DATETIME_FORMAT_SITE')
 			),
 			"DEFAULT" => CComponentUtil::GetDateTimeFormatDefault(),
 			"ADDITIONAL_VALUES" => "Y",
 		);
 	}
-	
+
 	function GetDateTimeFormatDefault()
 	{
 		return $GLOBALS["DB"]->DateFormatToPHP(CSite::GetDateFormat("FULL"));
 	}
-	
+
 }
 ?>

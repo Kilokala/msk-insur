@@ -18,16 +18,13 @@ function error_alert()
 		E_PARSE => "Parse error",
 	);
 	$e = error_get_last();
-        if(
-		is_null($e) === false
-		&& isset($arErrorType[$e['type']])
-	)
-        {
+	if(is_null($e) === false && isset($arErrorType[$e['type']]))
+	{
 		ob_end_clean();
-		echo '<div id="'.$sTableID.'_result_frame_div"><form method="POST"  onsubmit="ShowWaitWindow();'.$sTableID.'.SetActiveResult();" target="frame_'.$sTableID.'" id="form_'.$sTableID.'" name="form_'.$sTableID.'" action="/bitrix/admin/php_command_line.php?mode=frame">
-			<input type="hidden" name="query" id="query" value="'.htmlspecialchars($_REQUEST['query']).'">
-			<input type="hidden" name="sessid" id="sessid" value="'.htmlspecialchars($_SESSION["fixed_session_id"]).'" />
-			</form><br><b>'.$arErrorType[$e['type']].'</b>: '.htmlspecialchars($e['message']).' in <b>'.htmlspecialchars($e['file']).'</b> on line <b>'.htmlspecialchars($e['line']).'</b><br>
+		echo '<div id="'.$sTableID.'_result_frame_div"><form method="POST" onsubmit="ShowWaitWindow();'.$sTableID.'.SetActiveResult();" target="frame_'.$sTableID.'" id="form_'.$sTableID.'" name="form_'.$sTableID.'" action="/bitrix/admin/php_command_line.php?mode=frame">
+			<input type="hidden" name="query" id="query" value="'.htmlspecialcharsbx($_REQUEST['query']).'">
+			<input type="hidden" name="sessid" id="sessid" value="'.htmlspecialcharsbx($_SESSION["fixed_session_id"]).'" />
+			</form><br><b>'.$arErrorType[$e['type']].'</b>: '.htmlspecialcharsbx($e['message']).' in <b>'.htmlspecialcharsbx($e['file']).'</b> on line <b>'.htmlspecialcharsbx($e['line']).'</b><br>
 		</div>
 		<script>
 			var w = (opener? opener.window:parent.window);
@@ -36,7 +33,7 @@ function error_alert()
 			var targetResultDiv = w.document.getElementById("'.$sTableID.'_result_div");
 			targetResultDiv.innerHTML = frameResultDiv.innerHTML;
 		</script>';
-        }
+	}
 	else
 	{
 		global $DB;
@@ -48,10 +45,10 @@ function error_alert()
 		{
 
 			ob_end_clean();
-			echo '<div id="'.$sTableID.'_result_frame_div"><form method="POST"  onsubmit="ShowWaitWindow();'.$sTableID.'.SetActiveResult();" target="frame_'.$sTableID.'" id="form_'.$sTableID.'" name="form_'.$sTableID.'" action="/bitrix/admin/php_command_line.php?mode=frame">
-				<input type="hidden" name="query" id="query" value="'.htmlspecialchars($_REQUEST['query']).'">
-				<input type="hidden" name="sessid" id="sessid" value="'.htmlspecialchars($_SESSION["fixed_session_id"]).'" />
-				</form><br><font color=#ff0000>Query Error: '.htmlspecialchars($DB->GetErrorSQL()).'</font> ['.htmlspecialchars($DB->GetErrorMessage()).']<br>
+			echo '<div id="'.$sTableID.'_result_frame_div"><form method="POST" onsubmit="ShowWaitWindow();'.$sTableID.'.SetActiveResult();" target="frame_'.$sTableID.'" id="form_'.$sTableID.'" name="form_'.$sTableID.'" action="/bitrix/admin/php_command_line.php?mode=frame">
+				<input type="hidden" name="query" id="query" value="'.htmlspecialcharsbx($_REQUEST['query']).'">
+				<input type="hidden" name="sessid" id="sessid" value="'.htmlspecialcharsbx($_SESSION["fixed_session_id"]).'" />
+				</form><br><font color=#ff0000>Query Error: '.htmlspecialcharsbx($DB->GetErrorSQL()).'</font> ['.htmlspecialcharsbx($DB->GetErrorMessage()).']<br>
 			</div>
 			<script>
 				var w = (opener? opener.window:parent.window);
@@ -93,7 +90,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_REQUEST['query']<>'' && $isAdmin &&
 
 $lAdmin->BeginEpilogContent();
 ?>
-	<input type="hidden" name="query" id="query" value="<?=htmlspecialchars($_REQUEST['query'])?>">
+	<input type="hidden" name="query" id="query" value="<?=htmlspecialcharsbx($_REQUEST['query'])?>">
 <?
 $lAdmin->EndEpilogContent();
 
@@ -130,7 +127,7 @@ $editTab->BeginNextTab();
 <tr valign="top">
 	<td width="100%" colspan="2">
 	<input type="hidden" name="lang" value="<?=LANG?>">
-	<textarea cols="60" name="php" id="php" rows="15" wrap="OFF" style="width:100%;"><? echo htmlspecialchars($_REQUEST['query']); ?></textarea><br />	</td>
+	<textarea cols="60" name="php" id="php" rows="15" wrap="OFF" style="width:100%;"><? echo htmlspecialcharsbx($_REQUEST['query']); ?></textarea><br />	</td>
 </tr>
 <?$editTab->Buttons();
 ?>

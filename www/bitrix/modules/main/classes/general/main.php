@@ -6,7 +6,6 @@
 # mailto:admin@bitrixsoft.com                #
 ##############################################
 
-define('BX_VALID_FILENAME_SYMBOLS', '\x20-\x21\x2B-\x2E\x30-\x39\x41-\x5A\x5F\x61-\x7A\x7B\x7C\x7E');
 define('BX_SPREAD_SITES', 2);
 define('BX_SPREAD_DOMAIN', 4);
 
@@ -290,7 +289,7 @@ class CAllMain
 	function NeedCAPTHAForLogin($login)
 	{
 		//When last login was failed then ask for CAPTCHA
-		if(array_key_exists("BX_LOGIN_NEED_CAPTCHA", $_SESSION) && $_SESSION["BX_LOGIN_NEED_CAPTCHA"])
+		if(isset($_SESSION["BX_LOGIN_NEED_CAPTCHA"]) && $_SESSION["BX_LOGIN_NEED_CAPTCHA"])
 		{
 			return true;
 		}
@@ -305,9 +304,9 @@ class CAllMain
 		)
 		{
 			$POLICY_ATTEMPTS = 0;
-			if(strlen($login) > 0)
+			if($login <> '')
 			{
-				$rsUser = CUser::GetList($o, $b, array("LOGIN_EQUAL_EXACT" => $login));
+				$rsUser = CUser::GetList(($o='LOGIN'), ($b='DESC'), array("LOGIN_EQUAL_EXACT" => $login), array('FIELDS' => array('ID', 'LOGIN', 'LOGIN_ATTEMPTS')));
 				$arUser = $rsUser->Fetch();
 				if($arUser)
 				{
@@ -325,14 +324,14 @@ class CAllMain
 		//For users who had sucsessful login and if policy is set
 		//check for CAPTCHA display
 		if(
-			strlen($login) > 0
+			$login <> ''
 			&& $_SESSION["BX_LOGIN_NEED_CAPTCHA_LOGIN"]["POLICY_ATTEMPTS"] > 0
 		)
 		{
 			//We need to know how many attempts user made
 			if($USER_ATTEMPTS === false)
 			{
-				$rsUser = CUser::GetList($o, $b, array("LOGIN_EQUAL_EXACT" => $login));
+				$rsUser = CUser::GetList(($o='LOGIN'), ($b='DESC'), array("LOGIN_EQUAL_EXACT" => $login), array('FIELDS' => array('ID', 'LOGIN', 'LOGIN_ATTEMPTS')));
 				$arUser = $rsUser->Fetch();
 				if($arUser)
 					$USER_ATTEMPTS = intval($arUser["LOGIN_ATTEMPTS"]);
@@ -561,7 +560,7 @@ class CAllMain
 			$meta_name=$id;
 		$val = $this->GetProperty($id);
 		if(!empty($val))
-			return '<meta name="'.htmlspecialchars($meta_name).'" content="'.htmlspecialcharsEx($val).'"'.($bXhtmlStyle? ' /':'').'>'."\n";
+			return '<meta name="'.htmlspecialcharsbx($meta_name).'" content="'.htmlspecialcharsEx($val).'"'.($bXhtmlStyle? ' /':'').'>'."\n";
 		return '';
 	}
 
@@ -595,10 +594,10 @@ class CAllMain
 		return array_unique($this->sPath2css);
 	}
 
-	function GetCSS($cMaxStylesCnt=15, $bXhtmlStyle=true)
+	function GetCSS($cMaxStylesCnt=true, $bXhtmlStyle=true)
 	{
 		if($cMaxStylesCnt === true)
-			$cMaxStylesCnt = 15;
+			$cMaxStylesCnt = COption::GetOptionInt('main', 'max_css_files', 15);
 
 		$res = '';
 		$site_template = '';
@@ -645,9 +644,10 @@ class CAllMain
 
 		$arCSS = array_unique($arCSS);
 
-		$notIE = !IsIE();
+		$isIE = IsIE();
 		$cnt = 0;
 		$res_content = '';
+		$ruleCount = 0;
 		foreach($arCSS as $css_path)
 		{
 			$bExternalLink = (strncmp($css_path, 'http://', 7) == 0 || strncmp($css_path, 'https://', 8) == 0);
@@ -665,7 +665,7 @@ class CAllMain
 			$bLink = ($bExternalLink || substr($css_file, -4, 4) != '.css');
 			$addCSS = (strncmp($css_path, '/bitrix/themes/', 15) != 0);
 
-			if((($cnt<$cMaxStylesCnt || ($optimizeCSS == 'Y' && $addCSS) || $notIE) || $bLink) && strncmp($css_path, '/bitrix/modules/', 16) != 0)
+			if((($cnt < $cMaxStylesCnt || ($optimizeCSS == 'Y' && $addCSS) || !$isIE) || $bLink) && strncmp($css_path, '/bitrix/modules/', 16) != 0)
 			{
 				if($bExternalLink || file_exists($filename))
 				{
@@ -693,9 +693,22 @@ class CAllMain
 			elseif(!$bLink && file_exists($filename) && filesize($filename) > 0)
 			{
 				$contents = file_get_contents($filename);
-				$contents = preg_replace('#([;\s:]+url\s*\(\s*)([^\)]+)\)#sie', "'\\1'.CMain::__ReplaceUrlCSS('\\2', '".AddSlashes($css_path)."').')'", $contents);
 				if($contents != '')
+				{
+					$contents = preg_replace('#([;\s:]+url\s*\(\s*)([^\)]+)\)#sie', "'\\1'.CMain::__ReplaceUrlCSS('\\2', '".AddSlashes($css_path)."').')'", $contents);
+					if($isIE)
+					{
+						$c = CMain::__GetCssSelectCnt($contents);
+						$ruleCount += $c;
+						if($ruleCount > 4000)
+						{
+							$ruleCount = $c;
+							if($res_content <> '')
+								$res_content .= "</style>\n<style type=\"text/css\">";
+						}
+					}
 					$res_content .= "\n".$contents."\n";
+				}
 			}
 		}
 
@@ -946,7 +959,7 @@ class CAllMain
 
 	function __ReplaceUrlCSS($url, $cssPath)
 	{
-		if(strpos($url, "://")!==false)
+		if(strpos($url, "://") !== false || strpos($url, "data:") !== false)
 			return $url;
 		$url = trim(stripslashes($url), "'\" \r\n\t");
 		if(substr($url, 0, 1) == "/")
@@ -955,7 +968,7 @@ class CAllMain
 		return "'".$cssPath.'/'.$url."'";
 	}
 
-	function ShowCSS($cMaxStylesCnt=15, $bXhtmlStyle=true)
+	function ShowCSS($cMaxStylesCnt=true, $bXhtmlStyle=true)
 	{
 		$this->AddBufferContent(Array(&$this, "GetCSS"), $cMaxStylesCnt, $bXhtmlStyle);
 	}
@@ -1493,7 +1506,7 @@ class CAllMain
 	{
 		if($bUnQuote)
 			$title = str_replace(array("&amp;", "&quot;", "&#039;", "&lt;", "&gt;"), array("&", "\"", "'", "<", ">"), $title);
-		$this->arAdditionalChain[] = array("TITLE"=>$title, "LINK"=>htmlspecialchars($link));
+		$this->arAdditionalChain[] = array("TITLE"=>$title, "LINK"=>htmlspecialcharsbx($link));
 	}
 
 	function GetNavChain($path=false, $iNumFrom=0, $sNavChainPath=false, $bIncludeOnce=false, $bShowIcons = true)
@@ -2502,7 +2515,7 @@ class CAllMain
 		$db_res = CSite::GetList($by="SORT", $order="ASC", Array("ACTIVE"=>"Y"));
 		while($ar = $db_res->Fetch())
 		{
-			$ar["NAME"] = htmlspecialchars($ar["NAME"]);
+			$ar["NAME"] = htmlspecialcharsbx($ar["NAME"]);
 			$ar["SELECTED"] = ($ar["LID"]==LANG);
 
 			if($bAdmin)
@@ -2901,7 +2914,7 @@ class CAllMain
 	*/
 	function set_cookie($name, $value, $time=false, $folder="/", $domain=false, $secure=false, $spread=true, $name_prefix=false)
 	{
-		if($time===false)
+		if($time === false)
 			$time = time()+60*60*24*30*12; // 30 суток * 12 ~ 1 год
 		if($name_prefix===false)
 			$name = COption::GetOptionString("main", "cookie_name", "BITRIX_SM")."_".$name;
@@ -2911,27 +2924,20 @@ class CAllMain
 		if($domain === false)
 			$domain = $this->GetCookieDomain();
 
-		if($spread==="Y" || $spread===true)
+		if($spread === "Y" || $spread === true)
 			$spread_mode = BX_SPREAD_DOMAIN | BX_SPREAD_SITES;
-		elseif($spread>=1)
+		elseif($spread >= 1)
 			$spread_mode = $spread;
 		else
 			$spread_mode = BX_SPREAD_DOMAIN;
 
-		//echo "-$name<br>\r\n";
-
-		//if(!headers_sent())
+		//current domain only
 		if($spread_mode & BX_SPREAD_DOMAIN)
-		{
 			setcookie($name, $value, $time, $folder, $domain, $secure);
-			//echo "BX_SPREAD_DOMAIN<br>\r\n";
-		}
 
+		//spread over sites
 		if($spread_mode & BX_SPREAD_SITES)
-		{
 			$this->arrSPREAD_COOKIE[$name] = array("V" => $value, "T" => $time, "F" => $folder, "D" => $domain, "S" => $secure);
-			//echo "BX_SPREAD_SITES<br>\r\n";
-		}
 	}
 
 	function GetCookieDomain()
@@ -2991,6 +2997,11 @@ class CAllMain
 
 		$bCache = true;
 		return $cache;
+	}
+
+	function StoreCookies()
+	{
+		$_SESSION['SPREAD_COOKIE'] = $this->arrSPREAD_COOKIE;
 	}
 
 	// выводит набор IFRAME'ов для распостранения куков на ряд доменов
@@ -3060,7 +3071,7 @@ class CAllMain
 							$url = $protocol.$domain."/bitrix/spread.php?".$params;
 							$arrUrl = parse_url($url);
 							if($arrUrl["host"] != $arrCurUrl["host"])
-								$res .= '<img src="'.htmlspecialchars($url).'" alt="" style="width:0px; height:0px; position:absolute; left:-1px; top:-1px;" />'."\n";
+								$res .= '<img src="'.htmlspecialcharsbx($url).'" alt="" style="width:0px; height:0px; position:absolute; left:-1px; top:-1px;" />'."\n";
 						}
 					}
 				}
@@ -3442,7 +3453,7 @@ class CAllMain
 		}
 
 		//session expander
-		if(COption::GetOptionString("main", "session_expand", "Y") <> "N")
+		if(COption::GetOptionString("main", "session_expand", "Y") <> "N" && (!defined("BX_SKIP_SESSION_EXPAND") || BX_SKIP_SESSION_EXPAND == false))
 		{
 			$arPolicy = $GLOBALS["USER"]->GetSecurityPolicy();
 
@@ -3453,7 +3464,7 @@ class CAllMain
 				$sessTimeout = $phpSessTimeout;
 
 			$cookie_prefix = COption::GetOptionString('main', 'cookie_name', 'BITRIX_SM');
-			$salt = $_COOKIE[$cookie_prefix.'_UIDH']."|".$_SERVER["REMOTE_ADDR"]."|".@filemtime($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/classes/general/version.php")."|".LICENSE_KEY;
+			$salt = $_COOKIE[$cookie_prefix.'_UIDH']."|".$_SERVER["REMOTE_ADDR"]."|".@filemtime($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/classes/general/version.php")."|".LICENSE_KEY."|".CMain::GetServerUniqID();
 			$key = md5(bitrix_sessid().$salt);
 
 			$bShowMess = ($GLOBALS["USER"]->IsAuthorized() && COption::GetOptionString("main", "session_show_message", "Y") <> "N");
@@ -3648,7 +3659,7 @@ class CAllSite
 				}
 			}
 
-			if ($weekStart < 0)
+			if ($weekStart < 0 || $weekStart == null)
 			{
 				$weekStart = 1;
 			}
@@ -3697,7 +3708,7 @@ class CAllSite
 			$res = CLang::GetByID($lang);
 			$res = $res->Fetch();
 			$MAIN_LANGS_CACHE[$res["LID"]] = $res;
-    		if(defined("ADMIN_SECTION") && ADMIN_SECTION === true)
+			if(defined("ADMIN_SECTION") && ADMIN_SECTION === true)
 				$MAIN_LANGS_ADMIN_CACHE[$res["LID"]] = $res;
 		}
 
@@ -3716,9 +3727,11 @@ class CAllSite
 		return $format;
 	}
 
-	function GetTimeFormat($lang=false, $bSearchInSitesOnly = false)
+	function GetTimeFormat($lang=false, $bSearchInSitesOnly = false, $format = false)
 	{
-		return trim(str_replace(self::GetDateFormat('SHORT', $lang, $bSearchInSitesOnly), '', self::GetDateFormat('FULL', $lang, $bSearchInSitesOnly)));
+		$dateTimeFormat = self::GetDateFormat('FULL', $lang, $bSearchInSitesOnly);
+		preg_match('~[HG]~', $dateTimeFormat, $chars, PREG_OFFSET_CAPTURE);
+		return trim(substr($dateTimeFormat, $chars[0][1]));
 	}
 
 	function CheckFields($arFields, $ID=false)
@@ -3770,6 +3783,11 @@ class CAllSite
 		{
 			$this->LAST_ERROR .= GetMessage("BAD_FORMAT_DATETIME")." ";
 			$arMsg[] = array("id"=>"FORMAT_DATETIME", "text"=> GetMessage("BAD_FORMAT_DATETIME"));
+		}
+		if(is_set($arFields, "FORMAT_NAME") && strlen($arFields["FORMAT_NAME"])<=0)
+		{
+			$this->LAST_ERROR .= GetMessage("BAD_FORMAT_NAME")." ";
+			$arMsg[] = array("id"=>"FORMAT_NAME", "text"=> GetMessage("BAD_FORMAT_NAME"));
 		}
 		if(is_set($arFields, "CHARSET") && strlen($arFields["CHARSET"])<=0)
 		{
@@ -4301,6 +4319,148 @@ class CAllSite
 
 		return $s;
 	}
+
+	function GetNameTemplates()
+	{
+		return array(
+			'#NOBR##NAME# #LAST_NAME##/NOBR#' => GetMessage('MAIN_NAME_JOHN_SMITH'),
+			'#NOBR##LAST_NAME# #NAME##/NOBR#' => GetMessage('MAIN_NAME_SMITH_JOHN'),
+			'#NOBR##NAME# #SECOND_NAME_SHORT# #LAST_NAME##/NOBR#' => GetMessage('MAIN_NAME_JOHN_L_SMITH'),
+			'#NOBR##LAST_NAME# #NAME##/NOBR# #SECOND_NAME#' => GetMessage('MAIN_NAME_SMITH_JOHN_LLOYD'),
+			'#LAST_NAME#, #NOBR##NAME# #SECOND_NAME##/NOBR#' => GetMessage('MAIN_NAME_SMITH_COMMA_JOHN_LLOYD'),
+			'#NAME# #SECOND_NAME# #LAST_NAME#' => GetMessage('MAIN_NAME_JOHN_LLOYD_SMITH'),
+			'#NOBR##NAME_SHORT# #SECOND_NAME_SHORT# #LAST_NAME##/NOBR#' => GetMessage('MAIN_NAME_J_L_SMITH'),
+			'#NOBR##NAME_SHORT# #LAST_NAME##/NOBR#' => GetMessage('MAIN_NAME_J_SMITH'),
+			'#NOBR##LAST_NAME# #NAME_SHORT##/NOBR#' => GetMessage('MAIN_NAME_SMITH_J'),
+			'#NOBR##LAST_NAME# #NAME_SHORT# #SECOND_NAME_SHORT##/NOBR#' => GetMessage('MAIN_NAME_SMITH_J_L'),
+			'#NOBR##LAST_NAME#, #NAME_SHORT##/NOBR#' => GetMessage('MAIN_NAME_SMITH_COMMA_J'),
+			'#NOBR##LAST_NAME#, #NAME_SHORT# #SECOND_NAME_SHORT##/NOBR#' => GetMessage('MAIN_NAME_SMITH_COMMA_J_L')
+		);
+	}
+
+	function GetNameFormatByValue($sValue)
+	{
+		$arNameTemplates = self::GetNameTemplates();
+
+		foreach ($arNameTemplates as $sFormat => $sName)
+		{
+			if ($sValue == $sName)
+				return $sFormat;
+		}
+
+		if ($sValue == GetMessage("MAIN_FORMAT_NAME_NOT_SET"))
+			return "";
+		else
+			return self::GetDefaultNameFormat();
+	}
+
+	/**
+	* Returns current name template
+	*
+	* If site is not defined - will look for name template for current language.
+	* If there is no value for language - returns pre-defined value @see CSite::GetDefaultNameFormat
+	* FORMAT_NAME constant can be set in dbconn.php
+	*
+	* @param bool $bUseBreaks - if true, will contain #NOBR# #/NOBR# for <nobr> tags. Default - true
+	* @param string $site_id - use to get value for the specific site
+	* @return string ex: #LAST_NAME# #NAME#
+	*/
+	function GetNameFormat($bUseBreaks = true, $site_id = "")
+	{
+		if ($site_id == "")
+			$site_id = SITE_ID;
+
+		if(defined("SITE_ID") && $site_id == SITE_ID) //for current site
+		{
+			if(defined("FORMAT_NAME"))
+				$format = FORMAT_NAME;
+		}
+
+		//site value
+		if ($format == "")
+		{
+			$db_res = CSite::GetByID($site_id);
+
+			if ($res = $db_res->Fetch())
+				$format = $res["FORMAT_NAME"];
+		}
+
+		//if not found - trying to get value for the language
+		if ($format == "")
+		{
+			global $MAIN_LANGS_ADMIN_CACHE;
+			if(!is_set($MAIN_LANGS_ADMIN_CACHE, $site_id))
+			{
+				$db_res = CLanguage::GetByID(LANGUAGE_ID);
+				if ($res = $db_res->Fetch())
+					$MAIN_LANGS_ADMIN_CACHE[$res["LID"]] = $res;
+			}
+
+			if(is_set($MAIN_LANGS_ADMIN_CACHE, LANGUAGE_ID))
+				$format = strtoupper($MAIN_LANGS_ADMIN_CACHE[LANGUAGE_ID]["FORMAT_NAME"]);
+		}
+
+		//if not found - trying to get default values
+		if ($format == "")
+			$format = self::GetDefaultNameFormat(empty($res["LANGUAGE_ID"]) ? "" : $res["LANGUAGE_ID"]);
+
+		if (!$bUseBreaks)
+			$format = str_replace(array("#NOBR#","#/NOBR#"), array("",""), $format);
+
+		return $format;
+	}
+
+	/**
+	* Returns default name template
+	* By default: Russian #LAST_NAME# #NAME#, English #NAME# #LAST_NAME#
+	*
+	* @param string $sLangId - language id, if we need to get value for specific language
+	* @return string - one of two possible default values
+	*/
+	function GetDefaultNameFormat($sLangId = "")
+	{
+		return '#NOBR##NAME# #LAST_NAME##/NOBR#';
+
+		// if ($sLangId == "")
+		// 	$sCheckLang = LANGUAGE_ID;
+		// else
+		// 	$sCheckLang = $sLangId;
+
+		// return ($sCheckLang == 'ru' ? '#NOBR##LAST_NAME# #NAME##/NOBR#' : '#NOBR##NAME# #LAST_NAME##/NOBR#');
+	}
+
+	function SelectBoxName($sFieldName, $sValue, $sDefaultValue="", $sFuncName="", $field="class=\"typeselect\"")
+	{
+		$arNameTemplates = self::GetNameTemplates();
+
+		if (empty($sValue))
+			$arNameTemplates["0"] = GetMessage("MAIN_FORMAT_NAME_NOT_SET");
+
+		$s = '<select name="'.$sFieldName.'" '.$field;
+		if(strlen($sFuncName)>0) $s .= ' OnChange="'.$sFuncName.'"';
+		$s .= '>'."\n";
+		$found = false;
+
+		if (defined('FORMAT_NAME'))
+		{
+			$s1 .= '<option value="constant" selected>'.CUser::FormatName(FORMAT_NAME,
+				array("NAME"		=>	GetMessage("MAIN_NAME_JOHN"),
+					"LAST_NAME"		=>	GetMessage("MAIN_NAME_SMITH"),
+					"SECOND_NAME"	=>	GetMessage("MAIN_NAME_LLOYD")), false).' '.GetMessage("MAIN_NAME_DEFINED_IN_DBCONN").'</option>';
+		}
+		else
+		{
+			foreach ($arNameTemplates as $template => $value) {
+				$found = ($template == $sValue);
+				$s1 .= '<option value="'.$value.'"'.($found ? ' selected':'').'>'.htmlspecialcharsex($value).'</option>'."\n";
+			}
+
+			if(strlen($sDefaultValue)>0)
+				$s .= "<option value='NOT_REF' ".($found ? "" : "selected").">".htmlspecialcharsex($sDefaultValue)."</option>";
+		}
+
+		return $s.$s1.'</select>';
+	}
 }
 
 class _CLangDBResult extends CDBResult
@@ -4320,7 +4480,7 @@ class _CLangDBResult extends CDBResult
 			if(!is_array($arCache))
 				$arCache = Array();
 			if(is_set($arCache, $res["LID"]))
-				 $res["DOMAINS"] = $arCache[$res["LID"]];
+				$res["DOMAINS"] = $arCache[$res["LID"]];
 			else
 			{
 				if(CACHED_b_lang_domain===false)
@@ -4466,32 +4626,37 @@ class CAllLanguage
 		$this->LAST_ERROR = "";
 		$arMsg = Array();
 
-		if(is_set($arFields, "NAME") && strlen($arFields["NAME"])<2)
-		{
-			$this->LAST_ERROR .= GetMessage("BAD_LANG_NAME")." ";
-			$arMsg[] = array("id"=>"NAME", "text"=> GetMessage("BAD_LANG_NAME"));
-		}
 		if($ID===false && is_set($arFields, "LID") && strlen($arFields["LID"])!=2)
 		{
 			$this->LAST_ERROR .= GetMessage("BAD_LANG_LID")." ";
 			$arMsg[] = array("id"=>"LID", "text"=> GetMessage("BAD_LANG_LID"));
 		}
-		if($ID===false && is_set($arFields, "SORT") && intval($arFields["SORT"])<=0)
+		if(is_set($arFields, "NAME") && strlen($arFields["NAME"])<2)
+		{
+			$this->LAST_ERROR .= GetMessage("BAD_LANG_NAME")." ";
+			$arMsg[] = array("id"=>"NAME", "text"=> GetMessage("BAD_LANG_NAME"));
+		}
+		if(is_set($arFields, "SORT") && intval($arFields["SORT"])<=0)
 		{
 			$this->LAST_ERROR .= GetMessage("BAD_LANG_SORT")." ";
 			$arMsg[] = array("id"=>"SORT", "text"=> GetMessage("BAD_LANG_SORT"));
 		}
-		if($ID===false && is_set($arFields, "FORMAT_DATE") && strlen($arFields["FORMAT_DATE"])<2)
+		if(is_set($arFields, "FORMAT_DATE") && strlen($arFields["FORMAT_DATE"])<=0)
 		{
 			$this->LAST_ERROR .= GetMessage("BAD_LANG_FORMAT_DATE")." ";
 			$arMsg[] = array("id"=>"FORMAT_DATE", "text"=> GetMessage("BAD_LANG_FORMAT_DATE"));
 		}
-		if($ID===false && is_set($arFields, "FORMAT_DATETIME") && strlen($arFields["FORMAT_DATETIME"])<2)
+		if(is_set($arFields, "FORMAT_DATETIME") && strlen($arFields["FORMAT_DATETIME"])<=0)
 		{
 			$this->LAST_ERROR .= GetMessage("BAD_LANG_FORMAT_DATETIME")." ";
 			$arMsg[] = array("id"=>"FORMAT_DATETIME", "text"=> GetMessage("BAD_LANG_FORMAT_DATETIME"));
 		}
-		if($ID===false && is_set($arFields, "CHARSET") && strlen($arFields["CHARSET"])<2)
+		if(is_set($arFields, "FORMAT_NAME") && strlen($arFields["FORMAT_NAME"])<=0)
+		{
+			$this->LAST_ERROR .= GetMessage("BAD_LANG_FORMAT_NAME")." ";
+			$arMsg[] = array("id"=>"FORMAT_NAME", "text"=> GetMessage("BAD_LANG_FORMAT_NAME"));
+		}
+		if(is_set($arFields, "CHARSET") && strlen($arFields["CHARSET"])<=0)
 		{
 			$this->LAST_ERROR .= GetMessage("BAD_LANG_CHARSET")." ";
 			$arMsg[] = array("id"=>"CHARSET", "text"=> GetMessage("BAD_LANG_CHARSET"));
@@ -4639,12 +4804,12 @@ class CAllLanguage
 		$db_res = $DB->Query("SELECT * FROM b_language WHERE ACTIVE='Y' ORDER BY SORT");
 		while($ar = $db_res->Fetch())
 		{
-			$ar["NAME"] = htmlspecialchars($ar["NAME"]);
+			$ar["NAME"] = htmlspecialcharsbx($ar["NAME"]);
 			$ar["SELECTED"] = ($ar["LID"]==LANG);
 
 			global $QUERY_STRING;
 			$p = rtrim(str_replace("&#", "#", preg_replace("/lang=[^&#]*&*/", "", $QUERY_STRING)), "&");
-			$ar["PATH"] = $APPLICATION->GetCurPage()."?lang=".$ar["LID"].($p <> ''? '&amp;'.htmlspecialchars($p) : '');
+			$ar["PATH"] = $APPLICATION->GetCurPage()."?lang=".$ar["LID"].($p <> ''? '&amp;'.htmlspecialcharsbx($p) : '');
 
 			$result[] = $ar;
 		}

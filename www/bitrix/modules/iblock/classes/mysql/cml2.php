@@ -642,17 +642,22 @@ class CIBlockXMLFile
 			zip_entry_open($hZip, $entry);
 			if(zip_entry_filesize($entry))
 			{
-				$file_name = $dir_name.$entry_name;
-				CheckDirPath($file_name);
-				$fout = fopen($file_name, "wb");
-				if(!$fout)
-					return false;
-				while($data = zip_entry_read($entry, 102400))
+				$file_name = preg_replace("/[:~\$<>]+/", "", $entry_name);
+				$bBadFile = HasScriptExtension($file_name) || IsFileUnsafe($file_name);
+				if(!$bBadFile)
 				{
-					$data_len = function_exists('mb_strlen') ? mb_strlen($data, 'latin1') : strlen($data);
-					$result = fwrite($fout, $data);
-					if($result !== $data_len)
+					$file_name = $dir_name.$entry_name;
+					CheckDirPath($file_name);
+					$fout = fopen($file_name, "wb");
+					if(!$fout)
 						return false;
+					while($data = zip_entry_read($entry, 102400))
+					{
+						$data_len = function_exists('mb_strlen') ? mb_strlen($data, 'latin1') : strlen($data);
+						$result = fwrite($fout, $data);
+						if($result !== $data_len)
+							return false;
+					}
 				}
 			}
 			zip_entry_close($entry);

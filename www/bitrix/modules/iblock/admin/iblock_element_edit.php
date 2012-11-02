@@ -1245,18 +1245,6 @@ else
 	$arTranslit = $arIBlock["FIELDS"]["CODE"]["DEFAULT_VALUE"];
 	$bLinked = (!strlen($str_TIMESTAMP_X) || $bCopy) && $_POST["linked_state"]!=='N';
 
-	if(
-		$arTranslit["USE_GOOGLE"] === "Y"
-		&& COption::GetOptionString("main", "translate_key_bing", "") == ""
-		&& !(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1)
-	)
-		CAdminMessage::ShowMessage(array(
-			"MESSAGE"=>GetMessage("IBEL_E_WARNING"),
-			"DETAILS"=>GetMessage("IBEL_E_TRANSLATION_SERVICE_NOT_CONFIGURED"),
-			"HTML"=>true,
-			"TYPE"=>"ERROR",
-		));
-
 if(strlen($arIBlock["EDIT_FILE_AFTER"])>0 && is_file($_SERVER["DOCUMENT_ROOT"].$arIBlock["EDIT_FILE_AFTER"])):
 	include($_SERVER["DOCUMENT_ROOT"].$arIBlock["EDIT_FILE_AFTER"]);
 	$_SESSION['IBLOCK_CUSTOM_FORM'] = true;

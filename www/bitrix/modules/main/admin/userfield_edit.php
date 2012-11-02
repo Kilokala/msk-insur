@@ -136,31 +136,31 @@ else
 
 if($bVarsFromForm)
 {
-	$ENTITY_ID = htmlspecialchars($_REQUEST["ENTITY_ID"]);
-	$FIELD_NAME = htmlspecialchars($_REQUEST["FIELD_NAME"]);
-	$USER_TYPE_ID = htmlspecialchars($_REQUEST["USER_TYPE_ID"]);
-	$XML_ID = htmlspecialchars($_REQUEST["XML_ID"]);
-	$SORT = htmlspecialchars($_REQUEST["SORT"]);
-	$MULTIPLE = htmlspecialchars($_REQUEST["MULTIPLE"]);
-	$MANDATORY = htmlspecialchars($_REQUEST["MANDATORY"]);
-	$SHOW_FILTER = htmlspecialchars($_REQUEST["SHOW_FILTER"]);
-	$SHOW_IN_LIST = htmlspecialchars($_REQUEST["SHOW_IN_LIST"]);
-	$EDIT_IN_LIST = htmlspecialchars($_REQUEST["EDIT_IN_LIST"]);
-	$IS_SEARCHABLE = htmlspecialchars($_REQUEST["IS_SEARCHABLE"]);
+	$ENTITY_ID = htmlspecialcharsbx($_REQUEST["ENTITY_ID"]);
+	$FIELD_NAME = htmlspecialcharsbx($_REQUEST["FIELD_NAME"]);
+	$USER_TYPE_ID = htmlspecialcharsbx($_REQUEST["USER_TYPE_ID"]);
+	$XML_ID = htmlspecialcharsbx($_REQUEST["XML_ID"]);
+	$SORT = htmlspecialcharsbx($_REQUEST["SORT"]);
+	$MULTIPLE = htmlspecialcharsbx($_REQUEST["MULTIPLE"]);
+	$MANDATORY = htmlspecialcharsbx($_REQUEST["MANDATORY"]);
+	$SHOW_FILTER = htmlspecialcharsbx($_REQUEST["SHOW_FILTER"]);
+	$SHOW_IN_LIST = htmlspecialcharsbx($_REQUEST["SHOW_IN_LIST"]);
+	$EDIT_IN_LIST = htmlspecialcharsbx($_REQUEST["EDIT_IN_LIST"]);
+	$IS_SEARCHABLE = htmlspecialcharsbx($_REQUEST["IS_SEARCHABLE"]);
 }
 else
 {
-	$ENTITY_ID = htmlspecialchars($arUserField["ENTITY_ID"]);
-	$FIELD_NAME = htmlspecialchars($arUserField["FIELD_NAME"]);
-	$USER_TYPE_ID = htmlspecialchars($arUserField["USER_TYPE_ID"]);
-	$XML_ID = htmlspecialchars($arUserField["XML_ID"]);
-	$SORT = htmlspecialchars($arUserField["SORT"]);
-	$MULTIPLE = htmlspecialchars($arUserField["MULTIPLE"]);
-	$MANDATORY = htmlspecialchars($arUserField["MANDATORY"]);
-	$SHOW_FILTER = htmlspecialchars($arUserField["SHOW_FILTER"]);
-	$SHOW_IN_LIST = htmlspecialchars($arUserField["SHOW_IN_LIST"]);
-	$EDIT_IN_LIST = htmlspecialchars($arUserField["EDIT_IN_LIST"]);
-	$IS_SEARCHABLE = htmlspecialchars($arUserField["IS_SEARCHABLE"]);
+	$ENTITY_ID = htmlspecialcharsbx($arUserField["ENTITY_ID"]);
+	$FIELD_NAME = htmlspecialcharsbx($arUserField["FIELD_NAME"]);
+	$USER_TYPE_ID = htmlspecialcharsbx($arUserField["USER_TYPE_ID"]);
+	$XML_ID = htmlspecialcharsbx($arUserField["XML_ID"]);
+	$SORT = htmlspecialcharsbx($arUserField["SORT"]);
+	$MULTIPLE = htmlspecialcharsbx($arUserField["MULTIPLE"]);
+	$MANDATORY = htmlspecialcharsbx($arUserField["MANDATORY"]);
+	$SHOW_FILTER = htmlspecialcharsbx($arUserField["SHOW_FILTER"]);
+	$SHOW_IN_LIST = htmlspecialcharsbx($arUserField["SHOW_IN_LIST"]);
+	$EDIT_IN_LIST = htmlspecialcharsbx($arUserField["EDIT_IN_LIST"]);
+	$IS_SEARCHABLE = htmlspecialcharsbx($arUserField["IS_SEARCHABLE"]);
 }
 
 $APPLICATION->SetTitle(($ID>0? GetMessage("USER_TYPE_EDIT_TITLE", array("#ID#"=>$ID)) : GetMessage("USER_TYPE_ADD_TITLE")));
@@ -285,7 +285,7 @@ $tabControl->BeginNextTab();
 			if($ID > 0)
 			{
 				$arUserType = $USER_FIELD_MANAGER->GetUserType($USER_TYPE_ID);
-				echo htmlspecialchars($arUserType["DESCRIPTION"]);
+				echo htmlspecialcharsbx($arUserType["DESCRIPTION"]);
 			}
 			else
 			{
@@ -296,7 +296,7 @@ $tabControl->BeginNextTab();
 					$arr["reference"][] = $arUserType["DESCRIPTION"];
 					$arr["reference_id"][] = $arUserType["USER_TYPE_ID"];
 				}
-				echo SelectBoxFromArray("USER_TYPE_ID", $arr, $USER_TYPE_ID, "", 'OnChange="window.location=\''.htmlspecialchars($APPLICATION->GetCurPageParam("", array("USER_TYPE_ID")).'&USER_TYPE_ID=').'\'+this.value"');
+				echo SelectBoxFromArray("USER_TYPE_ID", $arr, $USER_TYPE_ID, "", 'OnChange="window.location=\''.htmlspecialcharsbx($APPLICATION->GetCurPageParam("", array("USER_TYPE_ID")).'&USER_TYPE_ID=').'\'+this.value"');
 			}
 			?>
 		</td>
@@ -407,11 +407,11 @@ $tabControl->BeginNextTab();
 				?>
 				<tr>
 					<td><?echo $arLanguage["NAME"]?>:</font></td>
-					<td><input type="text" name="EDIT_FORM_LABEL[<?echo $arLanguage["LID"]?>]" size="20" maxlength="255" value="<?echo htmlspecialchars($bVarsFromForm? $EDIT_FORM_LABEL[$arLanguage["LID"]]: $arUserField["EDIT_FORM_LABEL"][$arLanguage["LID"]])?>"></td>
-					<td><input type="text" name="LIST_COLUMN_LABEL[<?echo $arLanguage["LID"]?>]" size="20" maxlength="255" value="<?echo htmlspecialchars($bVarsFromForm? $LIST_COLUMN_LABEL[$arLanguage["LID"]]: $arUserField["LIST_COLUMN_LABEL"][$arLanguage["LID"]])?>"></td>
-					<td><input type="text" name="LIST_FILTER_LABEL[<?echo $arLanguage["LID"]?>]" size="20" maxlength="255" value="<?echo htmlspecialchars($bVarsFromForm? $LIST_FILTER_LABEL[$arLanguage["LID"]]: $arUserField["LIST_FILTER_LABEL"][$arLanguage["LID"]])?>"></td>
-					<td><input type="text" name="ERROR_MESSAGE[<?echo $arLanguage["LID"]?>]" size="20" maxlength="255" value="<?echo htmlspecialchars($bVarsFromForm? $ERROR_MESSAGE[$arLanguage["LID"]]: $arUserField["ERROR_MESSAGE"][$arLanguage["LID"]])?>"></td>
-					<td><input type="text" name="HELP_MESSAGE[<?echo $arLanguage["LID"]?>]" size="20" maxlength="255" value="<?echo htmlspecialchars($bVarsFromForm? $HELP_MESSAGE[$arLanguage["LID"]]: $arUserField["HELP_MESSAGE"][$arLanguage["LID"]])?>"></td>
+					<td><input type="text" name="EDIT_FORM_LABEL[<?echo $arLanguage["LID"]?>]" size="20" maxlength="255" value="<?echo htmlspecialcharsbx($bVarsFromForm? $EDIT_FORM_LABEL[$arLanguage["LID"]]: $arUserField["EDIT_FORM_LABEL"][$arLanguage["LID"]])?>"></td>
+					<td><input type="text" name="LIST_COLUMN_LABEL[<?echo $arLanguage["LID"]?>]" size="20" maxlength="255" value="<?echo htmlspecialcharsbx($bVarsFromForm? $LIST_COLUMN_LABEL[$arLanguage["LID"]]: $arUserField["LIST_COLUMN_LABEL"][$arLanguage["LID"]])?>"></td>
+					<td><input type="text" name="LIST_FILTER_LABEL[<?echo $arLanguage["LID"]?>]" size="20" maxlength="255" value="<?echo htmlspecialcharsbx($bVarsFromForm? $LIST_FILTER_LABEL[$arLanguage["LID"]]: $arUserField["LIST_FILTER_LABEL"][$arLanguage["LID"]])?>"></td>
+					<td><input type="text" name="ERROR_MESSAGE[<?echo $arLanguage["LID"]?>]" size="20" maxlength="255" value="<?echo htmlspecialcharsbx($bVarsFromForm? $ERROR_MESSAGE[$arLanguage["LID"]]: $arUserField["ERROR_MESSAGE"][$arLanguage["LID"]])?>"></td>
+					<td><input type="text" name="HELP_MESSAGE[<?echo $arLanguage["LID"]?>]" size="20" maxlength="255" value="<?echo htmlspecialcharsbx($bVarsFromForm? $HELP_MESSAGE[$arLanguage["LID"]]: $arUserField["HELP_MESSAGE"][$arLanguage["LID"]])?>"></td>
 				</tr>
 				<?endwhile?>
 			</table>
@@ -448,7 +448,7 @@ $tabControl->BeginNextTab();
 
 		if($bVarsFromForm && is_array($_REQUEST['LIST'][$arEnum["ID"]]))
 			foreach($_REQUEST['LIST'][$arEnum["ID"]] as $key=>$val)
-				$arEnum[$key] = htmlspecialchars($val);
+				$arEnum[$key] = htmlspecialcharsbx($val);
 ?>
 	<tr>
 		<td><?=$arEnum["ID"]?></td>
@@ -469,9 +469,9 @@ if($bVarsFromForm):
 ?>
 	<tr>
 		<td>&nbsp;</td>
-		<td><input type="text" name="LIST[n<?=$n?>][XML_ID]" value="<?=htmlspecialchars($val["XML_ID"])?>" size="15" maxlength="255"></td>
-		<td><input type="text" name="LIST[n<?=$n?>][VALUE]" value="<?=htmlspecialchars($val["VALUE"])?>" size="35" maxlength="255"></td>
-		<td><input type="text" name="LIST[n<?=$n?>][SORT]" value="<?=htmlspecialchars($val["SORT"])?>" size="5" maxlength="10"></td>
+		<td><input type="text" name="LIST[n<?=$n?>][XML_ID]" value="<?=htmlspecialcharsbx($val["XML_ID"])?>" size="15" maxlength="255"></td>
+		<td><input type="text" name="LIST[n<?=$n?>][VALUE]" value="<?=htmlspecialcharsbx($val["VALUE"])?>" size="35" maxlength="255"></td>
+		<td><input type="text" name="LIST[n<?=$n?>][SORT]" value="<?=htmlspecialcharsbx($val["SORT"])?>" size="5" maxlength="10"></td>
 		<td><input type="<?=($MULTIPLE=="Y"? "checkbox": "radio")?>" name="LIST[DEF][]" value="n<?=$n?>"></td>
 		<td><input type="checkbox" name="LIST[n<?=$n?>][DEL]" value="Y"<?if($val["DEL"] == "Y") echo " checked"?>></td>
 	</tr>
@@ -512,7 +512,7 @@ $tabControl->Buttons(
 <?if($ID>0 && !$bCopy):?>
 	<input type="hidden" name="ID" value="<?=$ID?>">
 <?endif;?>
-<input type="hidden" name="back_url" value="<?=htmlspecialchars($back_url)?>">
+<input type="hidden" name="back_url" value="<?=htmlspecialcharsbx($back_url)?>">
 <?
 $tabControl->End();
 ?>

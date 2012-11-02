@@ -839,10 +839,10 @@ class blogTextParser1
 			// }
 
 			// function sortlen($a, $b) {
-			    // if (strlen($a["TYPING"]) == strlen($b["TYPING"])) {
-			        // return 0;
-			    // }
-			    // return (strlen($a["TYPING"]) > strlen($b["TYPING"])) ? -1 : 1;
+				// if (strlen($a["TYPING"]) == strlen($b["TYPING"])) {
+					// return 0;
+				// }
+				// return (strlen($a["TYPING"]) > strlen($b["TYPING"])) ? -1 : 1;
 			// }
 
 			// foreach ($arSmiles as $LID => $arSmilesLID)
@@ -1549,7 +1549,7 @@ class blogTextParser1
 			$bErrorIMG = True;
 		if (!$bErrorIMG && !preg_match("/$extension(\||\$)/".BX_UTF_PCRE_MODIFIER, $this->allow_img_ext))
 			$bErrorIMG = True;
-		if (!$bErrorIMG && !preg_match("/^((http|https|ftp)\:\/\/[-_:.a-z0-9@]+)*(\/[-_+\/=:.a-z0-9@%]+)$/i".BX_UTF_PCRE_MODIFIER, $url))
+		if (!$bErrorIMG && !preg_match("/^(http|https|ftp|\/)/i".BX_UTF_PCRE_MODIFIER, $url))
 			$bErrorIMG = True;
 
 		if ($bErrorIMG)

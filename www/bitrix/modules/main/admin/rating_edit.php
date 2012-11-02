@@ -24,7 +24,7 @@ if($_SERVER['REQUEST_METHOD']=="POST" && ($_POST['save']<>"" || $_POST['apply']<
 	$arFields = array(
 		"ACTIVE"				=> isset($_POST['ACTIVE'])? $_POST['ACTIVE'] : 'N',
 		"NAME"					=> $_POST['NAME'],
-		"ENTITY_ID"		 		=> $_POST['ENTITY_ID'],
+		"ENTITY_ID"				=> $_POST['ENTITY_ID'],
 		"CALCULATION_METHOD"	=> $_POST['CALCULATION_METHOD'],
 		"CONFIGS"				=> $_POST['CONFIGS'],
 		"POSITION"				=> isset($_POST['POSITION'])? 'Y' : 'N',
@@ -57,14 +57,14 @@ if($_SERVER['REQUEST_METHOD']=="POST" && ($_POST['save']<>"" || $_POST['apply']<
 	}
 }
 
-$bTypeChange 	= isset($_POST["action"]) && $_POST["action"] == 'type_changed' ? true : false;
-$str_NAME		= isset($_REQUEST["NAME"]) ? htmlspecialchars($_REQUEST["NAME"]) : GetMessage("RATING_DEF_NAME");
-$str_ENTITY_ID 	= isset($_REQUEST["ENTITY_ID"]) ? htmlspecialchars($_REQUEST["ENTITY_ID"]) : 'USER';
+$bTypeChange = isset($_POST["action"]) && $_POST["action"] == 'type_changed' ? true : false;
+$str_NAME = isset($_REQUEST["NAME"]) ? htmlspecialcharsbx($_REQUEST["NAME"]) : GetMessage("RATING_DEF_NAME");
+$str_ENTITY_ID = isset($_REQUEST["ENTITY_ID"]) ? htmlspecialcharsbx($_REQUEST["ENTITY_ID"]) : 'USER';
 $str_CALCULATION_METHOD = isset($_REQUEST["CALCULATION_METHOD"]) ? IntVal($_REQUEST["CALCULATION_METHOD"]) : '1';
-$str_ACTIVE  	= isset($_REQUEST["ACTIVE"]) && $_REQUEST["ACTIVE"] == 'Y' ? 'Y' : 'N';
-$str_POSITION 	= isset($_REQUEST["POSITION"]) && $_REQUEST["POSITION"] == 'Y' ? 'Y' : 'N';
-$str_AUTHORITY  = isset($_REQUEST["AUTHORITY"]) && $_REQUEST["AUTHORITY"] == 'Y' ? 'Y' : 'N';
-$str_CONFIGS 	= null;
+$str_ACTIVE = isset($_REQUEST["ACTIVE"]) && $_REQUEST["ACTIVE"] == 'Y' ? 'Y' : 'N';
+$str_POSITION = isset($_REQUEST["POSITION"]) && $_REQUEST["POSITION"] == 'Y' ? 'Y' : 'N';
+$str_AUTHORITY = isset($_REQUEST["AUTHORITY"]) && $_REQUEST["AUTHORITY"] == 'Y' ? 'Y' : 'N';
+$str_CONFIGS = null;
 
 if ($ID == 0 && empty($_POST))
 {
@@ -134,7 +134,7 @@ $tabControl->BeginEpilogContent();
 	<input type="hidden" name="lang" value="<?=LANGUAGE_ID?>">
 	<input type="hidden" name="action" value="" id="action">
 <?if($_REQUEST["addurl"]<>""):?>
-	<input type="hidden" name="addurl" value="<?echo htmlspecialchars($_REQUEST["addurl"])?>">
+	<input type="hidden" name="addurl" value="<?echo htmlspecialcharsbx($_REQUEST["addurl"])?>">
 <?endif;?>
 <?
 $tabControl->EndEpilogContent();
@@ -214,8 +214,8 @@ foreach ($arRatingConfigs as $arConfigModule => $arConfigModuleValue)
 				}
 				$FIELD_COUNT = count($arConfig['FIELDS']);
 				// define a default value
-				$bGroupFieldStatus = isset($_POST['CONFIGS'][$arConfigModule][$arConfigType][$arConfig['ID']]['ACTIVE']) ? 
-									 ($_POST['CONFIGS'][$arConfigModule][$arConfigType][$arConfig['ID']]['ACTIVE']) : ($ID>0 ? false : true);
+				$bGroupFieldStatus = isset($_POST['CONFIGS'][$arConfigModule][$arConfigType][$arConfig['ID']]['ACTIVE'])? 
+					($_POST['CONFIGS'][$arConfigModule][$arConfigType][$arConfig['ID']]['ACTIVE']) : ($ID>0 ? false : true);
 				
 				// if exist editing data and block configuration is active
 				if (isset($str_CONFIGS[$arConfigModule][$arConfigType][$arConfig['ID']]['ACTIVE']) &&
@@ -290,34 +290,34 @@ foreach ($arRatingConfigs as $arConfigModule => $arConfigModuleValue)
 											<?
 										}
 									}
-								   ?>
-								   </table>
-							    <td width="50%" class="rating-component-descr" rowspan="<?=$FIELD_COUNT?>">
-							    <? if(isset($arConfig['DESC'])): ?>
-					    			<p><?=$arConfig['DESC']?></p>
-					    		<? else: ?>
+								?>
+								</table>
+								<td width="50%" class="rating-component-descr" rowspan="<?=$FIELD_COUNT?>">
+								<? if(isset($arConfig['DESC'])): ?>
+									<p><?=$arConfig['DESC']?></p>
+								<? else: ?>
 									<p><?=GetMessage('RATING_FIELDS_DEF_DESC')?></p>
 								<? endif; ?>
-					    		<? if(isset($arConfig['FORMULA'])): ?>
-					  				<p class="formula"><?=$arConfig['FORMULA']?></p>
-					  			<? else: ?>
+								<? if(isset($arConfig['FORMULA'])): ?>
+									<p class="formula"><?=$arConfig['FORMULA']?></p>
+								<? else: ?>
 									<p class="formula"><?=GetMessage('RATING_FIELDS_DEF_FORMULA')?></p>
 								<? endif; ?>
-					  			<? if(isset($arConfig['FORMULA_DESC'])): ?>
-					  				<p><?=$arConfig['FORMULA_DESC']?></p>
-					  			<? else: ?>
+								<? if(isset($arConfig['FORMULA_DESC'])): ?>
+									<p><?=$arConfig['FORMULA_DESC']?></p>
+								<? else: ?>
 									<p><?=GetMessage('RATING_FIELDS_DEF_FORMULA_DESC')?></p>
 								<? endif; ?>
-					  			</td>
-					  		</tr>
+								</td>
+							</tr>
 
-					       </table>
-				       </div>
-		       		</td>
-		        </tr>
-		        <tr><td colspan="2" class="rating-component-gap"></td></tr>
-		        </table>
-			    <?	
+						</table>
+					</div>
+				</td>
+			</tr>
+			<tr><td colspan="2" class="rating-component-gap"></td></tr>
+		</table>
+			<?	
 			}
 		}
 	}
@@ -360,7 +360,7 @@ function jsChangeDisplayRatingBlock(block_id)
 	var _div = document.getElementById(block_id+'_div');
 	var _input = document.getElementById(block_id+'_block');
 	
-	_div.style.display = (_input.checked  ? "block" : "none");
+	_div.style.display = (_input.checked? "block" : "none");
 }
 </script>
 <?echo BeginNote();?>

@@ -53,8 +53,8 @@ if($USER->IsAuthorized())
 					$sTitle = str_replace("\n", " ", $sTitle);
 
 					$aFav[] = array(
-						"TEXT"=>htmlspecialchars($db_fav_arr["NAME"]),
-						"TITLE"=>htmlspecialchars($sTitle),
+						"TEXT"=>htmlspecialcharsbx($db_fav_arr["NAME"]),
+						"TITLE"=>htmlspecialcharsbx($sTitle),
 						"ICON"=>"favorites",
 						"HK_ID"=>"FAV-".$db_fav_arr["CODE_ID"],
 						"ACTION"=>"jsUtils.Redirect([], '".CUtil::addslashes($db_fav_arr["URL"])."');",
@@ -106,7 +106,7 @@ if($USER->IsAuthorized())
 	$module = (defined("ADMIN_MODULE_NAME")? ADMIN_MODULE_NAME:"main");
 	$aActiveSection = $adminMenu->ActiveSection();
 	if(LANGUAGE_ID == "ru")
-		$help_link = "http://dev.1c-bitrix.ru/".(IsModuleInstalled('intranet')?"intranet":"user")."_help/".$aActiveSection["help_section"]."/".(defined("HELP_FILE") && strpos(HELP_FILE, '/') !== false?  HELP_FILE : $module."/".$page);
+		$help_link = "http://dev.1c-bitrix.ru/user_help/".$aActiveSection["help_section"]."/".(defined("HELP_FILE") && strpos(HELP_FILE, '/') !== false?  HELP_FILE : $module."/".$page);
 	else
 		$help_link = "http://www.bitrixsoft.com/help/index.html?page=".urlencode("source/".$module."/help/en/".$page.".html");
 
@@ -183,7 +183,7 @@ if(!defined("BX_AUTH_FORM") && $USER->IsAuthorized() && CModule::IncludeModule("
 }
 
 $sPubUrl = ($_SESSION["BACK_URL_PUB"] <> ""?
-	htmlspecialchars($_SESSION["BACK_URL_PUB"]).(strpos($_SESSION["BACK_URL_PUB"], "?") !== false? "&amp;":"?") : '/?').
+	htmlspecialcharsbx($_SESSION["BACK_URL_PUB"]).(strpos($_SESSION["BACK_URL_PUB"], "?") !== false? "&amp;":"?") : '/?').
 	'back_url_admin='.urlencode($APPLICATION->GetCurPage().($params<>""? "?".$params:""));
 
 
@@ -198,7 +198,7 @@ $aUserOpt = CUserOptions::GetOption("admin_panel", "settings");
 <div style="display:none; overflow:hidden;" id="bx-panel-back"></div>
 <div id="bx-panel" class="bx-panel-admin-mode">
 
-    <div id="bx-panel-top"><div id="bx-panel-tabs"><a href="#"<?if ($USER->IsAuthorized()):?> onclick="jsStartMenu.ShowStartMenu(this);"<?endif?> id="bx-panel-menu"><span><?echo GetMessage("admin_panel_menu")?></span></a><a href="<?=$sPubUrl?>" id="bx-panel-view-tab"><span><?echo GetMessage("admin_panel_site")?></span></a><a href="<?=BX_ROOT."/admin/index.php?lang=".LANGUAGE_ID?>" id="bx-panel-admin-tab"><span class="bx-panel-admin-tab-background" id="bx-panel-admin-tab-background"<?if($aUserOptGlobal["panel_color"]!=""):?> style="background-color: <?=htmlspecialchars($aUserOptGlobal["panel_color"])?> !important"<?endif?>><span class="bx-panel-admin-tab-left"></span><span class="bx-panel-admin-tab-center"><span class="bx-panel-menu-opacity"><?echo GetMessage("admin_panel_admin")?></span></span><span class="bx-panel-admin-tab-right"></span></span></a></div><?
+	<div id="bx-panel-top"><div id="bx-panel-tabs"><a href="#"<?if ($USER->IsAuthorized()):?> onclick="jsStartMenu.ShowStartMenu(this);"<?endif?> id="bx-panel-menu"><span><?echo GetMessage("admin_panel_menu")?></span></a><a href="<?=$sPubUrl?>" id="bx-panel-view-tab"><span><?echo GetMessage("admin_panel_site")?></span></a><a href="<?=BX_ROOT."/admin/index.php?lang=".LANGUAGE_ID?>" id="bx-panel-admin-tab"><span class="bx-panel-admin-tab-background" id="bx-panel-admin-tab-background"<?if($aUserOptGlobal["panel_color"]!=""):?> style="background-color: <?=htmlspecialcharsbx($aUserOptGlobal["panel_color"])?> !important"<?endif?>><span class="bx-panel-admin-tab-left"></span><span class="bx-panel-admin-tab-center"><span class="bx-panel-menu-opacity"><?echo GetMessage("admin_panel_admin")?></span></span><span class="bx-panel-admin-tab-right"></span></span></a></div><?
 
 		if($USER->IsAuthorized())
 		{
@@ -230,11 +230,11 @@ $aUserOpt = CUserOptions::GetOption("admin_panel", "settings");
 
 			$bCanProfile = $USER->CanDoOperation('view_own_profile') || $USER->CanDoOperation('edit_own_profile');
 			if ($bCanProfile)
-				$userInfo .= '<a href="/bitrix/admin/user_edit.php?lang='.LANGUAGE_ID.'&ID='.$USER->GetID().'" id="bx-panel-user">'.htmlspecialchars($USER->GetFullName()).' ('.htmlspecialchars($USER->GetLogin()).')</a><span class="bx-panel-userinfo-separator"></span>';
+				$userInfo .= '<a href="/bitrix/admin/user_edit.php?lang='.LANGUAGE_ID.'&ID='.$USER->GetID().'" id="bx-panel-user">'.htmlspecialcharsbx($USER->GetFullName()).' ('.htmlspecialcharsbx($USER->GetLogin()).')</a><span class="bx-panel-userinfo-separator"></span>';
 			else
-				$userInfo .= '<a id="bx-panel-user">'.htmlspecialchars($USER->GetFullName()).' ('.htmlspecialchars($USER->GetLogin()).')</a><span class="bx-panel-userinfo-separator"></span>';
+				$userInfo .= '<a id="bx-panel-user">'.htmlspecialcharsbx($USER->GetFullName()).' ('.htmlspecialcharsbx($USER->GetLogin()).')</a><span class="bx-panel-userinfo-separator"></span>';
 
-			$userInfo .= '<a href="'.htmlspecialchars($APPLICATION->GetCurPage()).'?logout=yes'.htmlspecialchars(($s=DeleteParam(array("logout"))) == ""? "":"&".$s).'" id="bx-panel-logout" title="'.$hkInstance->GetTitle("bx-panel-logout").'">'.GetMessage("admin_panel_logout").'</a>';
+			$userInfo .= '<a href="'.htmlspecialcharsbx($APPLICATION->GetCurPage()).'?logout=yes'.htmlspecialcharsbx(($s=DeleteParam(array("logout"))) == ""? "":"&".$s).'" id="bx-panel-logout" title="'.$hkInstance->GetTitle("bx-panel-logout").'">'.GetMessage("admin_panel_logout").'</a>';
 			$Execs	=	$hkInstance->GetCodeByClassName("bx-panel-logout",GetMessage('admin_panel_logout'));
 
 			$userInfo .= '<span class="bx-panel-userinfo-separator"></span>';
@@ -253,15 +253,15 @@ $aUserOpt = CUserOptions::GetOption("admin_panel", "settings");
 		}
 		?>
 
-        <div id="bx-panel-userinfo"><?=$userInfo?></div>
+	<div id="bx-panel-userinfo"><?=$userInfo?></div>
 	</div>
 		<?
 		if($USER->IsAuthorized())
 			$hkInstance->PrintJSExecs($Execs);
 		?>
 
-	<div id="bx-panel-admin-toolbar"<?if($aUserOptGlobal["panel_color"]!=""):?> style="background-color: <?=htmlspecialchars($aUserOptGlobal["panel_color"])?> !important"<?endif?>>
-        <div id="bx-panel-admin-toolbar-inner">
+	<div id="bx-panel-admin-toolbar"<?if($aUserOptGlobal["panel_color"]!=""):?> style="background-color: <?=htmlspecialcharsbx($aUserOptGlobal["panel_color"])?> !important"<?endif?>>
+	<div id="bx-panel-admin-toolbar-inner">
 		<?
 		foreach($arPanelButtons as $item)
 		{
@@ -312,11 +312,11 @@ $aUserOpt = CUserOptions::GetOption("admin_panel", "settings");
 		if($USER->IsAuthorized() && IsModuleInstalled("search"))
 		{
 		?>
-            <div class="bx-search-box" id="bx-search-box">
-                <div class="bx-search-box-inner"><input id="bx-search-input" onclick="if (this.value=='<?=GetMessage("top_panel_search_def")?>') {this.value=''; BX.addClass(this,'bx-search-selected');}" value="<?=GetMessage("top_panel_search_def")?>" onblur="if (this.value==''){this.value='<?=GetMessage("top_panel_search_def")?>'; BX.removeClass(this,'bx-search-selected');}" class="bx-search" type="text" autocomplete="off" /></div>
-            </div>
+		<div class="bx-search-box" id="bx-search-box">
+			<div class="bx-search-box-inner"><input id="bx-search-input" onclick="if (this.value=='<?=GetMessage("top_panel_search_def")?>') {this.value=''; BX.addClass(this,'bx-search-selected');}" value="<?=GetMessage("top_panel_search_def")?>" onblur="if (this.value==''){this.value='<?=GetMessage("top_panel_search_def")?>'; BX.removeClass(this,'bx-search-selected');}" class="bx-search" type="text" autocomplete="off" /></div>
+		</div>
 			<script type="text/javascript">
-			var jsControl = new JCTitleSearch({
+			var jsControl = new JCAdminTitleSearch({
 				'AJAX_PAGE' : '/bitrix/admin/get_search.php?lang=<?=LANGUAGE_ID?>',
 				'CONTAINER_ID': 'bx-search-box',
 				'INPUT_ID': 'bx-search-input',
@@ -330,12 +330,12 @@ $aUserOpt = CUserOptions::GetOption("admin_panel", "settings");
 
 		}
 		?>
-        </div>
-    </div>
-    <?
-    	if ($USER->IsAdmin())
+		</div>
+	</div>
+	<?
+		if ($USER->IsAdmin())
 			echo CAdminNotify::GetHtml();
-    ?>
+	?>
 </div>
 
 <script type="text/javascript">BX.admin.panel.state = {fixed: <?=($aUserOpt["fix"] == "on" ? "true" : "false")?>}</script>

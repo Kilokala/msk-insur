@@ -166,7 +166,7 @@ function DoAction(oEvent, action, module_id)
 		$str = str_replace("#A1#","<a  href='sysupdate.php?lang=".LANG."'>",GetMessage("MOD_MAIN_DESCRIPTION"));
 		$str = str_replace("#A2#","</a>",$str);
 		echo $str;?></td>
-		<td ondblclick="<?echo htmlspecialchars("DoAction(event, 'version_down', 'main')")?>" id="version_for_main"><?echo SM_VERSION;?></td>
+		<td ondblclick="<?echo htmlspecialcharsbx("DoAction(event, 'version_down', 'main')")?>" id="version_for_main"><?echo SM_VERSION;?></td>
 		<td nowrap><?echo CDatabase::FormatDate(SM_VERSION_DATE, "YYYY-MM-DD HH:MI:SS", CLang::GetDateFormat("SHORT"));?></td>
 		<td><?=GetMessage("MOD_INSTALLED")?></td>
 		<td>&nbsp;</td>
@@ -176,14 +176,14 @@ foreach($arModules as $info) :
 ?>
 	<tr>
 		<td><b><?echo htmlspecialcharsex($info["MODULE_NAME"])?></b> <?echo htmlspecialcharsex(strlen($info["MODULE_PARTNER"]) > 0? " <b><i>(".str_replace(array("#NAME#", "#URI#"), array($info["MODULE_PARTNER"], $info["MODULE_PARTNER_URI"]), GetMessage("MOD_PARTNER_NAME")).")</i></b>" : "(".$info["MODULE_ID"].")") ?><br><?echo $info["MODULE_DESCRIPTION"]?></td>
-		<td ondblclick="<?echo htmlspecialchars("DoAction(event, 'version_down', '".CUtil::AddSlashes($info["MODULE_ID"])."')")?>" id="version_for_<?echo htmlspecialchars($info["MODULE_ID"])?>"><?echo $info["MODULE_VERSION"]?></td>
+		<td ondblclick="<?echo htmlspecialcharsbx("DoAction(event, 'version_down', '".CUtil::AddSlashes($info["MODULE_ID"])."')")?>" id="version_for_<?echo htmlspecialcharsbx($info["MODULE_ID"])?>"><?echo $info["MODULE_VERSION"]?></td>
 		<td nowrap><?echo CDatabase::FormatDate($info["MODULE_VERSION_DATE"], "YYYY-MM-DD HH:MI:SS", CLang::GetDateFormat("SHORT"));?></td>
 		<td><?if($info["IsInstalled"]):?><?echo GetMessage("MOD_INSTALLED")?><?else:?><span class="required"><?echo GetMessage("MOD_NOT_INSTALLED")?></span><?endif?></td>
 		<td>
-			<form action="<?echo $APPLICATION->GetCurPage()?>" method="GET" id="form_for_<?echo htmlspecialchars($info["MODULE_ID"])?>">
-				<input type="hidden" name="action" value="" id="action_for_<?echo htmlspecialchars($info["MODULE_ID"])?>">
+			<form action="<?echo $APPLICATION->GetCurPage()?>" method="GET" id="form_for_<?echo htmlspecialcharsbx($info["MODULE_ID"])?>">
+				<input type="hidden" name="action" value="" id="action_for_<?echo htmlspecialcharsbx($info["MODULE_ID"])?>">
 				<input type="hidden" name="lang" value="<?echo LANG?>">
-				<input type="hidden" name="id" value="<?echo htmlspecialchars($info["MODULE_ID"])?>">
+				<input type="hidden" name="id" value="<?echo htmlspecialcharsbx($info["MODULE_ID"])?>">
 				<?=bitrix_sessid_post()?>
 				<?if($info["IsInstalled"]):?>
 					<input <?if (!$isAdmin || $info["MODULE_ID"] == 'fileman' || $info["MODULE_ID"] == 'intranet') echo "disabled" ?> type="submit" name="uninstall" value="<?echo GetMessage("MOD_DELETE")?>">

@@ -31,14 +31,15 @@ if($REQUEST_METHOD=="POST" && (strlen($save)>0 || strlen($apply)>0) && $isAdmin 
 {
 	$arFields = Array(
 		"ACTIVE"			=> $_REQUEST['ACTIVE'],
-		"SORT"			=> $_REQUEST['SORT'],
-		"DEF"			=> $_REQUEST['DEF'],
-		"NAME"			=> $_REQUEST['NAME'],
+		"SORT"				=> $_REQUEST['SORT'],
+		"DEF"				=> $_REQUEST['DEF'],
+		"NAME"				=> $_REQUEST['NAME'],
 		"FORMAT_DATE"		=> $_REQUEST['FORMAT_DATE'],
 		"FORMAT_DATETIME"	=> $_REQUEST['FORMAT_DATETIME'],
 		"WEEK_START"		=> intval($_REQUEST["WEEK_START"]),
+		"FORMAT_NAME"		=> CSite::GetNameFormatByValue($_REQUEST["FORMAT_NAME"]),
 		"CHARSET"			=> $_REQUEST['CHARSET'],
-		"DIRECTION"		=> $_REQUEST['DIRECTION']
+		"DIRECTION"			=> $_REQUEST['DIRECTION']
 		);
 
 	if($ID<=0)
@@ -86,14 +87,24 @@ elseif(strlen($LID)>0)
 	if($x = $lng->ExtractFields("str_"))
 		$ID=1;
 }
+else
+{
+	//only if new
+	if (empty($str_FORMAT_NAME))
+		$str_FORMAT_NAME = CSite::GetDefaultNameFormat();
+}
+
 
 if($bVarsFromForm)
+{
 	$DB->InitTableVarsForEdit("b_lang", "", "str_");
+	$str_FORMAT_NAME = CSite::GetNameFormatByValue($_POST["FORMAT_NAME"]);
+}
 
 $strTitle = ($ID>0) ? str_replace("#ID#", "$str_LID", GetMessage("EDIT_LANG_TITLE")) : GetMessage("NEW_LANG_TITLE");
 $APPLICATION->SetTitle($strTitle);
 /***************************************************************************
-                               HTML форма
+				HTML form
 ****************************************************************************/
 
 require($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/include/prolog_admin_after.php");
@@ -149,7 +160,7 @@ if($message)
 <?=bitrix_sessid_post()?>
 <input type="hidden" name="lang" value="<?=LANGUAGE_ID?>">
 <input type="hidden" name="ID" value="<?echo $ID?>">
-<?if(strlen($COPY_ID)>0):?><input type="hidden" name="COPY_ID" value="<?echo htmlspecialchars($COPY_ID)?>"><?endif?>
+<?if(strlen($COPY_ID)>0):?><input type="hidden" name="COPY_ID" value="<?echo htmlspecialcharsbx($COPY_ID)?>"><?endif?>
 <?
 $tabControl->Begin();
 
@@ -200,6 +211,10 @@ for ($i = 0; $i < 7; $i++)
 }
 ?>
 		</select></td>
+	</tr>
+	<tr valign="top">
+		<td><span class="required">*</span><? echo GetMessage('FORMAT_NAME')?></td>
+		<td><?echo CSite::SelectBoxName("FORMAT_NAME", $str_FORMAT_NAME);?></td>
 	</tr>
 	<tr valign="top">
 		<td><span class="required">*</span><? echo GetMessage('CHARSET')?></td>

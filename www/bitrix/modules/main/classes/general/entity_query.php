@@ -28,6 +28,7 @@ class CEntityQuery
 
 	protected
 		$select_expr_chains = array(), // from select expr "build_from"
+		$having_expr_chains = array(), // from having expr "build_from"
 		$hidden_chains = array(); // all expr "build_from" elements;
 
 	protected
@@ -154,7 +155,7 @@ class CEntityQuery
 		$this->order[$definition] = $order;
 	}
 
-	public function getLimit($limit)
+	public function getLimit()
 	{
 		return $this->limit;
 	}
@@ -164,7 +165,7 @@ class CEntityQuery
 		$this->limit = $limit;
 	}
 
-	public function getOptions($options)
+	public function getOptions()
 	{
 		return $this->options;
 	}
@@ -203,7 +204,7 @@ class CEntityQuery
 		$this->setFilterChains($this->filter);
 		$this->divideFilter($this->filter);
 
-		foreach ($this->group as $key => $value)
+		foreach ($this->group as $value)
 		{
 			$this->addToGroupChain($value);
 		}
@@ -399,6 +400,15 @@ class CEntityQuery
 					$this->where[$k] = $sub_filter;
 					$this->setFilterChains($tmp_filter, 'where');
 				}
+			}
+		}
+
+		// collect "build_from" fields from having
+		foreach ($this->having_chains as $chain)
+		{
+			if ($chain->getLastElement()->getValue() instanceof CExpressionEntityField)
+			{
+				$this->collectExprChains($chain, array('hidden', 'having_expr'));
 			}
 		}
 	}
@@ -652,7 +662,7 @@ class CEntityQuery
 				$alias = $chain->getAlias();
 
 				if (isset($this->select_chains[$alias]) || isset($this->select_expr_chains[$alias]) || isset($this->order_chains[$alias])
-					|| isset($this->having_chains[$alias]))
+					|| isset($this->having_chains[$alias]) || isset($this->having_expr_chains[$alias]))
 				{
 					if (!($chain->getLastElement()->getValue() instanceof CExpressionEntityField) && !$chain->hasAggregation())
 					{
@@ -729,6 +739,10 @@ class CEntityQuery
 					{
 						$filter_match = $last->getValue()->normalizeValue($filter_match);
 					}
+				}
+				elseif ($field_type == 'float')
+				{
+					$field_type = 'double';
 				}
 
 				//$is_having = $last->getValue() instanceof CExpressionEntityField && $last->getValue()->IsAggregated();

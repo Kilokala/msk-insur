@@ -22,7 +22,7 @@ $addUrl = 'lang='.LANGUAGE_ID.($logical == "Y"?'&logical=Y':'');
 $io = CBXVirtualIo::GetInstance();
 $path = $io->CombinePath("/", $path);
 
-$bVarsFromForm = false;		// флаг, указывающий, откуда брать контент из файла или из запостченой формы
+$bVarsFromForm = false;		//flag, witch points were get content from: file or post form
 if (strlen($filename) > 0 && ($mess = CFileMan::CheckFileName($filename)) !== true)
 {
 	$filename2 = $filename;
@@ -31,9 +31,9 @@ if (strlen($filename) > 0 && ($mess = CFileMan::CheckFileName($filename)) !== tr
 	$bVarsFromForm = true;
 }
 
-// если новый файл и задано новое имя
+//if new file & sets new name
 if(strlen($new)>0 && strlen($filename)>0)
-	$path = $path."/".$filename; // присвоим нашему пути это новое имя
+	$path = $path."/".$filename; // let's set this new name to us path
 
 $site = CFileMan::__CheckSite($site);
 if(!$site)
@@ -64,8 +64,8 @@ if((strlen($new) <= 0 || strlen($filename) <= 0) && !$io->FileExists($abs_path))
 	{
 		$new = "Y";
 		$filename = substr($path, $p+1);
-		$path = substr($path, 0, $p);
-		$abs_path = $DOC_ROOT.$path;
+		//$path = substr($path, 0, $p);
+		//$abs_path = $DOC_ROOT.$path;
 	}
 }
 $originalPath = $path;
@@ -96,7 +96,7 @@ else
 	!$USER->CanDoFileOperation('fm_edit_existent_file',$arPath))
 		$only_read = true;
 
-	if(strlen($new) > 0 && strlen($filename) > 0 && $io->FileExists($abs_path))		// если мы хотим создать новый файл, но уже такой есть - ругаемся
+	if(strlen($new) > 0 && strlen($filename) > 0 && $io->FileExists($abs_path))		// if we want to make new file , but the file with the same name alredy exist, let's abuse
 	{
 		$strWarning = GetMessage("FILEMAN_FILEEDIT_FILE_EXISTS")." ";
 		$bEdit = false;
@@ -786,11 +786,14 @@ function AjaxApply(e)
 {
 	var
 		form = document.forms.ffilemanedit,
+		target = form.target,
 		cancelBut = BX.findChild(form, {tag: 'INPUT', attr: {'name': 'cancel', 'type':'button'}}, true),
 		saveBut = BX.findChild(form, {tag: 'INPUT', attr: {'name': 'save', 'type':'submit'}}, true),
 		applyBut = form.apply;
 
-	form.appendChild(BX.create('INPUT', {props: {type: 'hidden', name: 'AJAX_APPLY', value: 'Y'}}));
+	var applyInp = BX('bx-ffilemanedit-ajax-apply');
+	if (!applyInp)
+		applyInp = form.appendChild(BX.create('INPUT', {props: {id: 'bx-ffilemanedit-ajax-apply', type: 'hidden', name: 'AJAX_APPLY', value: 'Y'}}));
 
 	applyBut.value1 = applyBut.value;
 	applyBut.value = '<?= GetMessage('FILEMAN_APPLY_PROCESS')?>...';
@@ -812,10 +815,14 @@ function AjaxApply(e)
 		if (top.strWarning && top.strWarning != '')
 			alert(top.strWarning);
 
+		form.target = target;
+		if (applyInp)
+			BX.cleanNode(applyInp, true);
+
 		BX.focus(BX('bx-filesrc'));
 	});
 
-	
+
 	return BX.PreventDefault(e || window.event);
 }
 

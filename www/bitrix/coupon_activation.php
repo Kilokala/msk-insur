@@ -4,6 +4,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 require_once($_SERVER['DOCUMENT_ROOT']."/bitrix/php_interface/dbconn.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/bitrix/modules/main/classes/".$DBType."/database.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/bitrix/modules/main/tools.php");
 
 if ($_REQUEST['lang'] == 'ru')
 	define("LANGUAGE_ID", 'ru');
@@ -25,6 +26,8 @@ if (LANGUAGE_ID == 'ru')
 	$MESS['ERROR_INVALID_COUPON'] = 'Лицензионный ключ / купон не корректен';
 	$MESS['ERROR_EMPTY_COUPON'] = 'Лицензионный ключ / купон не указан';
 	$MESS['SUCCESS_RECOVER'] = "Работоспособность сайта восстановлена";
+	$MESS['ERROR_NOT_WRITABLE'] = "Ядро продукта не доступно на запись";
+	$MESS['ERROR_NOT_FOPEN'] = "Не удалось открыть файл на запись";
 }
 else
 {
@@ -40,6 +43,8 @@ else
 	$MESS['ERROR_INVALID_COUPON'] = 'License Key / Coupon is incorrect';
 	$MESS['ERROR_EMPTY_COUPON'] = 'License Key / Coupon is not specified';
 	$MESS['SUCCESS_RECOVER'] = "Site restore completed";
+	$MESS['ERROR_NOT_WRITABLE'] = "Folder is not writable";
+	$MESS['ERROR_NOT_FOPEN'] = "File open fails";
 }
 
 $DB = new CDatabase;
@@ -107,6 +112,9 @@ function UpdateGetHTTPPage($requestDataAdd, &$errorMessage)
 	$serverPort = 80;
 
 	$proxyAddr = UpdateGetOption("update_site_proxy_addr", "");
+	$proxyPort = 0;
+	$proxyUserName = "";
+	$proxyPassword = "";
 	if (strlen($proxyAddr) > 0)
 	{
 		$proxyPort = intval(UpdateGetOption("update_site_proxy_port", ""));
@@ -277,9 +285,22 @@ function UpdateActivateCoupon($coupon, &$errorMessage)
 
 	UpdateSetOption('admin_passwordh', $arContent["V1"]);
 
-	$fp = fopen($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/admin/define.php", 'w');
-	fwrite($fp, "<"."?Define(\"TEMPORARY_CACHE\", \"".$arContent["V2"]."\");?".">");
-	fclose($fp);
+	if (is_writable($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/admin/define.php"))
+	{
+		if ($fp = fopen($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/admin/define.php", 'w'))
+		{
+			fwrite($fp, "<"."?Define(\"TEMPORARY_CACHE\", \"".$arContent["V2"]."\");?".">");
+			fclose($fp);
+		}
+		else
+		{
+			$errorMessage .= $MESS['ERROR_NOT_FOPEN'].". ";
+		}
+	}
+	else
+	{
+		$errorMessage .= $MESS['ERROR_NOT_WRITABLE'].". ";
+	}
 
 	if (isset($arContent["DATE_TO_SOURCE"]))
 		UpdateSetOption("~support_finish_date", $arContent["DATE_TO_SOURCE"]);
@@ -289,9 +310,22 @@ function UpdateActivateCoupon($coupon, &$errorMessage)
 		UpdateSetOption("PARAM_MAX_USERS", intval($arContent["MAX_USERS"]));
 	if (isset($arContent["ISLC"]))
 	{
-		$fp = fopen($_SERVER['DOCUMENT_ROOT']."/bitrix/license_key.php", "wb");
-		fputs($fp, '<'.'?$LICENSE_KEY = "'.htmlspecialchars($coupon).'";?'.'>');
-		fclose($fp);
+		if (is_writable($_SERVER['DOCUMENT_ROOT']."/bitrix/license_key.php"))
+		{
+			if ($fp = fopen($_SERVER['DOCUMENT_ROOT']."/bitrix/license_key.php", "wb"))
+			{
+				fputs($fp, '<'.'?$LICENSE_KEY = "'.EscapePHPString($coupon).'";?'.'>');
+				fclose($fp);
+			}
+			else
+			{
+				$errorMessage .= $MESS['ERROR_NOT_FOPEN'].". ";
+			}
+		}
+		else
+		{
+			$errorMessage .= $MESS['ERROR_NOT_WRITABLE'].". ";
+		}
 	}
 
 	return true;

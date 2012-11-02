@@ -86,8 +86,8 @@ if($lAdmin->EditAction())
 	foreach($FIELDS as $ID=>$arFields)
 	{
 		$ID = IntVal($ID);
-	   	if($ID <= 0)
-	   		continue;
+		if($ID <= 0)
+			continue;
 		if(!$lAdmin->IsUpdated($ID))
 			continue;
 		if(!$isAdmin)
@@ -115,9 +115,9 @@ if(($arID = $lAdmin->GroupAction()))
 
 	foreach($arID as $ID)
 	{
-	   	$ID = IntVal($ID);
-	   	if($ID <= 0)
-	   		continue;
+		$ID = IntVal($ID);
+		if($ID <= 0)
+			continue;
 		if(!$isAdmin)
 		{
 			$db_fav = CFavorites::GetByID($ID);
@@ -235,7 +235,7 @@ $oFilter = new CAdminFilter(
 <tr>
 	<td><b><?echo GetMessage("fav_list_flt_find")?></b></td>
 	<td>
-		<input type="text" size="25" name="find" value="<?echo htmlspecialchars($find)?>" title="<?echo GetMessage("fav_list_flt_find_title")?>">
+		<input type="text" size="25" name="find" value="<?echo htmlspecialcharsbx($find)?>" title="<?echo GetMessage("fav_list_flt_find_title")?>">
 		<?
 		$arr = array(
 			"reference" => array(
@@ -255,15 +255,15 @@ $oFilter = new CAdminFilter(
 </tr>
 <tr>
 	<td><?echo GetMessage("fav_list_flt_name2")?></td>
-	<td><input type="text" name="find_name" size="40" value="<?echo htmlspecialchars($find_name)?>"><?=ShowFilterLogicHelp()?></td>
+	<td><input type="text" name="find_name" size="40" value="<?echo htmlspecialcharsbx($find_name)?>"><?=ShowFilterLogicHelp()?></td>
 </tr>
 <tr>
 	<td><?echo GetMessage("fav_list_flt_url2")?></td>
-	<td><input type="text" name="find_url" size="40" value="<?echo htmlspecialchars($find_url)?>"><?=ShowFilterLogicHelp()?></td>
+	<td><input type="text" name="find_url" size="40" value="<?echo htmlspecialcharsbx($find_url)?>"><?=ShowFilterLogicHelp()?></td>
 </tr>
 <tr>
 	<td><?echo GetMessage("MAIN_F_ID")?></td>
-	<td><input type="text" name="find_id" size="40" value="<?echo htmlspecialchars($find_id)?>"><?=ShowFilterLogicHelp()?></td>
+	<td><input type="text" name="find_id" size="40" value="<?echo htmlspecialcharsbx($find_id)?>"><?=ShowFilterLogicHelp()?></td>
 </tr>
 <tr>
 	<td><?echo GetMessage("fav_list_flt_lang2")?></td>
@@ -275,15 +275,15 @@ $oFilter = new CAdminFilter(
 </tr>
 <tr>
 	<td><?echo GetMessage("MAIN_F_MODIFIED_BY")?></td>
-	<td><input type="text" name="find_modified" value="<?echo htmlspecialchars($find_modified)?>" size="40"><?=ShowFilterLogicHelp()?></td>
+	<td><input type="text" name="find_modified" value="<?echo htmlspecialcharsbx($find_modified)?>" size="40"><?=ShowFilterLogicHelp()?></td>
 </tr>
 <tr>
 	<td><?echo GetMessage("MAIN_F_CREATED_BY")?></td>
-	<td><input type="text" name="find_created" value="<?echo htmlspecialchars($find_created)?>" size="40"><?=ShowFilterLogicHelp()?></td>
+	<td><input type="text" name="find_created" value="<?echo htmlspecialcharsbx($find_created)?>" size="40"><?=ShowFilterLogicHelp()?></td>
 </tr>
 <tr>
 	<td><?echo GetMessage("fav_list_flt_desc1")?></td>
-	<td><input type="text" name="find_keywords" value="<?echo htmlspecialchars($find_keywords)?>" size="40"><?=ShowFilterLogicHelp()?></td>
+	<td><input type="text" name="find_keywords" value="<?echo htmlspecialcharsbx($find_keywords)?>" size="40"><?=ShowFilterLogicHelp()?></td>
 </tr>
 <?if($isAdmin):?>
 <tr>
@@ -296,7 +296,7 @@ $oFilter = new CAdminFilter(
 </tr>
 <tr>
 	<td><?echo GetMessage("fav_list_flt_user1")?></td>
-	<td><input type="text" name="find_user_id" size="40" value="<?echo htmlspecialchars($find_user_id)?>"><?=ShowFilterLogicHelp()?></td>
+	<td><input type="text" name="find_user_id" size="40" value="<?echo htmlspecialcharsbx($find_user_id)?>"><?=ShowFilterLogicHelp()?></td>
 </tr>
 <tr>
 	<td><?echo GetMessage("fav_list_flt_mod1")?></td>

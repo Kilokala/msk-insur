@@ -2487,19 +2487,8 @@ class CAllSearchQuery
 		$arStemInfo = stemming_init($this->m_lang);
 		$letters = $arStemInfo["pcre_letters"]."|+&~()";
 
-		//This chars will be whiped out
-		$white_space = '*%!@#$^_={};\':<>?,.[]"\\/';
-		//Take off alphabet chars from delimiters
-		$white_space = preg_replace("/[".$letters."]+/".BX_UTF_PCRE_MODIFIER, "", $white_space);
-		//Escape special chars
-		$white_space = str_replace(
-			array("\\"  , "-"  , "^"  , "]"  , "/"  ),
-			array("\\\\", "\\-", "\\^", "\\]", "\\/"),
-			$white_space
-		);
-
 		//Erase delimiters from the query
-		$qwe = trim(preg_replace("/[".$white_space."]+/".BX_UTF_PCRE_MODIFIER, " ", $qwe));
+		$qwe = trim(preg_replace("/[^".$letters."]+/".BX_UTF_PCRE_MODIFIER, " ", $qwe));
 
 		// query language normalizer
 		if(!$this->no_bool_lang)

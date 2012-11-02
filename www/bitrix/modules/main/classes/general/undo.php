@@ -252,7 +252,7 @@ class CAutoSave
 			$DISABLE_STANDARD_NOTIFY = ($admin ? 'false' : 'true');
 
 			if (defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1)
-				echo CJSCore::Init(array('autosave'), true);
+				echo CJSCore::GetHTML(array('autosave'));
 ?>
 <input type="hidden" name="autosave_id" id="autosave_marker_<?=$this->GetID()?>" value="<?=$this->GetID()?>" />
 <script type="text/javascript">window.autosave_<?=$this->GetID()?> = new top.BX.CAutoSave({

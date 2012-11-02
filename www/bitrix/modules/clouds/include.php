@@ -17,6 +17,7 @@ CModule::AddAutoloadClasses(
 		"CCloudStorageService_RackSpaceCloudFiles" =>  "classes/general/storage_service_rackspace.php",
 		"CCloudStorageService_ClodoRU" =>  "classes/general/storage_service_clodo.php",
 		"CCloudStorageUpload" => "classes/general/storage_upload.php",
+		"CCloudSecurityService_AmazonS3" => "classes/general/security_service_s3.php",
 	)
 );
 ?>

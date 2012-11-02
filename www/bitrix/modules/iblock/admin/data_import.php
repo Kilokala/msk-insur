@@ -689,6 +689,11 @@ if (($REQUEST_METHOD == "POST" || $CUR_FILE_POS > 0) && $STEP > 1 && check_bitri
 					"TMP_ID" => $tmpid,
 					"IBLOCK_SECTION" => $csvFile->MapSections($arRes) ,
 				);
+
+				//Preserve existing sections
+				if(empty($arLoadProductArray["IBLOCK_SECTION"]))
+					unset($arLoadProductArray["IBLOCK_SECTION"]);
+
 				$bThereIsGroups |= !empty($arLoadProductArray["IBLOCK_SECTION"]);
 				foreach ($arIBlockAvailProdFields as $key => $arField)
 				{
@@ -744,9 +749,15 @@ if (($REQUEST_METHOD == "POST" || $CUR_FILE_POS > 0) && $STEP > 1 && check_bitri
 						if (strlen($arLoadProductArray["PREVIEW_PICTURE"]) > 0)
 						{
 							if (preg_match("/^(http|https):\\/\\//", $arLoadProductArray["PREVIEW_PICTURE"]))
+							{
 								$arLoadProductArray["PREVIEW_PICTURE"] = CFile::MakeFileArray($arLoadProductArray["PREVIEW_PICTURE"]);
+							}
 							else
+							{
 								$arLoadProductArray["PREVIEW_PICTURE"] = CFile::MakeFileArray($_SERVER["DOCUMENT_ROOT"].$PATH2IMAGE_FILES."/".$arLoadProductArray["PREVIEW_PICTURE"]);
+								if (is_array($arLoadProductArray["PREVIEW_PICTURE"]))
+									$arLoadProductArray["PREVIEW_PICTURE"]["COPY_FILE"] = "Y";
+							}
 						}
 						if (!is_array($arLoadProductArray["PREVIEW_PICTURE"]))
 							unset($arLoadProductArray["PREVIEW_PICTURE"]);
@@ -757,9 +768,15 @@ if (($REQUEST_METHOD == "POST" || $CUR_FILE_POS > 0) && $STEP > 1 && check_bitri
 						if (strlen($arLoadProductArray["DETAIL_PICTURE"]) > 0)
 						{
 							if (preg_match("/^(http|https):\\/\\//", $arLoadProductArray["DETAIL_PICTURE"]))
+							{
 								$arLoadProductArray["DETAIL_PICTURE"] = CFile::MakeFileArray($arLoadProductArray["DETAIL_PICTURE"]);
+							}
 							else
+							{
 								$arLoadProductArray["DETAIL_PICTURE"] = CFile::MakeFileArray($_SERVER["DOCUMENT_ROOT"].$PATH2IMAGE_FILES."/".$arLoadProductArray["DETAIL_PICTURE"]);
+								if (is_array($arLoadProductArray["DETAIL_PICTURE"]))
+									$arLoadProductArray["DETAIL_PICTURE"]["COPY_FILE"] = "Y";
+							}
 						}
 						if (!is_array($arLoadProductArray["DETAIL_PICTURE"]))
 							unset($arLoadProductArray["DETAIL_PICTURE"]);
@@ -801,7 +818,11 @@ if (($REQUEST_METHOD == "POST" || $CUR_FILE_POS > 0) && $STEP > 1 && check_bitri
 											"del" => "Y",
 											"tmp_name" => "",
 										);
-									elseif(strlen($arPropFile["VALUE"]) > 0 && $arPropFile["PROPERTY_TYPE"] != "F" && !array_key_exists($arPropFile["ID"], $arPropsLoaded))
+									elseif(
+										$arPropFile["PROPERTY_TYPE"] != "F"
+										&& !array_key_exists($arPropFile["ID"], $arPropsLoaded)
+										&& (is_array($arPropFile["VALUE"]) || strlen($arPropFile["VALUE"]) > 0)
+									)
 									{
 										$arLoadProductArray["PROPERTY_VALUES"][$arPropFile["ID"]][$arPropFile["PROPERTY_VALUE_ID"]] = array(
 											"VALUE" => $arPropFile["VALUE"],
@@ -814,6 +835,7 @@ if (($REQUEST_METHOD == "POST" || $CUR_FILE_POS > 0) && $STEP > 1 && check_bitri
 							{
 								unset($arLoadProductArray["PROPERTY_VALUES"]);
 							}
+
 							$res = $el->Update($PRODUCT_ID, $arLoadProductArray, $bWorkFlow, true, $IMAGE_RESIZE === "Y");
 						}
 						else
@@ -1073,7 +1095,7 @@ $tabControl->Begin();
 if ($STEP == 1)
 {
 ?>
- 	<tr>
+	<tr>
 		<td><?echo GetMessage("IBLOCK_ADM_IMP_DATA_FILE"); ?></td>
 		<td>
 			<input type="text" name="URL_DATA_FILE" value="<?echo htmlspecialchars($URL_DATA_FILE); ?>" size="30">

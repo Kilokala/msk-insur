@@ -27,7 +27,7 @@ class CUserTypeEntity extends CAllUserTypeEntity
 			if(!$rs)
 			{
 				$APPLICATION->ThrowException(GetMessage("USER_TYPE_TABLE_CREATION_ERROR",array(
-					"#ENTITY_ID#"=>htmlspecialchars($entity_id),
+					"#ENTITY_ID#"=>htmlspecialcharsbx($entity_id),
 				)));
 				return false;
 			}
@@ -46,7 +46,7 @@ class CUserTypeEntity extends CAllUserTypeEntity
 			if(!$rs)
 			{
 				$APPLICATION->ThrowException(GetMessage("USER_TYPE_TABLE_CREATION_ERROR",array(
-					"#ENTITY_ID#"=>htmlspecialchars($entity_id),
+					"#ENTITY_ID#"=>htmlspecialcharsbx($entity_id),
 				)));
 				return false;
 			}

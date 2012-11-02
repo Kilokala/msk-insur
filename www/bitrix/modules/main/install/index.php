@@ -386,6 +386,7 @@ Class main extends CModule
 				"NAME" => GetMessage("MAIN_DEFAULT_LANGUAGE_NAME"),
 				"FORMAT_DATE" => GetMessage("MAIN_DEFAULT_LANGUAGE_FORMAT_DATE"),
 				"FORMAT_DATETIME" => GetMessage("MAIN_DEFAULT_LANGUAGE_FORMAT_DATETIME"),
+				"FORMAT_NAME" => GetMessage("MAIN_DEFAULT_LANGUAGE_FORMAT_NAME"),
 				"CHARSET" => (defined("BX_UTF") ? "UTF-8" : GetMessage("MAIN_DEFAULT_LANGUAGE_FORMAT_CHARSET"))
 			)
 		);
@@ -399,6 +400,7 @@ Class main extends CModule
 				"NAME" => "English",
 				"FORMAT_DATE" => "MM/DD/YYYY",
 				"FORMAT_DATETIME" => "MM/DD/YYYY HH:MI:SS",
+				"FORMAT_NAME" => "#NOBR##NAME# #LAST_NAME##/NOBR#",
 				"CHARSET" => (defined("BX_UTF") ? "UTF-8" : "iso-8859-1")
 			);
 
@@ -411,6 +413,7 @@ Class main extends CModule
 				"NAME" => "German",
 				"FORMAT_DATE" => "DD.MM.YYYY",
 				"FORMAT_DATETIME" => "DD.MM.YYYY HH:MI:SS",
+				"FORMAT_NAME" => "#NOBR##NAME# #LAST_NAME##/NOBR#",
 				"CHARSET" => (defined("BX_UTF") ? "UTF-8" : "iso-8859-1")
 			);
 
@@ -423,6 +426,7 @@ Class main extends CModule
 				"NAME" => "Russian",
 				"FORMAT_DATE" => "DD.MM.YYYY",
 				"FORMAT_DATETIME" => "DD.MM.YYYY HH:MI:SS",
+				"FORMAT_NAME" => "#NOBR##NAME# #LAST_NAME##/NOBR#",
 				"CHARSET" => (defined("BX_UTF") ? "UTF-8" : "windows-1251")
 			);
 
@@ -450,6 +454,7 @@ Class main extends CModule
 			"DIR" => "/",
 			"FORMAT_DATE" => GetMessage("MAIN_DEFAULT_SITE_FORMAT_DATE"),
 			"FORMAT_DATETIME" => GetMessage("MAIN_DEFAULT_SITE_FORMAT_DATETIME"),
+			"FORMAT_NAME" => GetMessage("MAIN_DEFAULT_SITE_FORMAT_NAME"),
 			"CHARSET" =>  (defined("BX_UTF") ? "UTF-8" : GetMessage("MAIN_DEFAULT_SITE_FORMAT_CHARSET")),
 			"LANGUAGE_ID" => LANGUAGE_ID,
 		);

@@ -5,18 +5,18 @@ require_once($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/prolog.php");
 if(!defined('NOT_CHECK_PERMISSIONS') || NOT_CHECK_PERMISSIONS !== true)
 {
 	if (!$USER->CanDoOperation('view_other_settings'))
-	    $APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
+		$APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
 }
 
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/classes/general/checklist.php");
 IncludeModuleLangFile(__FILE__);
 $APPLICATION->AddHeadString(
-    '<link type="text/css" rel="stylesheet" href="/bitrix/themes/.default/check-list-style.css">
+	'<link type="text/css" rel="stylesheet" href="/bitrix/themes/.default/check-list-style.css">
 	<style type="text/css">
-        .checklist-button-left-corn {background:url(\'/bitrix/js/main/core/images/controls-sprite.png\') no-repeat left -328px;}
-        .checklist-button-cont{background:url(\'/bitrix/js/main/core/images/controls-sprite.png\') repeat-x left -356px;}
-        .checklist-button-right-corn {background:url(\'/bitrix/js/main/core/images/controls-sprite.png\') no-repeat -6px -328px;}
-    </style>
+		.checklist-button-left-corn {background:url(\'/bitrix/js/main/core/images/controls-sprite.png\') no-repeat left -328px;}
+		.checklist-button-cont{background:url(\'/bitrix/js/main/core/images/controls-sprite.png\') repeat-x left -356px;}
+		.checklist-button-right-corn {background:url(\'/bitrix/js/main/core/images/controls-sprite.png\') no-repeat -6px -328px;}
+	</style>
 ');
 $APPLICATION->SetTitle(GetMessage("CL_TITLE_CHECKLIST"));
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_after.php");
@@ -347,28 +347,28 @@ if (($res = CCheckListResult::GetList(Array(),Array("REPORT"=>"N"))->Fetch())||(
 			BX.ready(function(){InitState();});
 
 
-		 var list_binds={
-            checklist_span:BX.findChildren(document,{className:'checklist-testlist-text'}, true),
-            hover_link:BX.findChildren(document,{className:'checklist-testlist-level3-cont'}, true),
-            show_list:function(){
-                BX.hasClass(this.parentNode,'testlist-open')?BX.removeClass(this.parentNode, 'testlist-open'):BX.addClass(this.parentNode, 'testlist-open');
-            },
-            hover_border:function(event){
-                var event = event || window.event;
-                if(event.type=='mouseover') BX.findChild(this,{className:'checklist-testlist-level3-cont-border'}, true).style.borderBottom='1px dashed';
-                if(event.type=='mouseout') BX.findChild(this,{className:'checklist-testlist-level3-cont-border'}, true).style.borderBottom='none';
-            },
-            binds:function(){
-                for(var i=0; i<this.checklist_span.length; i++){
-                    BX.bind(this.checklist_span[i], "click", this.show_list)
-                    }
-                for(var b=0; b<this.hover_link.length; b++){
-                    BX.bind(this.hover_link[b], 'mouseover', this.hover_border);
-                    BX.bind(this.hover_link[b], 'mouseout', this.hover_border)
-                }
-            }
-        };
-        list_binds.binds();
+		var list_binds={
+			checklist_span:BX.findChildren(document,{className:'checklist-testlist-text'}, true),
+			hover_link:BX.findChildren(document,{className:'checklist-testlist-level3-cont'}, true),
+			show_list:function(){
+				BX.hasClass(this.parentNode,'testlist-open')?BX.removeClass(this.parentNode, 'testlist-open'):BX.addClass(this.parentNode, 'testlist-open');
+			},
+			hover_border:function(event){
+				var event = event || window.event;
+				if(event.type=='mouseover') BX.findChild(this,{className:'checklist-testlist-level3-cont-border'}, true).style.borderBottom='1px dashed';
+				if(event.type=='mouseout') BX.findChild(this,{className:'checklist-testlist-level3-cont-border'}, true).style.borderBottom='none';
+			},
+			binds:function(){
+				for(var i=0; i<this.checklist_span.length; i++){
+					BX.bind(this.checklist_span[i], "click", this.show_list)
+				}
+				for(var b=0; b<this.hover_link.length; b++){
+					BX.bind(this.hover_link[b], 'mouseover', this.hover_border);
+					BX.bind(this.hover_link[b], 'mouseout', this.hover_border)
+				}
+			}
+		};
+		list_binds.binds();
 
 
 		function InitState()
@@ -933,7 +933,7 @@ if (($res = CCheckListResult::GetList(Array(),Array("REPORT"=>"N"))->Fetch())||(
 				<?foreach ($arReports as $arReport):?>
 					<tr class="">
 						<td><?=$arReport["DATE_CREATE"]?></td>
-						<td><?=htmlspecialchars($arReport["TESTER"]);?></td>
+						<td><?=htmlspecialcharsbx($arReport["TESTER"]);?></td>
 						<td><?=$arReport["TOTAL"]?></td>
 						<td><?=$arReport["SUCCESS"]?></td>
 						<td><?=$arReport["FAILED"]?></td>

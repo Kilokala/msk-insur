@@ -141,13 +141,13 @@ function GetFilterHiddens($var = "filter_", $button = array("filter" => "Y", "se
 					reset($value);
 					foreach($value as $v)
 					{
-						$res .= '<input type="hidden" name="'.htmlspecialchars($var_name).'[]" value="'.htmlspecialchars($v).'">';
+						$res .= '<input type="hidden" name="'.htmlspecialcharsbx($var_name).'[]" value="'.htmlspecialcharsbx($v).'">';
 					}
 				}
 			}
 			elseif (strlen($value)>0 && $value!="NOT_REF")
 			{
-				$res .= '<input type="hidden" name="'.htmlspecialchars($var_name).'" value="'.htmlspecialchars($value).'">';
+				$res .= '<input type="hidden" name="'.htmlspecialcharsbx($var_name).'" value="'.htmlspecialcharsbx($value).'">';
 			}
 		}
 	}
@@ -156,7 +156,7 @@ function GetFilterHiddens($var = "filter_", $button = array("filter" => "Y", "se
 	{
 		reset($button); // php bug
 		while(list($key, $value) = each($button))
-			$res.='<input type="hidden" name="'.htmlspecialchars($key).'" value="'.htmlspecialchars($value).'">';
+			$res.='<input type="hidden" name="'.htmlspecialcharsbx($key).'" value="'.htmlspecialcharsbx($value).'">';
 	}
 	else
 		$res .= $button;
@@ -218,10 +218,10 @@ function GetFilterParams($var="filter_", $bDoHtmlEncode=true, $button = array("f
 		$res .= $button;
 
 
-	$tmp_phpbug = ($bDoHtmlEncode) ? htmlspecialchars($res) : $res;
+	$tmp_phpbug = ($bDoHtmlEncode) ? htmlspecialcharsbx($res) : $res;
 
 	return $tmp_phpbug;
-	//return ($bDoHtmlEncode) ? htmlspecialchars($res) : $res;
+	//return ($bDoHtmlEncode) ? htmlspecialcharsbx($res) : $res;
 }
 
 // устаревшая функция, оставлена для совместимости
@@ -302,7 +302,7 @@ function ShowFilterLogicHelp()
 	global $LogicHelp;
 	$str = "";
 	if(LANGUAGE_ID == "ru")
-		$help_link = "http://dev.1c-bitrix.ru/user_help/general/filter.php";
+		$help_link = "http://dev.1c-bitrix.ru/user_help/help/filter.php";
 	else
 		$help_link = "http://www.bitrixsoft.com/help/index.html?page=".urlencode("source/main/help/en/filter.php.html");
 	if ($LogicHelp != "Y")
@@ -680,6 +680,6 @@ function SortingEx($By, $Path = false, $sByVar="by", $sOrderVar="order", $Anchor
 	if($strTest=="&" OR $strTest == "?")
 		$strAdd2URL="";
 
-	return "<nobr><a href=\"".htmlspecialchars($Path.$strAdd2URL.$sByVar."=".$By."&".$sOrderVar."=asc#".$Anchor)."\">".$sImgDown."</a>".
-			"<a href=\"".htmlspecialchars($Path.$strAdd2URL.$sByVar."=".$By."&".$sOrderVar."=desc#".$Anchor)."\">".$sImgUp."</a></nobr>";
+	return "<nobr><a href=\"".htmlspecialcharsbx($Path.$strAdd2URL.$sByVar."=".$By."&".$sOrderVar."=asc#".$Anchor)."\">".$sImgDown."</a>".
+			"<a href=\"".htmlspecialcharsbx($Path.$strAdd2URL.$sByVar."=".$By."&".$sOrderVar."=desc#".$Anchor)."\">".$sImgUp."</a></nobr>";
 }?>

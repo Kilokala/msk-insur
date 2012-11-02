@@ -1,5 +1,5 @@
 <?
-$MESS["socserv_mailru_name"] = "Ìîé Ìèð";
-$MESS["socserv_openid_yandex"] = "ßíäåêñ";
-$MESS["socserv_vk_name"] = "ÂÊîíòàêòå";
+$MESS["socserv_mailru_name"] = "ÐœÐ¾Ð¹ ÐœÐ¸Ñ€";
+$MESS["socserv_openid_yandex"] = "Ð¯Ð½Ð´ÐµÐºÑ";
+$MESS["socserv_vk_name"] = "Ð’ÐšÐ¾Ð½Ñ‚Ð°ÐºÑ‚Ðµ";
 ?>

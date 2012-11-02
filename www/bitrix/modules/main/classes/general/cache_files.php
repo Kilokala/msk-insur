@@ -58,6 +58,7 @@ class CPHPCacheFiles
 			static $bAgentAdded = false;
 
 			$source = "/".trim($basedir, "/")."/".trim($initdir, "/");
+			$source = rtrim($source, "/");
 			$bDelayedDelete = false;
 
 			if(file_exists(rtrim($_SERVER["DOCUMENT_ROOT"], "/").$source))
@@ -236,7 +237,7 @@ class CPHPCacheFiles
 		return false;
 	}
 
-	function DeleteOneDir()
+	function DeleteOneDir($etime = 0)
 	{
 		global $DB;
 		$bDeleteFromQueue = false;
@@ -257,7 +258,8 @@ class CPHPCacheFiles
 						{
 							DeleteDirFilesEx($ar["RELATIVE_PATH"]."/".$file);
 							$Counter++;
-							break;
+							if(time() > $etime)
+								break;
 						}
 					}
 					closedir($dh);
@@ -293,7 +295,7 @@ class CPHPCacheFiles
 		$etime = time()+2;
 		for($i = 0; $i < $count; $i++)
 		{
-			CPHPCacheFiles::DeleteOneDir();
+			CPHPCacheFiles::DeleteOneDir($etime);
 			if(time() > $etime)
 				break;
 		}
@@ -319,9 +321,14 @@ class CPHPCacheFiles
 			$count = 1;
 
 		if($bWasStatRecFound)
-			$DB->Query("UPDATE b_cache_tag SET RELATIVE_PATH='".$this_count."' WHERE TAG='**'");
+		{
+			if($last_count != $this_count)
+				$DB->Query("UPDATE b_cache_tag SET RELATIVE_PATH='".$this_count."' WHERE TAG='**'");
+		}
 		else
+		{
 			$DB->Query("INSERT INTO b_cache_tag (TAG, RELATIVE_PATH) VALUES ('**', '".$this_count."')");
+		}
 
 		if($this_count > 0)
 			return "CPHPCacheFiles::DelayedDelete(".$count.");";

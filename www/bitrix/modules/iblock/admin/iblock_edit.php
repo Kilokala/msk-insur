@@ -2533,7 +2533,8 @@ if (true == $bCatalog)
 	?>
 	<tr>
 		<td valign="top"  width="40%"><?echo GetMessage("IB_E_IS_SKU")?></td>
-		<td valign="top" width="60%"><a href="/bitrix/admin/iblock_edit.php?type=<? echo $str_PRODUCT_IBLOCK_TYPE_ID; ?>&lang=<? echo LANGUAGE_ID; ?>&ID=<? echo $str_PRODUCT_IBLOCK_ID; ?>&admin=Y"><? echo htmlspecialchars($str_PRODUCT_IBLOCK_NAME); ?></a></td>
+		<td valign="top" width="60%"><a href="/bitrix/admin/iblock_edit.php?type=<? echo $str_PRODUCT_IBLOCK_TYPE_ID; ?>&lang=<? echo LANGUAGE_ID; ?>&ID=<? echo $str_PRODUCT_IBLOCK_ID; ?>&admin=Y"><? echo htmlspecialchars($str_PRODUCT_IBLOCK_NAME); ?></a>
+		<input type="hidden" id="USED_SKU_N" name="USED_SKU" value="N"></td>
 	</tr>
 	<?
 	}
@@ -2597,7 +2598,7 @@ if (true == $bCatalog)
 		<?
 		/*
 		?>
- 		<div id="offers_rights" style="display: <? echo (0 < intval($str_OF_IBLOCK_ID) ? 'display' : 'none'); ?>; width: 100%; text-align: center;">
+		<div id="offers_rights" style="display: <? echo (0 < intval($str_OF_IBLOCK_ID) ? 'display' : 'none'); ?>; width: 100%; text-align: center;">
 			<table style="width: 100%;"><tbody>
 			<tr>
 			<td valign="top"  width="40%" class="field-name"><label for="SKU_RIGHTS_Y"><?echo GetMessage("IB_E_OF_RIGHTS"); ?></label></td>

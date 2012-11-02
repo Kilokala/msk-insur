@@ -187,7 +187,7 @@ class CTemplates
 		}
 	}
 
-	function GetFolderList($template_id =  false)
+	function GetFolderList($template_id = false)
 	{
 		$arTemplateFolders = Array();
 		$arTemplateFoldersSort = Array();
@@ -724,7 +724,7 @@ function GetDirList($path, &$arDirs, &$arFiles, $arFilter=Array(), $sort=Array()
 		if(is_set($arFilter, "MIN_PERMISSION") && $arFile["PERMISSION"]<$arFilter["MIN_PERMISSION"] && !$task_mode)
 			continue;
 
-		if(!$child->IsDirectory() && $arFile["PERMISSION"]<="R"  && !$task_mode)
+		if(!$child->IsDirectory() && $arFile["PERMISSION"]<="R" && !$task_mode)
 			continue;
 
 		if ($bLogical)
@@ -744,7 +744,7 @@ function GetDirList($path, &$arDirs, &$arFiles, $arFilter=Array(), $sort=Array()
 		if(substr($arFile["ABS_PATH"], 0, strlen(BX_ROOT."/modules"))==BX_ROOT."/modules" && !$USER->CanDoOperation('edit_php') && !$task_mode)
 			continue;
 
-		if ($arFile["PERMISSION"]=="U"  && !$task_mode)
+		if ($arFile["PERMISSION"]=="U" && !$task_mode)
 		{
 			$ftype = GetFileType($arFile["NAME"]);
 			if ($ftype!="SOURCE" && $ftype!="IMAGE" && $ftype!="UNKNOWN") continue;
@@ -788,39 +788,39 @@ class _FilesCmp
 {
 	function cmp_size_asc($a, $b)
 	{
-	   if($a["SIZE"] == $b["SIZE"])
-	       return 0;
-	   return ($a["SIZE"] < $b["SIZE"]) ? -1 : 1;
+		if($a["SIZE"] == $b["SIZE"])
+			return 0;
+		return ($a["SIZE"] < $b["SIZE"]) ? -1 : 1;
 	}
 	function cmp_size_desc($a, $b)
 	{
-	   if ($a["SIZE"] == $b["SIZE"])
-	       return 0;
-	   return ($a["SIZE"] > $b["SIZE"]) ? -1 : 1;
+		if ($a["SIZE"] == $b["SIZE"])
+			return 0;
+		return ($a["SIZE"] > $b["SIZE"]) ? -1 : 1;
 	}
 	function cmp_timestamp_asc($a, $b)
 	{
-	   if($a["TIMESTAMP"] == $b["TIMESTAMP"])
-	       return 0;
-	   return ($a["TIMESTAMP"] < $b["TIMESTAMP"]) ? -1 : 1;
+		if($a["TIMESTAMP"] == $b["TIMESTAMP"])
+			return 0;
+		return ($a["TIMESTAMP"] < $b["TIMESTAMP"]) ? -1 : 1;
 	}
 	function cmp_timestamp_desc($a, $b)
 	{
-	   if ($a["TIMESTAMP"] == $b["TIMESTAMP"])
-	       return 0;
-	   return ($a["TIMESTAMP"] > $b["TIMESTAMP"]) ? -1 : 1;
+		if ($a["TIMESTAMP"] == $b["TIMESTAMP"])
+			return 0;
+		return ($a["TIMESTAMP"] > $b["TIMESTAMP"]) ? -1 : 1;
 	}
 	function cmp_name_asc($a, $b)
 	{
-	   if($a["NAME"] == $b["NAME"])
-	       return 0;
-	   return ($a["NAME"] < $b["NAME"]) ? -1 : 1;
+		if($a["NAME"] == $b["NAME"])
+			return 0;
+		return ($a["NAME"] < $b["NAME"]) ? -1 : 1;
 	}
 	function cmp_name_desc($a, $b)
 	{
-	   if($a["NAME"] == $b["NAME"])
-	       return 0;
-	   return ($a["NAME"] > $b["NAME"]) ? -1 : 1;
+		if($a["NAME"] == $b["NAME"])
+			return 0;
+		return ($a["NAME"] > $b["NAME"]) ? -1 : 1;
 	}
 }
 
@@ -843,7 +843,7 @@ function SetPrologTitle($prolog, $title)
 			elseif(preg_match("#<title>[^<]*</title>#i", $prolog))
 				$prolog = preg_replace("#<title>[^<]*</title>#i", "<title>".$title."</title>", $prolog);
 			else
-				$prolog = $prolog."\n<title>".htmlspecialchars($title)."</title>\n";
+				$prolog = $prolog."\n<title>".htmlspecialcharsbx($title)."</title>\n";
 		}
 		else
 		{

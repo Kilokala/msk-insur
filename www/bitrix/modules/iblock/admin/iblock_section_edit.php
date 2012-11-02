@@ -280,18 +280,6 @@ $bFileman = CModule::IncludeModule("fileman");
 $arTranslit = $arIBlock["FIELDS"]["SECTION_CODE"]["DEFAULT_VALUE"];
 $bLinked = !$ID && $_POST["linked_state"]!=='N';
 
-if(
-	$arTranslit["USE_GOOGLE"] === "Y"
-	&& COption::GetOptionString("main", "translate_key_bing", "") == ""
-	&& !(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1)
-)
-	CAdminMessage::ShowMessage(array(
-		"MESSAGE"=>GetMessage("IBSEC_E_WARNING"),
-		"DETAILS"=>GetMessage("IBSEC_E_TRANSLATION_SERVICE_NOT_CONFIGURED"),
-		"HTML"=>true,
-		"TYPE"=>"ERROR",
-	));
-
 $tabControl->BeginPrologContent();
 if(method_exists($USER_FIELD_MANAGER, 'showscript'))
 	echo $USER_FIELD_MANAGER->ShowScript();
@@ -639,7 +627,7 @@ if(
 		?>
 			<tr colspan="2">
 				<td align="left">
-					<a href="/bitrix/admin/userfield_edit.php?lang=<?echo LANG?>&amp;ENTITY_ID=<?echo urlencode($entity_id)?>&amp;back_url=<?echo urlencode($APPLICATION->GetCurPageParam()."&tabControl_active_tab=user_fields_tab")?>"><?echo $tabControl->GetCustomLabelHTML()?></a>
+					<a href="/bitrix/admin/userfield_edit.php?lang=<?echo LANG?>&amp;ENTITY_ID=<?echo urlencode($entity_id)?>&amp;back_url=<?echo urlencode($APPLICATION->GetCurPageParam('', array('bxpublic'))."&tabControl_active_tab=user_fields_tab")?>"><?echo $tabControl->GetCustomLabelHTML()?></a>
 				</td>
 			</tr>
 		<?

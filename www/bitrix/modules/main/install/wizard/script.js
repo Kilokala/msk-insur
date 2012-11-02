@@ -46,6 +46,7 @@ function NeedUTFSection(dbType)
 		document.getElementById("utf-row-two").style.display='none';
 		document.getElementById("utf-row-one").style.display='none';
 		document.getElementById("utf8_inst").checked=false;
+		document.getElementsByName("__wiz_utf8")[0].value="";
 	}
 	else
 	{

@@ -140,8 +140,7 @@ class CBXArchive
 	public static function HasAccess($strFilename, $isFile)
 	{
 		$result = false;
-		$pos = strpos($strFilename, $_SERVER["DOCUMENT_ROOT"]);
-		$path = substr_replace($strFilename, "", $pos, strlen($_SERVER["DOCUMENT_ROOT"]));
+		$path = removeDocRoot($strFilename);
 
 		global $USER;
 
@@ -154,8 +153,7 @@ class CBXArchive
 		{
 			if ($USER->CanDoFileOperation('fm_view_file', array(SITE_ID,$path)) &&
 			($USER->CanDoOperation('edit_php') || $USER->CanDoFileOperation('fm_lpa', array(SITE_ID, $path)) ||
-			!(in_array(GetFileExtension(basename($path)), GetScriptFileExt()) || 
-			substr(basename($path), 0, 1)==".")))
+			!(HasScriptExtension($path) || substr(GetFileName($path), 0, 1) == ".")))
 			{
 				$result = true;
 			}

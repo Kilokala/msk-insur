@@ -64,7 +64,7 @@ class CUserTypeIBlockSection extends CUserTypeEnum
 			<tr valign="top">
 				<td>'.GetMessage("USER_TYPE_IBSEC_DISPLAY").':</td>
 				<td>
-					<input type="text" size="6" name="'.$arHtmlControl["NAME"].'[IBLOCK_ID]" value="'.htmlspecialchars($value).'">
+					<input type="text" size="6" name="'.$arHtmlControl["NAME"].'[IBLOCK_ID]" value="'.htmlspecialcharsbx($value).'">
 				</td>
 			</tr>
 			';
@@ -114,7 +114,7 @@ class CUserTypeIBlockSection extends CUserTypeEnum
 			<tr valign="top">
 				<td>'.GetMessage("USER_TYPE_IBSEC_DEFAULT_VALUE").':</td>
 				<td>
-					<input type="text" size="8" name="'.$arHtmlControl["NAME"].'[DEFAULT_VALUE]" value="'.htmlspecialchars($value).'">
+					<input type="text" size="8" name="'.$arHtmlControl["NAME"].'[DEFAULT_VALUE]" value="'.htmlspecialcharsbx($value).'">
 				</td>
 			</tr>
 			';

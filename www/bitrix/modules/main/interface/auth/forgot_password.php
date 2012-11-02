@@ -15,7 +15,7 @@ if(!empty($arAuthResult))
 	));
 }
 ?>	
-<form name="form_auth" method="post" target="_top" action="<?echo htmlspecialchars($sDocPath."?forgot_password=yes".(($s=DeleteParam(array("forgot_password"))) == ""? "":"&".$s))?>">
+<form name="form_auth" method="post" target="_top" action="<?echo htmlspecialcharsbx($sDocPath."?forgot_password=yes".(($s=DeleteParam(array("forgot_password"))) == ""? "":"&".$s))?>">
 <input type="hidden" name="AUTH_FORM" value="Y">
 <input type="hidden" name="TYPE" value="SEND_PWD">
 
@@ -27,7 +27,7 @@ if(!empty($arAuthResult))
 	<table cellpadding="0" cellspacing="0" border="0">
 		<tr>
 			<td class="label"><?=GetMessage("AUTH_LOGIN")?>:</td>
-			<td><input type="text" name="USER_LOGIN" maxlength="50" size="20" value="<?echo htmlspecialchars($last_login)?>" class="input-text"></td>
+			<td><input type="text" name="USER_LOGIN" maxlength="50" size="20" value="<?echo htmlspecialcharsbx($last_login)?>" class="input-text"></td>
 		</tr>
 		<tr> 
 			<td></td>
@@ -47,8 +47,8 @@ if(!empty($arAuthResult))
 
 	<div class="bx-auth-footer">
 		<p><?=GetMessage("AUTH_FORGOT_PASSWORD_1")?></p>
-		<p><?=GetMessage("AUTH_MESS_1")?> <a href="<?echo htmlspecialchars($sDocPath."?change_password=yes".($s<>""? "&".$s:""));?>"><?=GetMessage("AUTH_CHANGE_FORM")?></a>.</p>
-		<p><?echo GetMessage("admin_authorize_back")?> <a href="<?echo htmlspecialchars($sDocPath.($s == ""? "":"?$s"))?>"><?echo GetMessage("admin_authorize_back_form")?></a>.</p>
+		<p><?=GetMessage("AUTH_MESS_1")?> <a href="<?echo htmlspecialcharsbx($sDocPath."?change_password=yes".($s<>""? "&".$s:""));?>"><?=GetMessage("AUTH_CHANGE_FORM")?></a>.</p>
+		<p><?echo GetMessage("admin_authorize_back")?> <a href="<?echo htmlspecialcharsbx($sDocPath.($s == ""? "":"?$s"))?>"><?echo GetMessage("admin_authorize_back_form")?></a>.</p>
 	</div>
 </div>
 </form>

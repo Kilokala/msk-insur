@@ -197,7 +197,7 @@ $absoluteFilePath = $documentRoot.$path;
 
 //Check permissions
 if (!$io->FileExists($absoluteFilePath) || preg_match("~\/\.access\.php$~i", $path))
-	$popupWindow->ShowError(GetMessage("PAGE_DELETE_FILE_NOT_FOUND")." (".htmlspecialchars($path).")");
+	$popupWindow->ShowError(GetMessage("PAGE_DELETE_FILE_NOT_FOUND")." (".htmlspecialcharsbx($path).")");
 elseif (!$USER->CanDoFileOperation('fm_delete_file',Array($site, $path)))
 	$popupWindow->ShowError(GetMessage("PAGE_DELETE_ACCESS_DENIED"));
 
@@ -264,7 +264,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_REQUEST["save"]) && $strWarn
 $popupWindow->ShowTitlebar(GetMessage("PAGE_DELETE_WINDOW_TITLE"));
 $popupWindow->StartDescription("bx-delete-page");
 ?>
-<p><?=str_replace("#FILENAME#", htmlspecialchars($path), GetMessage("PAGE_DELETE_CONFIRM_TEXT"))?></p>
+<p><?=str_replace("#FILENAME#", htmlspecialcharsbx($path), GetMessage("PAGE_DELETE_CONFIRM_TEXT"))?></p>
 <?
 $popupWindow->EndDescription("bx-delete-page");
 $popupWindow->StartContent();

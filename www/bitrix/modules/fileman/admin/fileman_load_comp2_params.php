@@ -54,7 +54,7 @@ function GetProperties($componentName, $curTemplate = '')
 function fetchPropsHelp($componentName_)
 {
 	global $MESS;
-	
+
 	$componentName = str_replace("..", "", $componentName_);
 	$componentName = str_replace(":", "/", $componentName);
 	$lang = preg_replace("/[^a-zA-Z0-9_]/is", "", $_GET["lang"]);
@@ -68,9 +68,9 @@ function fetchPropsHelp($componentName_)
 	if(is_array($arTooltips) && !empty($arTooltips))
 	{
 		foreach($arTooltips as $propName => $tooltip)
-	 	{
+		{
 			?>arTT["<?=CUtil::JSEscape($propName)?>"] = '<?=CUtil::JSEscape($tooltip);?>';<?
-	 	}
+		}
 	}
 	elseif(is_array($MESS))
 	{

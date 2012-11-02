@@ -5,7 +5,7 @@ require_once($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/prolog.php");
 if(!defined('NOT_CHECK_PERMISSIONS') || NOT_CHECK_PERMISSIONS !== true)
 {
 	if (!$USER->CanDoOperation('view_other_settings'))
-	    $APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
+		$APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
 }
 
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/classes/general/checklist.php");
@@ -39,15 +39,15 @@ if($_REQUEST["ACTION"] == "INFO" && $_REQUEST["TEST_ID"] && $arPoints[$_REQUEST[
 	$APPLICATION->RestartBuffer();?>
 	<div id="test_detail_content" style="z-index: 1000; position: absolute; top:10px;min-width:700px;">
 		<span class="bx-check-list-dit"><?=$arPosition.GetMessage("CL_FROM").$arTotal?></span>
-        <div class="bx-core-admin-dialog-content">
-            <div class="bx-core-admin-dialog-head" style="display: block;">
-                <div class="bx-core-dialog-head-content">
-                    <span id="tabs" class="tabs">
-                        <a class="tab-container-selected" id="tab_cont_edit1"><span class="tab-left"><span class="tab-right"><?=GetMessage("CL_TAB_TEST");?></span></span></a>
-                        <a class="tab-container" id="tab_cont_edit2" ><span class="tab-left"><span class="tab-right"><?=GetMessage("CL_TAB_DESC");?></span></span></a>
-                    </span>
-                </div>
-            </div>
+		<div class="bx-core-admin-dialog-content">
+			<div class="bx-core-admin-dialog-head" style="display: block;">
+				<div class="bx-core-dialog-head-content">
+					<span id="tabs" class="tabs">
+						<a class="tab-container-selected" id="tab_cont_edit1"><span class="tab-left"><span class="tab-right"><?=GetMessage("CL_TAB_TEST");?></span></span></a>
+						<a class="tab-container" id="tab_cont_edit2" ><span class="tab-left"><span class="tab-right"><?=GetMessage("CL_TAB_DESC");?></span></span></a>
+					</span>
+				</div>
+			</div>
 			<div style="margin:3px;" class="edit-tab-inner" id="edit1" style="display:block;">
 				<div class="checklist-popup-test">
 					<span class="checklist-popup-name-test"><?=GetMessage("CL_TEST_NAME");?>:</span>
@@ -68,7 +68,7 @@ if($_REQUEST["ACTION"] == "INFO" && $_REQUEST["TEST_ID"] && $arPoints[$_REQUEST[
 							<span id="system_comment"><?=$arPoints[$arTestID]["STATE"]["COMMENTS"]["SYSTEM"]["PREVIEW"];?></span>
 							<a style="display:<?=$display?>" id="show_detail_link" onclick="ShowDetailComment('<?=$arTestID?>')" class="checklist-popup-test-link"><?=GetMessage("CL_MORE_DETAILS");?></a>
 							<div style="display:none">
-							<div  id="detail_system_comment_<?=$arTestID?>"  class="checklist-system-textarea"><?=preg_replace("/\r\n|\r|\n/",'<br>',$arPoints[$arTestID]["STATE"]["COMMENTS"]["SYSTEM"]["DETAIL"]);?></div>
+							<div id="detail_system_comment_<?=$arTestID?>" class="checklist-system-textarea"><?=preg_replace("/\r\n|\r|\n/",'<br>',$arPoints[$arTestID]["STATE"]["COMMENTS"]["SYSTEM"]["DETAIL"]);?></div>
 							</div>
 							</div>
 					</div>
@@ -78,12 +78,12 @@ if($_REQUEST["ACTION"] == "INFO" && $_REQUEST["TEST_ID"] && $arPoints[$_REQUEST[
 						<div class="checklist-form-textar-block">
 							<div class="checklist-form-textar-status"><?=GetMessage("CL_TESTER");?></div>
 							<div class="checklist-dot-line"></div>
-							<div id="performer_comment_area"  class="checklist-form-textar-comment" ><?=preg_replace("/\r\n|\r|\n/",'<br>', htmlspecialchars($arPoints[$arTestID]["STATE"]["COMMENTS"]["PERFOMER"]));?></div>
+							<div id="performer_comment_area" class="checklist-form-textar-comment" ><?=preg_replace("/\r\n|\r|\n/",'<br>', htmlspecialcharsbx($arPoints[$arTestID]["STATE"]["COMMENTS"]["PERFOMER"]));?></div>
 						</div>
 						<div class="checklist-form-textar-block">
 							<div class="checklist-form-textar-status"><?=GetMessage("CL_VENDOR");?></div>
 							<div class="checklist-dot-line"></div>
-							<div id="customer_comment_area"  class="checklist-form-textar-comment" ><?=preg_replace("/\r\n|\r|\n/",'<br>', htmlspecialchars($arPoints[$arTestID]["STATE"]["COMMENTS"]["CUSTOMER"]));?></div>
+							<div id="customer_comment_area" class="checklist-form-textar-comment" ><?=preg_replace("/\r\n|\r|\n/",'<br>', htmlspecialcharsbx($arPoints[$arTestID]["STATE"]["COMMENTS"]["CUSTOMER"]));?></div>
 						</div>
 					</div>
 				</div>
@@ -120,9 +120,9 @@ if($_REQUEST["ACTION"] == "INFO" && $_REQUEST["TEST_ID"] && $arPoints[$_REQUEST[
 					</div>
 				<?endif;?>
 			</div>
-        </div>
-    </div>
-    <script>
+		</div>
+	</div>
+	<script>
 	var arStatus = "<?=$arPoints[$arTestID]["STATE"]["STATUS"]?>";
 
 	switch(arStatus)
@@ -145,10 +145,10 @@ if($_REQUEST["ACTION"] == "INFO" && $_REQUEST["TEST_ID"] && $arPoints[$_REQUEST[
 
 	BX("check_list_comments").style.display = "block";
 	var tabs = BX.findChildren(BX('tabs'), {tagName:'a'}, false);
-    var blocks=[BX('edit1'), BX('edit2')];
-	   for(var i=0; i < tabs.length;i++){
-            tabs[i].onclick=function(){popup_tabs(this, this.id)};
-        }
+	var blocks=[BX('edit1'), BX('edit2')];
+		for(var i=0; i < tabs.length;i++){
+			tabs[i].onclick=function(){popup_tabs(this, this.id)};
+		}
 	if (BX('performer_comment_area').innerHTML.length<=0)
 	{
 		BX('performer_comment_area').style.color="#999";
@@ -163,22 +163,22 @@ if($_REQUEST["ACTION"] == "INFO" && $_REQUEST["TEST_ID"] && $arPoints[$_REQUEST[
 		BX('customer_comment_area').innerHTML = '<?=GetMessage("CL_NO_COMMENT");?>';
 	}
 
-    function popup_tabs(_this, id)
+	function popup_tabs(_this, id)
 	{
-         for(var i=0; i<tabs.length; i++){
-             blocks[i].style.display='none';
-             BX.removeClass(tabs[i], 'tab-container-selected');
-             BX.addClass(tabs[i], 'tab-container');
-         }
+		for(var i=0; i<tabs.length; i++){
+			blocks[i].style.display='none';
+			BX.removeClass(tabs[i], 'tab-container-selected');
+			BX.addClass(tabs[i], 'tab-container');
+		}
 
-          BX.removeClass(_this, 'tab-container');
-          BX.addClass(_this, 'tab-container-selected');
-          BX(id.substring(9)).style.display='block';
-          return false;
-    }
+		BX.removeClass(_this, 'tab-container');
+		BX.addClass(_this, 'tab-container-selected');
+		BX(id.substring(9)).style.display='block';
+		return false;
+	}
 /*
-    function ShowDetailComment()
-    {
+	function ShowDetailComment()
+	{
 		var DetailWindow = new BX.CAdminDialog(
 				{
 					title: "<?=GetMessage("CL_MORE_DETAILS");?>",
@@ -196,8 +196,8 @@ if($_REQUEST["ACTION"] == "INFO" && $_REQUEST["TEST_ID"] && $arPoints[$_REQUEST[
 	}
 */
 
-    </script>
-    <?die();?>
+	</script>
+	<?die();?>
 <?endif;?>
 
 
@@ -257,7 +257,7 @@ else:
 							<?if ($arPictureSrc):?>
 								<img width="30px" src="<?=$arPictureSrc;?>"/>
 							<?endif;?>
-							<?=htmlspecialchars($arReport["INFO"]["COMPANY_NAME"]);?> (<?=htmlspecialchars($arReport["INFO"]["TESTER"]);?>)</span></td>
+							<?=htmlspecialcharsbx($arReport["INFO"]["COMPANY_NAME"]);?> (<?=htmlspecialcharsbx($arReport["INFO"]["TESTER"]);?>)</span></td>
 						</tr>
 					</table>
 					<div class="checklist-top-info-result-right">
@@ -289,7 +289,7 @@ else:
 								<span id="mark_<?=$pkey;?>"></span>
 							</li>
 						<?endforeach;?>
-					   <?foreach($rFields["CATEGORIES"] as $skey=>$sFields): $num = 1;?>
+						<?foreach($rFields["CATEGORIES"] as $skey=>$sFields): $num = 1;?>
 								<li class="checklist-testlist-level2">
 									<div class="checklist-testlist-text" id="<?=$skey?>_name">
 										<?=$sFields["NAME"];?><span id="<?=$skey;?>_stat" class="checklist-testlist-amount-test"></span>
@@ -320,7 +320,7 @@ else:
 			<a class="checklist-result-back" href="/bitrix/admin/checklist.php?lang=<?=LANG;?>"><?=GetMessage("CL_BACK_TO_CHECKLIST");?></a>
 		</div>
 <?endif;?>
-    <script type="text/javascript">
+	<script type="text/javascript">
 
 		var arStates = eval(<?=$arStates;?>);
 		var Dialog = false;
@@ -328,7 +328,7 @@ else:
 		var next = 0;
 		var prev = 0;
 		var last_id = false;
-	    function InitState()
+		function InitState()
 		{
 			var el = false;
 			for (var i=0;i<arStates["SECTIONS"].length;i++)
@@ -385,12 +385,12 @@ else:
 				BX.addClass(BX("comments_"+element.TEST_ID),"checklist-hide");
 		}
 
-        var checklist_div= document.getElementsByTagName('div');
-        for(var i=0; i<checklist_div.length; i++){
-            if(BX.hasClass(checklist_div[i], 'checklist-testlist-text')){
-                BX.bind(checklist_div[i], "click", show_list)
-            }
-        }
+		var checklist_div= document.getElementsByTagName('div');
+		for(var i=0; i<checklist_div.length; i++){
+			if(BX.hasClass(checklist_div[i], 'checklist-testlist-text')){
+				BX.bind(checklist_div[i], "click", show_list)
+			}
+		}
 		function ShowPopupWindow(testID,head_name)
 		{
 			current = 0;
@@ -470,22 +470,22 @@ else:
 			ReCalc(current);
 		}
 
-        function show_list(){
-            BX.hasClass(this.parentNode,'testlist-open')?BX.removeClass(this.parentNode, 'testlist-open'):BX.addClass(this.parentNode, 'testlist-open');
-        }
+		function show_list(){
+			BX.hasClass(this.parentNode,'testlist-open')?BX.removeClass(this.parentNode, 'testlist-open'):BX.addClass(this.parentNode, 'testlist-open');
+		}
 
-        var DetailWindow = false;
+		var DetailWindow = false;
 
 	function ShowDetailComment(id)
-    {
+	{
 
-    	var innerText = BX("detail_system_comment_"+id).parentNode.innerHTML;
-    	content = BX.create("DIV",{
-    		props:{},
-    		html:innerText
-    	});
-    	if(!DetailWindow)
-    	{
+		var innerText = BX("detail_system_comment_"+id).parentNode.innerHTML;
+		content = BX.create("DIV",{
+			props:{},
+			html:innerText
+		});
+		if(!DetailWindow)
+		{
 
 			DetailWindow = new BX.CAdminDialog(
 			{
@@ -514,8 +514,8 @@ else:
 	function XSSReportModifier(data)
 	{
 		if (data.id == last_id)
-    		return;
-    	last_id = data.id;
+			return;
+		last_id = data.id;
 		if (data.id != "QSEC0080")
 			return;
 
@@ -568,5 +568,5 @@ else:
 
 	}
 	BX.addCustomEvent("onAfterDetailReportShow", XSSReportModifier);
-    </script>
+	</script>
 <?require($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/include/epilog_admin.php");?>

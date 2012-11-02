@@ -372,7 +372,7 @@ function xml_depth_rss($vals, &$i)
 	{
 		switch ($vals[$i]['type'])
 		{
-		   case 'open':
+			case 'open':
 				if (isset($vals[$i]['tag']))
 					$tagname = $vals[$i]['tag'];
 				else
@@ -596,7 +596,7 @@ function GetIBlockDropDownListEx($IBLOCK_ID, $strTypeName, $strIBlockName, $arFi
 
 	$html .= "&nbsp;\n";
 
-	$html .= '<select name="'.htmlspecialchars($strIBlockName).'" id="'.htmlspecialchars($strIBlockName).'"'.($onChangeIBlock != '' ? ' onchange="'.$onChangeIBlock.'"' : '').($strAddType != '' ? ' '.$strAddType : '').'>'."\n";
+	$html .= '<select name="'.htmlspecialchars($strIBlockName).'" id="'.htmlspecialchars($strIBlockName).'"'.($onChangeIBlock != '' ? ' onchange="'.$onChangeIBlock.'"' : '').($strAddIBlock != '' ? ' '.$strAddIBlock : '').'>'."\n";
 	foreach($arIBlocks[$IBLOCK_TYPE] as $key => $value)
 	{
 		$html .= '<option value="'.htmlspecialchars($key).'"'.($IBLOCK_ID==$key? ' selected': '').'>'.htmlspecialchars($value).'</option>'."\n";

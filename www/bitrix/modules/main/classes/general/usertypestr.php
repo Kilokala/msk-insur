@@ -112,9 +112,9 @@ class CUserTypeString
 	{
 		$result = '';
 		if($bVarsFromForm)
-			$value = htmlspecialchars($GLOBALS[$arHtmlControl["NAME"]]["DEFAULT_VALUE"]);
+			$value = htmlspecialcharsbx($GLOBALS[$arHtmlControl["NAME"]]["DEFAULT_VALUE"]);
 		elseif(is_array($arUserField))
-			$value = htmlspecialchars($arUserField["SETTINGS"]["DEFAULT_VALUE"]);
+			$value = htmlspecialcharsbx($arUserField["SETTINGS"]["DEFAULT_VALUE"]);
 		else
 			$value = "";
 		$result .= '
@@ -183,9 +183,9 @@ class CUserTypeString
 		</tr>
 		';
 		if($bVarsFromForm)
-			$value = htmlspecialchars($GLOBALS[$arHtmlControl["NAME"]]["REGEXP"]);
+			$value = htmlspecialcharsbx($GLOBALS[$arHtmlControl["NAME"]]["REGEXP"]);
 		elseif(is_array($arUserField))
-			$value = htmlspecialchars($arUserField["SETTINGS"]["REGEXP"]);
+			$value = htmlspecialcharsbx($arUserField["SETTINGS"]["REGEXP"]);
 		else
 			$value = "";
 		$result .= '
@@ -213,7 +213,7 @@ class CUserTypeString
 	function GetEditFormHTML($arUserField, $arHtmlControl)
 	{
 		if($arUserField["ENTITY_VALUE_ID"]<1 && strlen($arUserField["SETTINGS"]["DEFAULT_VALUE"])>0)
-			$arHtmlControl["VALUE"] = htmlspecialchars($arUserField["SETTINGS"]["DEFAULT_VALUE"]);
+			$arHtmlControl["VALUE"] = htmlspecialcharsbx($arUserField["SETTINGS"]["DEFAULT_VALUE"]);
 		if($arUserField["SETTINGS"]["ROWS"] < 2)
 			return '<input type="text" '.
 				'name="'.$arHtmlControl["NAME"].'" '.
@@ -250,7 +250,7 @@ class CUserTypeString
 	function GetEditFormHTMLMulty($arUserField, $arHtmlControl)
 	{
 		if($arUserField["VALUE"]===false && strlen($arUserField["SETTINGS"]["DEFAULT_VALUE"])>0)
-			$arHtmlControl["VALUE"] = array(htmlspecialchars($arUserField["SETTINGS"]["DEFAULT_VALUE"]));
+			$arHtmlControl["VALUE"] = array(htmlspecialcharsbx($arUserField["SETTINGS"]["DEFAULT_VALUE"]));
 		$result = array();
 		foreach($arHtmlControl["VALUE"] as $value)
 		{

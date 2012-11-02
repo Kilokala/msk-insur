@@ -26,15 +26,15 @@ $arMLTypes = CMedialib::GetTypes();
 $curTypeInd = 0;
 $curType = false;
 
-if (isset($_REQUEST['type']) && intVal($_REQUEST['type']) > 0 && check_bitrix_sessid())
+if (isset($_REQUEST['type']) && intVal($_REQUEST['type']) > 0 ) // && check_bitrix_sessid() http://jabber.bx/view.php?id=28997 commit
 {
 	for ($i = 0, $l = count($arMLTypes); $i < $l; $i++)
 	{
 		if ($arMLTypes[$i]['id'] == $_REQUEST['type'])
-		{
+		{			
 			$curTypeInd = $i;
 			$curType = $arMLTypes[$i];
-			CUserOptions::SetOption("fileman", "medialib_def_type", $arMLTypes[$i]['id']);
+			CUserOptions::SetOption("fileman", "medialib_def_type", $arMLTypes[$i]['id']);			
 			break;
 		}
 	}
@@ -143,6 +143,7 @@ if (count($aContext) > 0)
 	$menu = new CAdminContextMenu($aContext);
 	$menu->Show();
 }
+
 ?>
 
 <script>
@@ -173,7 +174,7 @@ BX.ready(function()
 				curColl: <?= isset($_REQUEST['cur_col']) ? intVal($_REQUEST['cur_col']) : 0?>,
 				bCanUpload: <?= $USER->CanDoOperation('fileman_upload_files') ? 'true' : 'false'?>,
 				bCanViewStructure: <?= $USER->CanDoOperation('fileman_view_file_structure') ? 'true' : 'false'?>,
-				strExt : "<?= CMedialib::GetMediaExtentions()?>",
+				strExt : "<?= htmlspecialcharsEx(CMedialib::GetMediaExtentions())?>",
 				lang : "<?= LANGUAGE_ID?>",
 				Types : <?= CUtil::PhpToJSObject($arMLTypes)?>,
 				curTypeInd : <?= $curTypeInd?>
@@ -242,7 +243,7 @@ BX.ready(function()
 
 <? if ($bCols): ?>
 <br />
-<table class="multiaction">
+<table class="multiaction" style = "display:<?= (CMedialib::CanDoOperation('medialib_del_item', 0)||CMedialib::CanDoOperation('medialib_del_collection', 0)) ? 'block' : 'none'?>">
 	<tr class="top">
 		<td class="left"><div class="empty"/></td><td><div class="empty"/></td><td class="right"><div class="empty"/></td>
 	</tr>

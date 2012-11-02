@@ -17,7 +17,7 @@ function BXCreateSection(&$fileContent, &$sectionFileContent, &$absoluteFilePath
 	//Create dir
 	if (!$io->CreateDirectory($absoluteFilePath))
 	{
-		$GLOBALS["APPLICATION"]->ThrowException(GetMessage("PAGE_NEW_FOLDER_CREATE_ERROR")."<br /> (".htmlspecialchars($absoluteFilePath).")", "DIR_NOT_CREATE");
+		$GLOBALS["APPLICATION"]->ThrowException(GetMessage("PAGE_NEW_FOLDER_CREATE_ERROR")."<br /> (".htmlspecialcharsbx($absoluteFilePath).")", "DIR_NOT_CREATE");
 		return false;
 	}
 
@@ -94,7 +94,7 @@ if($createNewFolder && (!$USER->CanDoFileOperation("fm_create_new_folder", Array
 elseif(!$USER->CanDoFileOperation("fm_create_new_file", Array($site, $path)))
 	$popupWindow->ShowError(GetMessage("PAGE_NEW_ACCESS_DENIED"));
 elseif(!$io->DirectoryExists($documentRoot.$path))
-	$popupWindow->ShowError(GetMessage("PAGE_NEW_FOLDER_NOT_FOUND")." (".htmlspecialchars($path).")");
+	$popupWindow->ShowError(GetMessage("PAGE_NEW_FOLDER_NOT_FOUND")." (".htmlspecialcharsbx($path).")");
 
 if(!$USER->CanDoFileOperation("fm_edit_existent_file", Array($site, $path)))
 	$canEditNewPage = false;
@@ -383,7 +383,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_REQUEST["save"]) && $strWarn
 					serialize($res_log)
 				);
 			else
-				 CEventLog::Log(
+				CEventLog::Log(
 					"content",
 					"SECTION_ADD",
 					"main",
@@ -579,7 +579,7 @@ if (isset($strWarning) && $strWarning != "")
 	$popupWindow->ShowValidationError($strWarning);
 ?>
 
-<p><?=GetMessage("PAGE_NEW_SUB_TITLE")?> <b><?=htmlspecialchars($path)?></b></p>
+<p><?=GetMessage("PAGE_NEW_SUB_TITLE")?> <b><?=htmlspecialcharsbx($path)?></b></p>
 
 <?if (IsModuleInstalled("fileman")):?>
 	<?if ($createNewFolder):?>
@@ -696,7 +696,7 @@ endif; //!empty($arEditGroups) || $bAdmin
 		<td>
 			<select id="bx_menu_type" id="menuType" name="menuType" style="width:50%" onchange="BXChangeMenuType(this.options[this.selectedIndex].value, true)">
 			<?foreach ($arMenu as $type => $arMenuProp):?>
-				<option value="<?=htmlspecialchars($type)?>" <?=($menuType == $type ? "selected" : "")?>><?=htmlspecialcharsEx($arMenuProp["NAME"])?></option>
+				<option value="<?=htmlspecialcharsbx($type)?>" <?=($menuType == $type ? "selected" : "")?>><?=htmlspecialcharsEx($arMenuProp["NAME"])?></option>
 			<?endforeach?>
 			</select>
 		</td>

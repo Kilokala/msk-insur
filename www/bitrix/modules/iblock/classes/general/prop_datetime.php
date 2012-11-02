@@ -108,6 +108,7 @@ class CIBlockPropertyDateTime
 				'FORM_NAME' => $strHTMLControlName["FORM_NAME"],
 				'INPUT_NAME' => $strHTMLControlName["VALUE"],
 				'INPUT_VALUE' => $value["VALUE"],
+				'SHOW_TIME' => "Y",
 			),
 			null,
 			array('HIDE_ICONS' => 'Y')
@@ -137,7 +138,7 @@ class CIBlockPropertyDateTime
 	//safe html
 	function GetPropertyFieldHtml($arProperty, $value, $strHTMLControlName)
 	{
-		return  CAdminCalendar::CalendarDate($strHTMLControlName["VALUE"], $value["VALUE"], 20).
+		return  CAdminCalendar::CalendarDate($strHTMLControlName["VALUE"], $value["VALUE"], 20, true).
 			($arProperty["WITH_DESCRIPTION"]=="Y" && '' != trim($strHTMLControlName["DESCRIPTION"]) ?
 				'&nbsp;<input type="text" size="20" name="'.$strHTMLControlName["DESCRIPTION"].'" value="'.htmlspecialchars($value["DESCRIPTION"]).'">'
 				:''

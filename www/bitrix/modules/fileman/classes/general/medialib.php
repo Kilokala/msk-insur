@@ -232,7 +232,7 @@ class CMedialib
 					},
 					bCanUpload: <?= $USER->CanDoOperation('fileman_upload_files') ? 'true' : 'false'?>,
 					bCanViewStructure: <?= $USER->CanDoOperation('fileman_view_file_structure') ? 'true' : 'false'?>,
-					strExt : "<?= CMedialib::GetMediaExtentions()?>",
+					strExt : "<?= CUtil::JSEscape(CMedialib::GetMediaExtentions())?>",
 					lang : "<?= $arConfig['lang']?>",
 					description_id : '<?= CUtil::JSEscape($arConfig['description_id'])?>'
 				};
@@ -582,7 +582,7 @@ ML_MESS.ChangeTypeChildConf = '<?= addslashes(GetMessage('ML_CHANGE_TYPE_CHILD_C
 			<div id="mlsd_info_cont" class="mlvi-info-cnt">
 				<table class="mlvi-info-tbl">
 					<tr><td><div class="mlvi-info-name" id="mlvi_info_name"></div></td></tr>
-					<tr><td><a id="mlvi_info_link" href="javascript: void(0);" title="<?= GetMessage("ML_DOWNLOAD_LINK_TITLE")?>"><?= GetMessage('ML_DOWNLOAD_LINK')?></a></td></tr>
+					<tr><td><a id="mlvi_info_link" href="javascript: void(0);" title="<?= GetMessage("ML_DOWNLOAD_LINK")?>"><?= GetMessage('ML_DOWNLOAD_LINK')?></a></td></tr>
 					<tr><td class="mlvi-new-row">
 						<div class="mlvi-info-details" id="mlvi_info_details"></div>
 					</td></tr>
@@ -1107,8 +1107,8 @@ ML_MESS.ChangeTypeChildConf = '<?= addslashes(GetMessage('ML_CHANGE_TYPE_CHILD_C
 div.bx-ml-pnbutton{float:left; cursor: pointer; width: 25px; height: 21px; margin:-1px 0 0 2px;}
 div.bx-ml-pnbutton div.bx-pn1{background: url(/bitrix/images/fileman/medialib/browse.gif); width: 14px; height: 21px; float: left;}
 div.bx-ml-pnbutton div.bx-pn2{background: url(/bitrix/images/fileman/medialib/browse.gif) -14px 0; width: 10px; height: 21px; float: left;}
- div.bx-ml-pnbutton div.bx-pressed{background: url(/bitrix/images/fileman/medialib/browse.gif) -39px 0;}
- .bxml-empty-icon{height: 22px !important; width: 20px !important;}
+div.bx-ml-pnbutton div.bx-pressed{background: url(/bitrix/images/fileman/medialib/browse.gif) -39px 0;}
+.bxml-empty-icon{height: 22px !important; width: 20px !important;}
 </style>
 
 <script>
@@ -1257,8 +1257,8 @@ window.MLSearchResult = [
 	}
 
 	/*
-		$strInputName //имя элемента управления
-		$strImageID // идентификатор файла или путь к файлу от корня сайта
+		$strInputName //the name of element
+		$strImageID // the file identifier or path to the file from site root
 		$showInfo => array(
 			"IMAGE" => "Y",
 			"MAX_SIZE" => array("W" => ww, "H" => hh)
@@ -1267,41 +1267,41 @@ window.MLSearchResult = [
 			"DIMENSIONS" => "Y",
 			"FILE_SIZE" => "Y",
 		),
-		$fileInput => array( //если false, то загрузка с компьютера не используется.
-			"NAME" => "...", //имя для инпута типа файл. для загрузки с компа. по умолчанию равен $strInputName
-			["ID" => "...",] //идентификатор инпута. по умолчанию равен $strInputName."_file" с заменой всех символов кроме a-zA-z0-9_ на подчеркивание.
-			["SIZE" => NN,] // необязательный параметр, по умолчанию 35
-			["SHOW_INFO" => "Y",] //показывать информацию о изображении или нет, по умолчанию не показывает
-			["LABEL" => "Подпись к инпуту"],
+		$fileInput => array( // if false then loading from computer don't used
+			"NAME" => "...", //the name for INPUT has "file" type. For loading from computer. It equals $strInputName for defaults
+			["ID" => "...",] //the identifier of INPUT. It equals $strInputName."_file" for defaults with replacement all symbols except a-zA-z0-9_ by _
+			["SIZE" => NN,] // optional param, default 35
+			["SHOW_INFO" => "Y",] //to show information about image or not. Default not
+			["LABEL" => "INPUT title"],
 		),
-		$servInput => array( //если false, то выбор файла на сервере не используется. по умолчанию равен $strInputName
-			"NAME" => "...", //имя для инпута типа текст. для выбора файла на сервере.
-			["ID" => "...",] //идентификатор инпута. по умолчанию равен $strInputName."_serv" с заменой всех символов кроме a-zA-z0-9_ на подчеркивание.
-			["SIZE" => NN,] // необязательный параметр, по умолчанию 35
-			["SHOW_INFO" => "Y",] //показывать информацию о изображении или нет, по умолчанию не показывает
-			["LABEL" => "Подпись к инпуту"],
+		$servInput => array( //if false, then choose file from server not used. Default equals $strInputName
+			"NAME" => "...", //name for INPUT type of text. For chosing file from server.
+			["ID" => "...",] //INPUT identifier.Default equals $strInputName."_serv" with replacement all symbols except a-zA-z0-9_ by _
+			["SIZE" => NN,] // optional param, default 35
+			["SHOW_INFO" => "Y",] //to show information about image, or not, default not
+			["LABEL" => "INPUT title"],
 		),
-		$pathInput => array( //если false, то медиа библиотека не используется.
-			["NAME" => "NNN",] //имя инпута типа текст. для выбора из медиа библиотеки. по умолчанию равен $strInputName
-			["ID" => "...",] //идентификатор инпута. по умолчанию равен $strInputName."_path" с заменой всех символов кроме a-zA-z0-9_ на подчеркивание.
-			["SIZE" => NN,] // необязательный параметр, по умолчанию 35
-			["LABEL" => "Подпись к инпуту"],
+		$pathInput => array( //if false, then library not use.
+			["NAME" => "NNN",] //INPUT name type text. For selection from media library. Default $strInputName.
+			["ID" => "...",] //INPUT identifier. Default equals $strInputName."_path" with replacement all symbols except a-zA-z0-9_ by _
+			["SIZE" => NN,] // optional param, default 35
+			["LABEL" => "INPUT title"],
 		),
-		$descInput => array( //если false, то поле описания не выводится.
-			["NAME" => "NNN",] //имя инпута типа текст. описание файла. по умолчанию равен $strInputName."_descr"  без учета индексов массива.
-			["SIZE" => NN,] // необязательный параметр, по умолчанию 35
-			["VALUE" => "...",] // значение для описания файла. если не задано, то будет взято из $strImageID
-			["LABEL" => "Подпись к инпуту"],
+		$descInput => array( //if false, then the describtion field will not showed.
+			["NAME" => "NNN",] //The INPUT's name type of text. File description. Default equals $strInputName."_descr" without array indexes influence.
+			["SIZE" => NN,] // optional param, default 35
+			["VALUE" => "...",] //Value for file description. if undefined, it will be got from $strImageID
+			["LABEL" => "INPUT title"],
 		),
-		$delInput => array( //если false, то флажок удаления не выводится.
-			["NAME" => "NNN",] //имя инпута типа чекбокс. флажок удаления файла.
-					// по умолчанию равен $strInputName."_del" без учета индексов массива.
-			["LABEL" => "Подпись к инпуту"],
+		$delInput => array( //if false, then delition flag will not be shown
+			["NAME" => "NNN",] //The INPUT's name type of checkbox. File delition flag/
+					// Default it equals $strInputName."_del" without array indexes influence.
+			["LABEL" => "INPUT title"],
 		),
-		$scaleIcon => array( //если false, то иконка с подсказкой показана не будет
-			"SCALE" => Y|N // Y - будет показана иконка масштабирования N - иконка сохр. размеров
-			"WIDTH" => xxx // информация для хинта над иконкой
-			"HEIGHT" => yyy // информация для хинта над иконкой
+		$scaleIcon => array( //if false, then icon with help will not be shown.
+			"SCALE" => Y|N // Y - show scale (zoom) icon N - save size icon
+			"WIDTH" => xxx // information for hint over icon
+			"HEIGHT" => yyy // information for hint over icon
 		),
 	*/
 	function InputFile(
@@ -1334,7 +1334,7 @@ window.MLSearchResult = [
 					"DESCRIPTION" => "",
 				);
 
-				$arImageSize = CFile::GetImageSize($io->GetPhysicalName($strFilePath));
+				$arImageSize = CFile::GetImageSize($strFilePath);
 				if(is_array($arImageSize))
 				{
 					$arFile["WIDTH"] = $arImageSize[0];
@@ -1685,7 +1685,7 @@ window.MLSearchResult = [
 				?><table width="100%" cellpadding="2" cellspacing="2">
 				<tr><td colspan="3"><?echo $servInput["LABEL"]?></td></tr>
 				<tr valign="center"><td><input type="text" id="<?echo htmlspecialchars($servInput["ID"])?>" size="<?echo $servInput["SIZE"]?>" value="<?echo htmlspecialchars($servInput["VALUE"])?>" name="<?echo htmlspecialchars($servInput["NAME"])?>" <?if(!$bFirst) echo "disabled"?>></td><td>
-				<input type="button" id="mlsd_<?echo htmlspecialchars($servInput["ID"])?>_open" value="..." style="width: 30px;" OnClick="<?echo htmlspecialchars("inputId = '".CUtil::JSEscape($servInput["ID"])."';serv_OpenML()")?>"></td><td align="left" width="100%"><?echo $servInput["SCALE_HINT_HTML"]?>&nbsp;</td></tr>
+				<input type="button" id="mlsd_<?echo htmlspecialchars($servInput["ID"])?>_open" value="..." style="width: 30px;" OnClick="<?echo htmlspecialchars("window.inputId = '".CUtil::JSEscape($servInput["ID"])."';serv_OpenML()")?>"></td><td align="left" width="100%"><?echo $servInput["SCALE_HINT_HTML"]?>&nbsp;</td></tr>
 				<?if(is_array($descInput) && !$arFile):?>
 					<tr><td colspan="3"><?echo $descInput["LABEL"]?></td></tr>
 					<tr><td colspan="3"><input type="text" name="<?echo htmlspecialchars($descInput["NAME"])?>" id="<?echo htmlspecialchars($descInput["ID"])?>_serv" size="<?echo $descInput["SIZE"]?>" value="<?echo htmlspecialchars($descInput["VALUE"])?>" <?if(!$bFirst) echo "disabled"?>></td></tr>
@@ -1717,7 +1717,7 @@ window.MLSearchResult = [
 				?><script>
 				function setServerInputFromDialog(filename, path, site, title, menu)
 				{
-					var inp = document.getElementById(inputId);
+					var inp = document.getElementById(window.inputId);
 					if(inp)
 						inp.value = path + (path == '/'? '': '/') + filename;
 				}
@@ -1729,10 +1729,25 @@ window.MLSearchResult = [
 			if(is_array($pathInput))
 			{
 				$tabControl->BeginTab();
+
+				$ar = array(
+					"event" => "media_OpenML",
+					"arResultDest" => array(
+						"FUNCTION_NAME" => "setMediaInputFromDialog",
+					),
+				);
+				if(is_array($descInput))
+				{
+					if($arFile)
+						$ar["description_id"] = $descInput["ID"];
+					else
+						$ar["description_id"] = $descInput["ID"]."_path";
+				}
+
 				?><table width="100%" cellpadding="2" cellspacing="2">
 				<tr><td colspan="3"><?echo $pathInput["LABEL"]?></td></tr>
 				<tr valign="center"><td><input type="text" id="<?echo htmlspecialchars($pathInput["ID"])?>" size="<?echo $pathInput["SIZE"]?>" value="" name="<?echo htmlspecialchars($pathInput["NAME"])?>" <?if(!$bFirst) echo "disabled"?>></td><td>
-				<input type="button" id="mlsd_<?echo htmlspecialchars($pathInput["ID"])?>_open" value="..." style="width: 30px;" OnClick="<?echo htmlspecialchars("inputId = '".CUtil::JSEscape($pathInput["ID"])."';descrId = '".CUtil::JSEscape($descInput["ID"]."_path")."';media_OpenML()")?>"></td><td align="left" width="100%"><?echo $pathInput["SCALE_HINT_HTML"]?>&nbsp;</td></tr>
+				<input type="button" id="mlsd_<?echo htmlspecialchars($pathInput["ID"])?>_open" value="..." style="width: 30px;" OnClick="<?echo htmlspecialchars("window.inputId = '".CUtil::JSEscape($pathInput["ID"])."';window.descrId = '".CUtil::JSEscape($ar["description_id"])."';media_OpenML()")?>"></td><td align="left" width="100%"><?echo $pathInput["SCALE_HINT_HTML"]?>&nbsp;</td></tr>
 				<?if(is_array($descInput) && !$arFile):?>
 					<tr><td colspan="3"><?echo $descInput["LABEL"]?></td></tr>
 					<tr><td colspan="3"><input type="text" name="<?echo htmlspecialchars($descInput["NAME"])?>" id="<?echo htmlspecialchars($descInput["ID"])?>_path" size="<?echo $descInput["SIZE"]?>" value="<?echo htmlspecialchars($descInput["VALUE"])?>" <?if(!$bFirst) echo "disabled"?>></td></tr>
@@ -1748,27 +1763,14 @@ window.MLSearchResult = [
 					);
 					</script>
 				<?endif;
-				$ar = array(
-					"event" => "media_OpenML",
-					"arResultDest" => array(
-						"FUNCTION_NAME" => "setMediaInputFromDialog",
-					),
-				);
-				if(is_array($descInput))
-				{
-					if($arFile)
-						$ar["description_id"] = $descInput["ID"];
-					else
-						$ar["description_id"] = $descInput["ID"]."_path";
-				}
 				CMedialib::ShowDialogScript($ar);
 				?><script>
 				function setMediaInputFromDialog(oItem)
 				{
-					var inp = document.getElementById(inputId);
+					var inp = document.getElementById(window.inputId);
 					if(inp)
 						inp.value = oItem.src;
-					var desc = document.getElementById(descrId);
+					var desc = document.getElementById(window.descrId);
 					if(desc)
 						desc.value = oItem.name;
 				}
@@ -1929,7 +1931,8 @@ window.MLSearchResult = [
 			$arFields["CODE"] = preg_replace("/[^a-zA-Z0-9_]/i", "", $arFields["CODE"]);
 			$arFields["EXT"] = preg_replace("/[^a-zA-Z0-9_\,]/i", "", $arFields["EXT"]);
 
-			if ($arFields["CODE"] == '' || $arFields["EXT"] == '' || $arFields["NAME"] == '')
+			//if ($arFields["CODE"] == '' || $arFields["EXT"] == '' || $arFields["NAME"] == '')
+			if ($arFields["CODE"] == '' || $arFields["EXT"] == '')
 				continue;
 
 			$id = IntVal($arFields['ID']);
@@ -1938,20 +1941,28 @@ window.MLSearchResult = [
 			if ($arFields['NEW']) // Add
 			{
 				unset($arFields['NEW']);
-				CDatabase::Add("b_medialib_type", $arFields);
+				CDatabase::Add("b_medialib_type", $arFields, array("DESCRIPTION"));
 			}
 			else // Update
 			{
 				// Edit only non system types
-				if ($arFields['SYSTEM'] == 'Y')
-					continue;
+				//if ($arFields['SYSTEM'] == 'Y')
+				//	continue;
+
+				//$strSql =
+				//	"UPDATE b_medialib_type SET ".
+				//		$DB->PrepareUpdate("b_medialib_type", $arFields).
+				//	" WHERE SYSTEM<>'Y' AND ID=".$id;
 
 				$strSql =
 					"UPDATE b_medialib_type SET ".
 						$DB->PrepareUpdate("b_medialib_type", $arFields).
-					" WHERE SYSTEM<>'Y' AND ID=".$id;
+					" WHERE ID=".$id;
 
-				$DB->Query($strSql, false, "File: ".__FILE__."<br>Line: ".__LINE__);
+				$DB->QueryBind($strSql,
+					array('DESCRIPTION' => $arFields['DESCRIPTION']),
+					false, "File: ".__FILE__."<br>Line: ".__LINE__
+					);
 			}
 		}
 	}
@@ -2235,7 +2246,7 @@ class CMedialibCollection
 		if ($bNew) // Add
 		{
 			unset($arFields['ID']);
-			$ID = CDatabase::Add("b_medialib_collection", $arFields);
+			$ID = CDatabase::Add("b_medialib_collection", $arFields, array("DESCRIPTION"));
 		}
 		else // Update
 		{
@@ -2246,7 +2257,10 @@ class CMedialibCollection
 				"UPDATE b_medialib_collection SET ".
 					$strUpdate.
 				" WHERE ID=".IntVal($ID);
-			$DB->Query($strSql, false, "File: ".__FILE__."<br>Line: ".__LINE__);
+
+			$DB->QueryBind($strSql,
+				array('DESCRIPTION' => $arFields['DESCRIPTION']),
+				false, "File: ".__FILE__."<br>Line: ".__LINE__);
 		}
 
 		return $ID;
@@ -2503,7 +2517,7 @@ class CMedialibItem
 			unset($arFields['ID']);
 			$arFields['SOURCE_ID'] = $source_id;
 			$arFields['~DATE_CREATE'] = $arFields['~DATE_UPDATE'];
-			$ID = CDatabase::Add("b_medialib_item", $arFields);
+			$ID = CDatabase::Add("b_medialib_item", $arFields, array("DESCRIPTION","SEARCHABLE_CONTENT"));
 		}
 		else // Update
 		{
@@ -2518,7 +2532,12 @@ class CMedialibItem
 					$strUpdate.
 				" WHERE ID=".IntVal($ID);
 
-			$res = $DB->Query($strSql, false, "File: ".__FILE__."<br>Line: ".__LINE__);
+			$DB->QueryBind($strSql,
+				array(
+					"DESCRIPTION" => $arFields["DESCRIPTION"],
+					"SEARCHABLE_CONTENT" => $arFields["SEARCHABLE_CONTENT"]
+				),
+				false, "File: ".__FILE__."<br>Line: ".__LINE__);
 		}
 
 		// 3. Set fields to b_medialib_collection_item

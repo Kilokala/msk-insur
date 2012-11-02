@@ -274,7 +274,7 @@ class CImageUploader
 		<?endif;?>
 		BX.ready(function(){BX('bxiu_<?= CUtil::JSEscape($id)?>').innerHTML = BXIU_<?= CUtil::JSEscape($id)?>.getHtml();})
 		</script>
-		<div id="bxiu_<?= htmlspecialchars($id)?>" class="bx-image-uploader"></div>
+		<div id="bxiu_<?= htmlspecialcharsbx($id)?>" class="bx-image-uploader"></div>
 		<?
 	}
 
@@ -323,7 +323,7 @@ class CImageUploader
 		if ($path)
 		{
 			if (!CheckDirPath($path))
-				echo "<b>Warning! Check file permissions for uploading dir: ".htmlspecialchars($path)."</b><br>";
+				echo "<b>Warning! Check file permissions for uploading dir: ".htmlspecialcharsbx($path)."</b><br>";
 		}
 	}
 
@@ -356,7 +356,7 @@ class CImageUploader
 					return;
 			}
 			foreach ($uploadedFiles as $uploadedFile)
-		    {
+			{
 				try
 				{
 					$convertedFiles = $uploadedFile->getConvertedFiles();
@@ -396,8 +396,8 @@ class CImageUploader
 				{
 					CImageUploader::SaveError(array(array("id" => "BXUPL_APPLET_SAVE_1", "text" => $e->getMessage)));
 				}
-		    }
-		    if (isset(self::$uploadCallbackParams['onAfterUpload']))
+			}
+			if (isset(self::$uploadCallbackParams['onAfterUpload']))
 				call_user_func(self::$uploadCallbackParams['onAfterUpload'], self::$uploadCallbackParams);
 		}
 		catch (Exception $e)
@@ -623,13 +623,13 @@ class CImageUploader
 				$ret *= 1024;
 			case 'G':
 				$ret *= 1024;
-		    case 'M':
+			case 'M':
 				$ret *= 1024;
 			case 'K':
 				$ret *= 1024;
 			break;
 		}
-	     return $ret;
+		return $ret;
 	}
 
 	public static function StrangeUrlEncode($url)
@@ -759,7 +759,7 @@ class CFlashUploader extends CImageUploader
 		BX.ready(function(){BX('bxiu_<?= CUtil::JSEscape($id)?>').innerHTML = BXFIU_<?= CUtil::JSEscape($id)?>.getHtml();});
 
 		</script>
-		<div id="bxiu_<?= htmlspecialchars($id)?>" class="bx-image-uploader"></div>
+		<div id="bxiu_<?= htmlspecialcharsbx($id)?>" class="bx-image-uploader"></div>
 		<?
 	}
 
@@ -861,7 +861,7 @@ class CFlashUploader extends CImageUploader
 				{
 					CImageUploader::SaveError(array(array("id" => "BXUPL_FLASH_SAVE_1", "text" => $e->getMessage)));
 				}
-		    }
+			}
 			if (isset(self::$uploadCallbackParams['onAfterUpload']))
 				call_user_func(self::$uploadCallbackParams['onAfterUpload'], self::$uploadCallbackParams);
 		}
@@ -879,7 +879,7 @@ class CFlashUploader extends CImageUploader
 			$arLoc = array(
 				'addFilesProgressDialog' => array(
 					'text' => GetMessage("BXFIU_text")
-			    ),
+				),
 				'commonDialog' => array(
 					'cancelButtonText' => GetMessage("BXFIU_cancelButtonText"),
 					'okButtonText' => GetMessage("BXFIU_okButtonText")

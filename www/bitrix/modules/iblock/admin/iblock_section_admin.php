@@ -152,7 +152,7 @@ if($arID = $lAdmin->GroupAction())
 	{
 		if(strlen($ID)<=0)
 			continue;
-	   	$ID = intval($ID);
+		$ID = intval($ID);
 
 		switch($_REQUEST['action'])
 		{

@@ -826,12 +826,12 @@ class CAdminSubListRow extends CAdminListRow
 			{
 				if (true == $this->boolBX)
 					$sDefAction = "(new BX.CAdminDialog({
-			    'content_url': '".$this->link.(!(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1) ? '&bxsku=Y' : '')."&bxpublic=Y',
-			    'content_post': 'from_module=iblock',
-				'draggable': true,
-				'resizable': true,
-				'buttons': [BX.CAdminDialog.btnSave, BX.CAdminDialog.btnCancel]
-			})).Show();";
+						'content_url': '".$this->link.(!(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1) ? '&bxsku=Y' : '')."&bxpublic=Y',
+						'content_post': 'from_module=iblock',
+						'draggable': true,
+						'resizable': true,
+						'buttons': [BX.CAdminDialog.btnSave, BX.CAdminDialog.btnCancel]
+					})).Show();";
 				else
 					$sDefAction = "jsUtils.Redirect([], '".CUtil::addslashes($this->link)."');";
 				$sDefTitle = $this->title;
@@ -844,12 +844,12 @@ class CAdminSubListRow extends CAdminListRow
 						//$sDefAction = htmlspecialchars($action["ACTION"]);
 				if (true == $this->boolBX)
 					$sDefAction = "(new BX.CAdminDialog({
-			    'content_url': '".CUtil::addslashes($action["ACTION"])."',
-			    'content_post': '".(!(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1) ? '&bxsku=Y' : '')."&bxpublic=Y&from_module=iblock',
-				'draggable': true,
-				'resizable': true,
-				'buttons': [BX.CAdminDialog.btnSave, BX.CAdminDialog.btnCancel]
-			})).Show();";
+						'content_url': '".CUtil::addslashes($action["ACTION"])."',
+						'content_post': '".(!(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1) ? '&bxsku=Y' : '')."&bxpublic=Y&from_module=iblock',
+						'draggable': true,
+						'resizable': true,
+						'buttons': [BX.CAdminDialog.btnSave, BX.CAdminDialog.btnCancel]
+					})).Show();";
 				else
 					$sDefAction = htmlspecialchars($action["ACTION"]);
 						$sDefTitle = (!empty($action["TITLE"])? $action["TITLE"]:$action["TEXT"]);

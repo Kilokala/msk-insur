@@ -196,7 +196,11 @@ class _CIBElement
 							$arTemp["~DESCRIPTION"][] = $arProp["~DESCRIPTION"];
 							$arTemp["PROPERTY_VALUE_ID"][] = $arProp["PROPERTY_VALUE_ID"];
 							if($arProp["PROPERTY_TYPE"]=="L")
+							{
 								$arTemp["VALUE_ENUM_ID"][] = $arProp["VALUE_ENUM_ID"];
+								$arTemp["VALUE_ENUM"][] = $arProp["VALUE_ENUM"];
+								$arTemp["VALUE_XML_ID"][] = $arProp["VALUE_XML_ID"];
+							}
 						}
 						else
 						{
@@ -206,7 +210,11 @@ class _CIBElement
 							$arTemp["~DESCRIPTION"] = array($arProp["~DESCRIPTION"]);
 							$arTemp["PROPERTY_VALUE_ID"] = array($arProp["PROPERTY_VALUE_ID"]);
 							if($arProp["PROPERTY_TYPE"]=="L")
+							{
 								$arTemp["VALUE_ENUM_ID"] = array($arProp["VALUE_ENUM_ID"]);
+								$arTemp["VALUE_ENUM"] = array($arProp["VALUE_ENUM"]);
+								$arTemp["VALUE_XML_ID"] = array($arProp["VALUE_XML_ID"]);
+							}
 						}
 					}
 				}
@@ -226,7 +234,11 @@ class _CIBElement
 						$arProp["~DESCRIPTION"] = array($arProp["~DESCRIPTION"]);
 						$arProp["PROPERTY_VALUE_ID"] = array($arProp["PROPERTY_VALUE_ID"]);
 						if($arProp["PROPERTY_TYPE"]=="L")
+						{
 							$arProp["VALUE_ENUM_ID"] = array($arProp["VALUE_ENUM_ID"]);
+							$arProp["VALUE_ENUM"] = array($arProp["VALUE_ENUM"]);
+							$arProp["VALUE_XML_ID"] = array($arProp["VALUE_XML_ID"]);
+						}
 					}
 					else
 					{
@@ -236,7 +248,11 @@ class _CIBElement
 						$arProp["~DESCRIPTION"] = false;
 						$arProp["PROPERTY_VALUE_ID"] = false;
 						if($arProp["PROPERTY_TYPE"]=="L")
+						{
 							$arProp["VALUE_ENUM_ID"] = false;
+							$arProp["VALUE_ENUM"] = false;
+							$arProp["VALUE_XML_ID"] = false;
+						}
 					}
 					$arAllProps[$PIND] = $arProp;
 				}

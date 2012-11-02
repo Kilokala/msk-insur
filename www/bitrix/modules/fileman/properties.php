@@ -102,6 +102,11 @@ class CIBlockPropertyMapGoogle extends CIBlockPropertyMapInterface
 	{
 		global $APPLICATION;
 
+		if(isset($GLOBALS['googleMapLastNumber']))
+			$GLOBALS['googleMapLastNumber']++;
+		else
+			$GLOBALS['googleMapLastNumber']=0;
+
 		if ($strHTMLControlName["MODE"] != "FORM_FILL")
 			return '<input type="text" name="'.htmlspecialchars($strHTMLControlName['VALUE']).'" value="'.htmlspecialchars($value['VALUE']).'" />';
 
@@ -117,7 +122,7 @@ class CIBlockPropertyMapGoogle extends CIBlockPropertyMapInterface
 			$bHasValue = false;
 		}
 
-		$MAP_ID = 'map_google_'.$arProperty['CODE'].'_'.$arProperty['ID'];
+		$MAP_ID = 'map_google_'.$arProperty['CODE'].'_'.$arProperty['ID'].'_'.$GLOBALS['googleMapLastNumber'];
 
 
 ?>
@@ -152,7 +157,15 @@ class CIBlockPropertyMapGoogle extends CIBlockPropertyMapInterface
 			),
 			false, array('HIDE_ICONS' => 'Y')
 		);
+
+//http://jabber.bx/view.php?id=17908
 ?>
+<script type="text/javascript">	 
+	var tabArea = BX.findParent(BX("BX_GMAP_<?=$MAP_ID?>"),{className:'edit-tab-inner'});
+	var tabButton = BX("tab_cont_"+tabArea.id);	
+	BX.bind(tabButton,"click", function() { BXMapGoogleAfterShow("<?=$MAP_ID?>"); });		
+</script>
+
 <div id="bx_address_search_control_<?echo $MAP_ID?>" style="display: none;"><?echo GetMessage('IBLOCK_PROP_MAP_GOOGLE_SEARCH')?><input type="text" name="bx_address_<?echo $MAP_ID?>" id="bx_address_<?echo $MAP_ID?>" value="" style="width: 300px;" autocomplete="off" /></div>
 <input type="hidden" id="value_<?echo $MAP_ID;?>" name="<?=htmlspecialchars($strHTMLControlName["VALUE"])?>" value="<?=htmlspecialcharsEx($value["VALUE"])?>" />
 <script type="text/javascript">
@@ -168,8 +181,10 @@ function BXWaitForMap_<?echo $MAP_ID?>()
 	else
 	{
 		window.obPoint_<?echo $MAP_ID?> = null;
-		google.maps.event.addListener(window.GLOBAL_arMapObjects['<?echo $MAP_ID?>'], 'dblclick', setPointValue_<?echo $MAP_ID?>);
-		BX('bx_address_<?echo $MAP_ID?>').onkeypress = jsGoogleCESearch_<?echo $MAP_ID;?>.setTypingStarted;
+		google.maps.event.addListener(window.GLOBAL_arMapObjects['<?echo $MAP_ID?>'], 'dblclick', setPointValue_<?echo $MAP_ID?>);	
+		var searchInput = BX('bx_address_<?echo $MAP_ID?>');
+		BX.bind(searchInput,"keydown", jsGoogleCESearch_<?echo $MAP_ID;?>.setTypingStarted);
+		BX.bind(searchInput,"contextmenu", jsGoogleCESearch_<?echo $MAP_ID;?>.setTypingStarted);		
 <?
 		if ($bHasValue):
 ?>
@@ -278,7 +293,7 @@ var jsGoogleCESearch_<?echo $MAP_ID;?> = {
 	{
 		if (null == e)
 			e = window.event;
-
+		
 		if (e.keyCode == 13)
 		{
 			jsGoogleCESearch_<?echo $MAP_ID;?>.doSearch();
@@ -286,8 +301,14 @@ var jsGoogleCESearch_<?echo $MAP_ID;?> = {
 		}
 		else
 		{
+
 			if (!jsGoogleCESearch_<?echo $MAP_ID;?>.bInited)
 				jsGoogleCESearch_<?echo $MAP_ID;?>.__init(this);
+
+			if (e.type=="contextmenu")
+					jsGoogleCESearch_<?echo $MAP_ID;?>.timerDelay=3000;
+			else
+					jsGoogleCESearch_<?echo $MAP_ID;?>.timerDelay=1000;	
 
 			jsGoogleCESearch_<?echo $MAP_ID;?>.hideResults();
 
@@ -318,14 +339,18 @@ var jsGoogleCESearch_<?echo $MAP_ID;?> = {
 		alert(jsGoogleCE.jsMess.mess_error);
 	},
 
-	__generateOutput: function()
+	setResultsCoordinates: function()
 	{
 		var obPos = jsUtils.GetRealPos(jsGoogleCESearch_<?echo $MAP_ID;?>.obInput);
-
-		jsGoogleCESearch_<?echo $MAP_ID;?>.obOut = document.body.appendChild(document.createElement('UL'));
-		jsGoogleCESearch_<?echo $MAP_ID;?>.obOut.className = 'bx-google-address-search-results';
 		jsGoogleCESearch_<?echo $MAP_ID;?>.obOut.style.top = (obPos.bottom + 2) + 'px';
 		jsGoogleCESearch_<?echo $MAP_ID;?>.obOut.style.left = obPos.left + 'px';
+	},
+
+	__generateOutput: function()
+	{	
+		jsGoogleCESearch_<?echo $MAP_ID;?>.obOut = document.body.appendChild(document.createElement('UL'));
+		jsGoogleCESearch_<?echo $MAP_ID;?>.obOut.className = 'bx-google-address-search-results';
+		jsGoogleCESearch_<?echo $MAP_ID;?>.setResultsCoordinates();
 	},
 
 	__searchResultsLoad: function(obResult, status)
@@ -406,7 +431,10 @@ var jsGoogleCESearch_<?echo $MAP_ID;?> = {
 	showResults: function()
 	{
 		if (null != jsGoogleCESearch_<?echo $MAP_ID;?>.obOut)
+		{
+			jsGoogleCESearch_<?echo $MAP_ID;?>.setResultsCoordinates();
 			jsGoogleCESearch_<?echo $MAP_ID;?>.obOut.style.display = 'block';
+		}
 	},
 
 	hideResults: function()
@@ -451,7 +479,7 @@ var jsGoogleCESearch_<?echo $MAP_ID;?> = {
 	}
 
 	function GetPublicViewHTML($arProperty, $value, $arParams)
-	{
+	{		
 		$s = '';
 		if(strlen($value["VALUE"])>0)
 		{
@@ -462,6 +490,11 @@ var jsGoogleCESearch_<?echo $MAP_ID;?> = {
 			}
 			else
 			{
+				if(isset($GLOBALS['googleMapLastNumber']))
+					$GLOBALS['googleMapLastNumber']++;
+				else
+					$GLOBALS['googleMapLastNumber']=0;
+
 				$arCoords = explode(',', $value['VALUE']);
 				ob_start();
 				$GLOBALS['APPLICATION']->IncludeComponent(
@@ -478,7 +511,7 @@ var jsGoogleCESearch_<?echo $MAP_ID;?> = {
 								),
 							),
 						)),
-						'MAP_ID' => 'MAP_GOOGLE_VIEW_'.$arProperty['IBLOCK_ID'].'_'.$arProperty['ID'],
+						'MAP_ID' => 'MAP_GOOGLE_VIEW_'.$arProperty['IBLOCK_ID'].'_'.$arProperty['ID'].'_'.$GLOBALS['googleMapLastNumber'],
 						'DEV_MODE' => 'Y',
 					),
 					false, array('HIDE_ICONS' => 'Y')
@@ -619,7 +652,15 @@ function saveYandexKey(domain, input)
 				),
 				false, array('HIDE_ICONS' => 'Y')
 			);
+
+//http://jabber.bx/view.php?id=17908
 ?>
+<script type="text/javascript">	
+	var tabArea = BX.findParent(BX("BX_YMAP_<?=$MAP_ID?>"),{className:'edit-tab-inner'});	
+	var tabButton = BX("tab_cont_"+tabArea.id);	
+	BX.bind(tabButton,"click", function() { BXMapYandexAfterShow("<?=$MAP_ID?>"); });		
+</script>
+
 <div id="bx_address_search_control_<?echo $MAP_ID?>" style="display: none;"><?echo GetMessage('IBLOCK_PROP_MAP_YANDEX_SEARCH')?><input type="text" name="bx_address_<?echo $MAP_ID?>" id="bx_address_<?echo $MAP_ID?>" value="" style="width: 300px;" autocomplete="off" /></div>
 <input type="hidden" id="value_<?echo $MAP_ID;?>" name="<?=htmlspecialchars($strHTMLControlName["VALUE"])?>" value="<?=htmlspecialcharsEx($value["VALUE"])?>" />
 <script type="text/javascript">
@@ -629,11 +670,14 @@ window.jsAdminYandexMess = {
 jsUtils.loadCSSFile('/bitrix/components/bitrix/map.yandex.view/settings/settings.css');
 
 function BXWaitForMap_<?echo $MAP_ID?>()
-{
+{	
 	window.obPoint_<?echo $MAP_ID?> = null;
 
 	window.GLOBAL_arMapObjects['<?echo $MAP_ID?>'].events.add('dblclick', setPointValue_<?echo $MAP_ID?>);
-	BX('bx_address_<?echo $MAP_ID?>').onkeypress = jsYandexCESearch_<?echo $MAP_ID;?>.setTypingStarted;
+	var searchInput = BX('bx_address_<?echo $MAP_ID?>');
+	BX.bind(searchInput,"keydown", jsYandexCESearch_<?echo $MAP_ID;?>.setTypingStarted);
+	BX.bind(searchInput,"contextmenu", jsYandexCESearch_<?echo $MAP_ID;?>.setTypingStarted);		
+
 <?
 			if ($bHasValue):
 ?>
@@ -722,6 +766,7 @@ var jsYandexCESearch_<?echo $MAP_ID;?> = {
 	timerDelay: 1000,
 
 	arSearchResults: [],
+	strLastSearch: null,
 
 	obOut: null,
 
@@ -739,11 +784,13 @@ var jsYandexCESearch_<?echo $MAP_ID;?> = {
 	},
 
 	setTypingStarted: function(e)
-	{
+	{		
 		if (null == e)
 			e = window.event;
 
-		if (e.keyCode == 13)
+		jsYandexCESearch_<?echo $MAP_ID;?>.hideResults();
+
+		if (e.keyCode == 13 )
 		{
 			jsYandexCESearch_<?echo $MAP_ID;?>.doSearch();
 			return false;
@@ -751,9 +798,12 @@ var jsYandexCESearch_<?echo $MAP_ID;?> = {
 		else
 		{
 			if (!jsYandexCESearch_<?echo $MAP_ID;?>.bInited)
-				jsYandexCESearch_<?echo $MAP_ID;?>.__init(this);
+				jsYandexCESearch_<?echo $MAP_ID;?>.__init(this);			
 
-			jsYandexCESearch_<?echo $MAP_ID;?>.hideResults();
+			if (e.type=="contextmenu")
+					jsYandexCESearch_<?echo $MAP_ID;?>.timerDelay=3000;
+			else
+					jsYandexCESearch_<?echo $MAP_ID;?>.timerDelay=1000;	
 
 			if (null != jsYandexCESearch_<?echo $MAP_ID;?>.timerID)
 				clearTimeout(jsYandexCESearch_<?echo $MAP_ID;?>.timerID);
@@ -764,10 +814,11 @@ var jsYandexCESearch_<?echo $MAP_ID;?> = {
 
 	doSearch: function()
 	{
-		var value = jsUtils.trim(jsYandexCESearch_<?echo $MAP_ID;?>.obInput.value);
-		if (value.length > 1)
+		this.strLastSearch = jsUtils.trim(jsYandexCESearch_<?echo $MAP_ID;?>.obInput.value);		
+
+		if (this.strLastSearch.length > 1)
 		{
-			ymaps.geocode(value).then(
+			ymaps.geocode(this.strLastSearch).then(
 				jsYandexCESearch_<?echo $MAP_ID;?>.__searchResultsLoad,
 				jsYandexCESearch_<?echo $MAP_ID;?>.handleError
 			);
@@ -779,14 +830,17 @@ var jsYandexCESearch_<?echo $MAP_ID;?> = {
 		alert(this.jsMess.mess_error + ': ' + error.message);
 	},
 
-	__generateOutput: function()
+	setResultsCoordinates: function()
 	{
-		var obPos = jsUtils.GetRealPos(jsYandexCESearch_<?echo $MAP_ID;?>.obInput);
-
-		jsYandexCESearch_<?echo $MAP_ID;?>.obOut = document.body.appendChild(document.createElement('UL'));
-		jsYandexCESearch_<?echo $MAP_ID;?>.obOut.className = 'bx-yandex-address-search-results';
+		var obPos = jsUtils.GetRealPos(jsYandexCESearch_<?echo $MAP_ID;?>.obInput);		
 		jsYandexCESearch_<?echo $MAP_ID;?>.obOut.style.top = (obPos.bottom + 2) + 'px';
 		jsYandexCESearch_<?echo $MAP_ID;?>.obOut.style.left = obPos.left + 'px';
+	},
+
+	__generateOutput: function()
+	{
+		jsYandexCESearch_<?echo $MAP_ID;?>.obOut = document.body.appendChild(document.createElement('UL'));
+		jsYandexCESearch_<?echo $MAP_ID;?>.obOut.className = 'bx-yandex-address-search-results';		
 	},
 
 	__searchResultsLoad: function(res)
@@ -844,8 +898,14 @@ var jsYandexCESearch_<?echo $MAP_ID;?> = {
 
 	showResults: function()
 	{
+		if(this.strLastSearch!=jsUtils.trim(jsYandexCESearch_<?echo $MAP_ID;?>.obInput.value))
+			jsYandexCESearch_<?echo $MAP_ID;?>.doSearch();
+
 		if (null != jsYandexCESearch_<?echo $MAP_ID;?>.obOut)
+		{
+			jsYandexCESearch_<?echo $MAP_ID;?>.setResultsCoordinates();
 			jsYandexCESearch_<?echo $MAP_ID;?>.obOut.style.display = 'block';
+		}
 	},
 
 	hideResults: function()
@@ -959,7 +1019,7 @@ class CVideoProperty
 			"CONTROLBAR" => "bottom",
 			"AUTOSTART" => "N",
 			"VOLUME" => "90",
-			"SKIN" => "",
+			"SKIN" => "",			
 			"FLASHVARS" => "",
 			"WMODE_FLV" => "transparent",
 			"BGCOLOR" => "FFFFFF",
@@ -1013,7 +1073,7 @@ class CVideoProperty
 
 	function BaseGetSettingsHTML($name, $val)
 	{
-		$arSkins = CUserTypeVideo::GetSkinsEx(CUserTypeVideo::GetSkinPath());
+		$arSkins = GetSkinsEx(CUserTypeVideo::GetSkinPath());
 		ob_start();
 ?>
 <tr><td colSpan="2">
@@ -1063,8 +1123,8 @@ jsUtils.loadJSFile("/bitrix/components/bitrix/player/js/prop_skin_selector.js", 
 
 	// Try to imitate CUSTOM-parameter in component params dialog
 	ComponentPropsSkinSelector({
-		popertyID : "SKIN",
-		getElements : function(){return {SKIN_PATH: {value: "<?= CVideoProperty::GetSkinPath()?>"}};},
+		popertyID : "SKIN",		
+		getElements : function(){return {SKIN_PATH: {value: "<?= CVideoProperty::GetSkinPath()?>"}};},		
 		oInput : document.getElementById("bx_player_skin_input"),
 		oCont : document.getElementById("bx_player_skin_cell"),
 		data : '<?= CUtil::JSEscape(CUtil::PhpToJSObject(array($arSkins, array('NoPreview' => GetMessage("IBLOCK_PROP_VIDEO_NO_PREVIEW"))))) ?>'
@@ -1127,10 +1187,10 @@ jsUtils.loadJSFile("/bitrix/components/bitrix/player/js/prop_skin_selector.js", 
 		return $result;
 	}
 
-	function BaseGetEditFormHTML($set, $val, $name)
-	{
+	function BaseGetEditFormHTML($set, $val, $name, $controlMode=false)
+	{	
 		global $APPLICATION;
-		$id = str_replace(array("[","]"), "_", $name);
+		$id = str_replace(array("[","]",":"), "_", $name);
 		$path = $val["path"];
 
 		if (intVal($val['width']) <= 0)
@@ -1157,118 +1217,130 @@ table.bx-video-prop-tbl img.spacer{display:block;float:left;height:1px;margin-to
 </style>
 
 <table class="bx-video-prop-tbl">
-	<tr class="bx-prop-main-title"><td colSpan="2"><?= GetMessage('IBLOCK_PROP_VIDEO_PARAMS_TITLE')?></td></tr>
+	<tr class="bx-prop-main-title"><td colSpan="2"><?= GetMessage('IBLOCK_PROP_VIDEO_PARAMS_TITLE')?></td></tr>	
+	<? if ($controlMode != "iblock_element_admin"): ?>
+		<? if(strlen($path) > 0):?>
+			<tr class="bx-prop-sub-title"><td colSpan="2"><?= GetMessage('IBLOCK_PROP_VIDEO_PARAMS_TITLE_VIEW')?></td></tr>		
+			<tr>
+				<td colSpan="2" style="text-align: center;">
+		<?$APPLICATION->IncludeComponent(
+				"bitrix:player",
+				"",
+				array(
+					"PLAYER_TYPE" => "auto",
+					"PATH" => $path,
+					"WIDTH" => $val['width'],
+					"HEIGHT" => $val['height'],
+					"FILE_TITLE" => $val['title'],
+					"FILE_DURATION" => intVal($val['duration']),
+					"FILE_AUTHOR" => $val['author'],
+					"FILE_DATE" => $val['date'],
+					"FILE_DESCRIPTION" => $val['desc'],
+					"SKIN_PATH" => CVideoProperty::GetSkinPath(),			
+					"SKIN" => $set["SKIN"],
+					"CONTROLBAR" => $set["CONTROLBAR"],
+					"WMODE" => $set["WMODE_FLV"],
+					"WMODE_WMV" => $set["WMODE_WMV"],
+					"SHOW_CONTROLS" => $set["CONTROLBAR"] != 'none' ? "Y" : "N",
+					"CONTROLS_BGCOLOR" => $set["CONTROLS_BGCOLOR"],
+					"CONTROLS_COLOR" => $set["CONTROLS_COLOR"],
+					"CONTROLS_OVER_COLOR" => $set["CONTROLS_OVER_COLOR"],
+					"SCREEN_COLOR" => $set["SCREEN_COLOR"],
+					"AUTOSTART" => $set["AUTOSTART"],
+					"VOLUME" => $set["VOLUME"],
+					"ADDITIONAL_FLASHVARS" => $set["FLASHVARS"],
+					"BUFFER_LENGTH" => $set["BUFFER_LENGTH"],
+					"ADDITIONAL_WMVVARS" => $set["SILVERVARS"],
+					"ALLOW_SWF" => "N",
+					"LOGO_POSITION" => "none"
+					),
+					false,
+					array('HIDE_ICONS' => 'Y')
+		); ?>
+				</td>
+			</tr>
+		<?endif;?>
 
-	<? if(strlen($path) > 0):?>
-	<tr class="bx-prop-sub-title"><td colSpan="2"><?= GetMessage('IBLOCK_PROP_VIDEO_PARAMS_TITLE_VIEW')?></td></tr>
-	<tr>
-		<td colSpan="2" style="text-align: center;">
-<?$APPLICATION->IncludeComponent(
-		"bitrix:player",
-		"",
-		array(
-			"PLAYER_TYPE" => "auto",
-			"PATH" => $path,
-			"WIDTH" => $val['width'],
-			"HEIGHT" => $val['height'],
-			"FILE_TITLE" => $val['title'],
-			"FILE_DURATION" => intVal($val['duration']),
-			"FILE_AUTHOR" => $val['author'],
-			"FILE_DATE" => $val['date'],
-			"FILE_DESCRIPTION" => $val['desc'],
-			"SKIN_PATH" => CVideoProperty::GetSkinPath(),
-			"SKIN" => $set["SKIN"],
-			"CONTROLBAR" => $set["CONTROLBAR"],
-			"WMODE" => $set["WMODE_FLV"],
-			"WMODE_WMV" => $set["WMODE_WMV"],
-			"SHOW_CONTROLS" => $set["CONTROLBAR"] != 'none' ? "Y" : "N",
-			"CONTROLS_BGCOLOR" => $set["CONTROLS_BGCOLOR"],
-			"CONTROLS_COLOR" => $set["CONTROLS_COLOR"],
-			"CONTROLS_OVER_COLOR" => $set["CONTROLS_OVER_COLOR"],
-			"SCREEN_COLOR" => $set["SCREEN_COLOR"],
-			"AUTOSTART" => $set["AUTOSTART"],
-			"VOLUME" => $set["VOLUME"],
-			"ADDITIONAL_FLASHVARS" => $set["FLASHVARS"],
-			"BUFFER_LENGTH" => $set["BUFFER_LENGTH"],
-			"ADDITIONAL_WMVVARS" => $set["SILVERVARS"],
-			"ALLOW_SWF" => "N",
-			"LOGO_POSITION" => "none"
-			),
-			false,
-			array('HIDE_ICONS' => 'Y')
-); ?>
-		</td>
-	</tr>
-	<?endif;?>
+		<tr><td class="bx-pr-title" style="width: 300px;"></td><td style="width: 240px;"></td></tr>
 
-	<tr><td class="bx-pr-title" style="width: 300px;"></td><td style="width: 240px;"></td></tr>
+		<tr class="bx-prop-sub-title"><td colSpan="2"><?= GetMessage('IBLOCK_PROP_VIDEO_PARAMS_TITLE_MAIN')?></td></tr>
 
-	<tr class="bx-prop-sub-title"><td colSpan="2"><?= GetMessage('IBLOCK_PROP_VIDEO_PARAMS_TITLE_MAIN')?></td></tr>
+		<? if(strlen($path) > 0):?>
+			<tr>
+				<td class="bx-pr-title"><?= GetMessage('IBLOCK_PROP_VIDEO_FILE')?>:</td>
+				<td>
+					<div id="bx_video_path_div_<?= $id?>" class="bx-path-div">
+					<input type="hidden" value="<?= $path?>" name= "<?= $name?>[CUR_PATH]" />
+					<input id="bx_video_b_new_file_<?= $id?>" type="hidden" value="N" name= "<?= $name?>[B_NEW_FILE]" />
+					<input class="bx-path" readonly="readonly" value="<?= htmlspecialcharsex($path)?>" size="30" />
+					<br />
+					<a href="javascript: void(0)" onclick="return ChangeOrLeaveFile<?=$id?>(true);" class="bx-change" id="bx-change"><?= GetMessage('IBLOCK_PROP_VIDEO_FILE_CHANGE')?></a>
+					<a href="javascript: void(0)" onclick="return ChangeOrLeaveFile<?=$id?>(false);"  class="bx-leave"><?= GetMessage('IBLOCK_PROP_VIDEO_FILE_LEAVE')?></a>
+					</div>
+				</td>
+			</tr>
+			<? if(CVideoProperty::CheckFileInUploadDir($path)):?>
+				<tr id="bx_video_del_row_<?= $id?>" style="display: none;">
+					<td class="bx-pr-title"></td>
+					<td>
+						<input type="checkbox" value="Y" id="bx_video_del_<?= $id?>" checked="checked" name= "<?= $name?>[DEL_CUR_FILE]" /><label for="bx_video_del_<?= $id?>"><?= GetMessage('IBLOCK_PROP_VIDEO_DEL_FILE')?></label>
+					</td>
+				</tr>
+			<?endif;?>
+		<?endif;?>
 
-	<? if(strlen($path) > 0):?>
-	<tr>
-		<td class="bx-pr-title"><?= GetMessage('IBLOCK_PROP_VIDEO_FILE')?>:</td>
-		<td>
-			<div id="bx_video_path_div_<?= $id?>" class="bx-path-div">
-			<input type="hidden" value="<?= $path?>" name= "<?= $name?>[CUR_PATH]" />
-			<input id="bx_video_b_new_file_<?= $id?>" type="hidden" value="N" name= "<?= $name?>[B_NEW_FILE]" />
-			<input class="bx-path" readonly="readonly" value="<?= htmlspecialcharsex($path)?>" size="30" />
-			<br />
-			<a href="javascript: void(0)" onclick="return ChangeOrLeaveFile<?= $id?>(true);" class="bx-change"><?= GetMessage('IBLOCK_PROP_VIDEO_FILE_CHANGE')?></a>
-			<a href="javascript: void(0)" onclick="return ChangeOrLeaveFile<?= $id?>(false);"  class="bx-leave"><?= GetMessage('IBLOCK_PROP_VIDEO_FILE_LEAVE')?></a>
-			</div>
-		</td>
-	</tr>
-	<? if(CVideoProperty::CheckFileInUploadDir($path)):?>
-	<tr id="bx_video_del_row_<?= $id?>" style="display: none;">
-		<td class="bx-pr-title"></td>
-		<td>
-			<input type="checkbox" value="Y" id="bx_video_del_<?= $id?>" checked="checked" name= "<?= $name?>[DEL_CUR_FILE]" /><label for="bx_video_del_<?= $id?>"><?= GetMessage('IBLOCK_PROP_VIDEO_DEL_FILE')?></label>
-		</td>
-	</tr>
-	<?endif;?>
-	<?endif;?>
-	<tr id="bx_video_new_path_row_<?= $id?>" <?if (strlen($path) > 0){ echo 'style="display: none;"'; }?>>
-		<td class="bx-pr-title" style="width: 300px;"><?= GetMessage(strlen($path) > 0 ? 'IBLOCK_PROP_VIDEO_PATH_NEW' : 'IBLOCK_PROP_VIDEO_PATH')?>:</td>
-		<td style="width: 240px;">
-		<img src="/bitrix/images/1.gif" class="spacer" />
-		<div id="bx_video_path_cont1_<?= $id?>" style="display: none;">
-		<input type="text" size="25" value="" id="bx_video_path_<?= $id?>"  style="float:left;" name= "<?= $name?>[PATH]" />
-		<?
-		CAdminFileDialog::ShowScript(Array
-			(
-				"event" => "OpenFileBrowser_".$id,
-				"arResultDest" => Array("FUNCTION_NAME" => "SetVideoPath".$id),
-				"arPath" => Array(),
-				"select" => 'F',// F - file only, D - folder only
-				"operation" => 'O',// O - open, S - save
-				"showUploadTab" => false,
-				"showAddToMenuTab" => false,
-				"fileFilter" => 'flv,mp4,mp3,wmv',
-				"allowAllFiles" => true,
-				"SaveConfig" => true
-			)
-		);
-
-		CMedialib::ShowBrowseButton(
-			array(
-				"id" => 'OpenFileBrowser_but_'.$id,
-				"event" => "OpenFileBrowser_".$id,
-				'MedialibConfig' => array(
-					"event" => "OpenFileBrowser_ml_".$id,
-					"arResultDest" => array("FUNCTION_NAME" => "SetVideoPath".$id)
+		<tr id="bx_video_new_path_row_<?= $id?>" <?if (strlen($path) > 0){ echo 'style="display: none;"'; }?>>
+			<td class="bx-pr-title" style="width: 300px;"><?= GetMessage(strlen($path) > 0 ? 'IBLOCK_PROP_VIDEO_PATH_NEW' : 'IBLOCK_PROP_VIDEO_PATH')?>:</td>
+			<td style="width: 240px;">
+			<img src="/bitrix/images/1.gif" class="spacer" />
+			<div id="bx_video_path_cont1_<?= $id?>" style="display: none;">
+			<input type="text" size="30" value="" id="bx_video_path_<?= $id?>"  style="float:left;" name= "<?= $name?>[PATH]" />
+			<?
+			CAdminFileDialog::ShowScript(Array
+				(
+					"event" => "OpenFileBrowser_".$id,
+					"arResultDest" => Array("FUNCTION_NAME" => "SetVideoPath".$id),
+					"arPath" => Array(),
+					"select" => 'F',// F - file only, D - folder only
+					"operation" => 'O',// O - open, S - save
+					"showUploadTab" => false,
+					"showAddToMenuTab" => false,
+					"fileFilter" => 'flv,mp4,mp3,wmv',
+					"allowAllFiles" => true,
+					"SaveConfig" => true
 				)
-			));?>
-		<br />
-		<a href="javascript: void(0)" onclick="return DisplayCont('bx_video_path_cont2_<?= $id?>', 'bx_video_path_cont1_<?= $id?>');" style="float: right;"><?= GetMessage('IBLOCK_PROP_VIDEO_PATH_FROM_PC')?></a>
-		</div>
-		<div id="bx_video_path_cont2_<?= $id?>">
-			<input type="file" value="" id="bx_video_path_<?= $id?>" name= "<?= $name?>[FILE]" />
+			);
+
+			CMedialib::ShowBrowseButton(
+				array(
+					"id" => 'OpenFileBrowser_but_'.$id,
+					"event" => "OpenFileBrowser_".$id,
+					'MedialibConfig' => array(
+						"event" => "OpenFileBrowser_ml_".$id,
+						"arResultDest" => array("FUNCTION_NAME" => "SetVideoPath".$id)
+					)
+				));?>
 			<br />
-			<a href="javascript: void(0)" onclick="return DisplayCont('bx_video_path_cont1_<?= $id?>', 'bx_video_path_cont2_<?= $id?>');" style="float: right;"><?= GetMessage('IBLOCK_PROP_VIDEO_PATH_FROM_FD')?></a>
-		</div>
-		</td>
-	</tr>
+			<a href="javascript: void(0)" onclick="return DisplayCont('bx_video_path_cont2_<?= $id?>', 'bx_video_path_cont1_<?= $id?>');" style="float: right;"><?= GetMessage('IBLOCK_PROP_VIDEO_PATH_FROM_PC')?></a>
+			</div>
+			<div id="bx_video_path_cont2_<?= $id?>">
+				<input type="file" value="" id="bx_video_path_<?= $id?>" name= "<?= $name?>[FILE]" />
+				<br />
+				<a href="javascript: void(0)" onclick="return DisplayCont('bx_video_path_cont1_<?= $id?>', 'bx_video_path_cont2_<?= $id?>');" style="float: right;"><?= GetMessage('IBLOCK_PROP_VIDEO_PATH_FROM_FD')?></a>
+			</div>
+			</td>
+		</tr>
+	<?else:?>		
+		<tr>		
+			<td class="bx-pr-title"><?= GetMessage('IBLOCK_PROP_VIDEO_FILE')?>:</td>
+			<td>
+				<div id="bx_video_path_div_<?= $id?>" class="bx-path-div">					
+					<input type="text" size="25" value="<?= htmlspecialcharsex($path)?>" size="30" name="<?= $name?>[PATH]"/>					
+				</div>
+			</td>			
+		</tr>		
+	<?endif;?>
+
 	<tr>
 		<td class="bx-pr-title"><?= GetMessage('IBLOCK_PROP_VIDEO_SIZE')?>:</td>
 		<td>
@@ -1421,7 +1493,7 @@ function ChangeOrLeaveFile<?= $id?>(bChange)
 
 					$pathto = Rel2Abs($pathToDir, $name);
 					if (is_uploaded_file($value["FILE"]["tmp_name"])
-					    && $io->Copy($value["FILE"]["tmp_name"], $_SERVER["DOCUMENT_ROOT"].$pathto))
+						&& $io->Copy($value["FILE"]["tmp_name"], $_SERVER["DOCUMENT_ROOT"].$pathto))
 					{
 						$arRes["path"] = Rel2Abs("/", $pathto);
 						// Quota
@@ -1469,30 +1541,34 @@ function ChangeOrLeaveFile<?= $id?>(bChange)
 	}
 
 	function BaseCheckFields($val)
-	{
+	{						
 		$arErrors = array();
 
 		if (!is_array($val))
 			$val = array();
 
 		// Check uploaded file
-		if ($val["B_NEW_FILE"] != "N" && isset($val["FILE"]) && strlen($val["FILE"]["tmp_name"]) > 0) //
+		if ($val["B_NEW_FILE"] != "N" && isset($val["FILE"])) //
 		{
-			$name = $val["FILE"]["name"];
-			$name = preg_replace("/[^a-zA-Z0-9_:\.]/is", "_", $name);
-			$ext = GetFileExtension($name);
+			if($val["FILE"]["error"] == 1 || $val["FILE"]["error"] == 2)
+				$arErrors[] = GetMessage("IBLOCK_PROP_VIDEO_SIZE_ERROR", Array('#FILE_NAME#' => $pathto))."\n";		
 
-			if(strlen($ext) == 0 || HasScriptExtension($name) || substr($name, 0, 1) == ".")
-				$arErrors[] = GetMessage("IBLOCK_PROP_VIDEO_INCORRECT_EXT", array("#EXT#" => strtoupper($ext)));
-			elseif (!is_uploaded_file($val["FILE"]["tmp_name"]))
-				$arErrors[] = GetMessage("IBLOCK_PROP_VIDEO_UPLOAD_ERROR");
-			elseif($val["FILE"]["error"] == 1 || $val["FILE"]["error"] == 2)
-				$arErrors[] = GetMessage("IBLOCK_PROP_VIDEO_SIZE_ERROR", Array('#FILE_NAME#' => $pathto))."\n";
-			else
+			if(strlen($val["FILE"]["tmp_name"]) > 0)
 			{
-				$quota = new CDiskQuota();
-				if (!$quota->checkDiskQuota(array("FILE_SIZE" => $val["FILE"]["size"])))
-					$arErrors[] = GetMessage("IBLOCK_PROP_VIDEO_QUOTE_ERROR")."\n";
+				$name = $val["FILE"]["name"];
+				$name = preg_replace("/[^a-zA-Z0-9_:\.]/is", "_", $name);
+				$ext = GetFileExtension($name);
+
+				if(strlen($ext) == 0 || HasScriptExtension($name) || substr($name, 0, 1) == ".")
+					$arErrors[] = GetMessage("IBLOCK_PROP_VIDEO_INCORRECT_EXT", array("#EXT#" => strtoupper($ext)));
+				elseif (!is_uploaded_file($val["FILE"]["tmp_name"]))
+					$arErrors[] = GetMessage("IBLOCK_PROP_VIDEO_UPLOAD_ERROR");			
+				else
+				{
+					$quota = new CDiskQuota();
+					if (!$quota->checkDiskQuota(array("FILE_SIZE" => $val["FILE"]["size"])))
+						$arErrors[] = GetMessage("IBLOCK_PROP_VIDEO_QUOTE_ERROR")."\n";
+				}
 			}
 		}
 		return $arErrors;
@@ -1529,7 +1605,7 @@ function ChangeOrLeaveFile<?= $id?>(bChange)
 		"FILE_DATE" => $val['date'],
 		"FILE_DESCRIPTION" => $val['desc'],
 		"SKIN_PATH" => CIBlockPropertyVideo::GetSkinPath(),
-		"SKIN" => $set["SKIN"],
+		"SKIN" => $set["SKIN"],		
 		"CONTROLBAR" => $set["CONTROLBAR"],
 		"WMODE" => $set["WMODE_FLV"],
 		"WMODE_WMV" => $set["WMODE_WMV"],
@@ -1590,18 +1666,42 @@ function ChangeOrLeaveFile<?= $id?>(bChange)
 		return "/bitrix/components/bitrix/player/mediaplayer/skins";
 	}
 
-	function GetSkinsEx($path)
+}
+
+if (!function_exists('getSkinsEx'))
+{
+	function getSkinsEx($path)
+	{
+		$basePath = $_SERVER["DOCUMENT_ROOT"].Rel2Abs("/", $path);
+		$arSkins = Array();
+
+		if (!is_dir($basePath)) // Not valid folder
+			return $arSkins;
+
+		$arSkins = getSkinsFromDir($path);
+
+		$handle  = @opendir($basePath);
+
+		while(false !== ($skinDir = @readdir($handle)))
+		{
+
+			if(!is_dir($basePath.'/'.$skinDir) || $skinDir == "." || $skinDir == ".." )
+				continue;
+
+			$arSkins = array_merge($arSkins,getSkinsFromDir($path.'/'.$skinDir));
+		}
+		return $arSkins;		
+	}
+
+	function getSkinsFromDir($path) //http://jabber.bx/view.php?id=28856
 	{
 		$basePath = $_SERVER["DOCUMENT_ROOT"].Rel2Abs("/", $path);
 		$arSkinExt = array('swf', 'zip');
 		$arPreviewExt = array('png', 'gif', 'jpg', 'jpeg');
-		$prExtCnt = count($arPreviewExt);
-
+		$prExtCnt = count($arPreviewExt);		
 		$arSkins = Array();
-		if (!is_dir($basePath)) // Not valid folder
-			return $arSkins;
-
 		$handle  = @opendir($basePath);
+
 		while(false !== ($f = @readdir($handle)))
 		{
 			if($f == "." || $f == ".." || $f == ".htaccess" || !is_file($basePath.'/'.$f))
@@ -1616,19 +1716,21 @@ function ChangeOrLeaveFile<?= $id?>(bChange)
 
 				$Skin = array('filename' => $f);
 				$Skin['name'] = strtoupper(substr($name, 0, 1)).strtolower(substr($name, 1));
+				$Skin['the_path'] = $path;
 
 				// Try to find preview
 				for ($i = 0; $i < $prExtCnt; $i++)
 				{
-					if (file_exists(($basePath.'/'.$name.'.'.$arPreviewExt[$i])))
+					if (file_exists($basePath.'/'.$name.'.'.$arPreviewExt[$i]))
 					{
-						$Skin['preview'] = $name.'.'.$arPreviewExt[$i];
+						$Skin['preview'] = $name.'.'.$arPreviewExt[$i];						
 						break;
 					}
 				}
 				$arSkins[] = $Skin;
 			}
 		}
+
 		return $arSkins;
 	}
 }
@@ -1656,10 +1758,10 @@ class CIBlockPropertyVideo extends CVideoProperty
 	}
 
 	function GetPropertyFieldHtml($arProperty, $value, $strHTMLControlName)
-	{
+	{		
 		$dbVal = CUserTypeVideo::BaseConvertToDB($value["VALUE"]);
-		$val = CUserTypeVideo::BaseConvertFromDB($dbVal);
-		return CIBlockPropertyVideo::BaseGetEditFormHTML($arProperty["USER_TYPE_SETTINGS"], $val, $strHTMLControlName["VALUE"]);
+		$val = CUserTypeVideo::BaseConvertFromDB($dbVal);		
+		return CIBlockPropertyVideo::BaseGetEditFormHTML($arProperty["USER_TYPE_SETTINGS"], $val, $strHTMLControlName["VALUE"], $strHTMLControlName["MODE"]);
 	}
 
 	function GetAdminListViewHTML($arProperty, $value, $strHTMLControlName)

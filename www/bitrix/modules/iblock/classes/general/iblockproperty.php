@@ -241,7 +241,7 @@ class CAllIBlockProperty
 
 			if($arFields["VERSION"]==2)
 			{
-			 	if($this->_Add($ID, $arFields))
+				if($this->_Add($ID, $arFields))
 				{
 					$Result = $ID;
 					$arFields["ID"] = &$ID;
@@ -575,79 +575,77 @@ class CAllIBlockProperty
 		return $arr;
 	}
 
-	function GetPropertyEnum($PROP_ID, $arOrder = Array("SORT"=>"asc"), $arFilter = Array())
+	function GetPropertyEnum($PROP_ID, $arOrder = array("SORT"=>"asc"), $arFilter = array())
 	{
 		global $DB;
 
-		$arSqlSearch = Array();
-		$filter_keys = array_keys($arFilter);
-		for($i=0; $i<count($filter_keys); $i++)
-		{
-			$val = $DB->ForSql($arFilter[$filter_keys[$i]]);
-			switch(strtoupper($filter_keys[$i]))
-			{
-			case "ID":
-				$arSqlSearch[] = "BPE.ID=".IntVal($val);
-				break;
-			case "IBLOCK_ID":
-				$arSqlSearch[] = "BP.IBLOCK_ID=".IntVal($val);
-				break;
-			case "VALUE":
-				$arSqlSearch[] = "BPE.VALUE LIKE '".$val."'";
-				break;
-			case "EXTERNAL_ID": case "XML_ID":
-				$arSqlSearch[] = "BPE.XML_ID LIKE '".$val."'";
-				break;
-			}
-		}
-
-
 		$strSqlSearch = "";
-		for($i=0; $i<count($arSqlSearch); $i++)
-			$strSqlSearch .= " AND (".$arSqlSearch[$i].") ";
-
-		$arSqlOrder = Array();
-		foreach($arOrder as $by=>$order)
+		if(is_array($arFilter))
 		{
-			$by = strtolower($by);
-			$order = strtolower($order);
-			if ($order!="asc") $order = "desc";
-
-			if ($by == "value")		$arSqlOrder[] = " BPE.VALUE ".$order." ";
-			elseif ($by == "id")	$arSqlOrder[] = " BPE.ID ".$order." ";
-			elseif ($by == "external_id")	$arSqlOrder[] = " BPE.XML_ID ".$order." ";
-			else
+			foreach($arFilter as $key => $val)
 			{
-				$arSqlOrder[] = " BPE.SORT ".$order." ";
-				$by = "sort";
+				$key = strtoupper($key);
+				switch($key)
+				{
+				case "ID":
+					$strSqlSearch .= "AND (BPE.ID=".intval($val).")\n";
+					break;
+				case "IBLOCK_ID":
+					$strSqlSearch .= "AND (BP.IBLOCK_ID=".intval($val).")\n";
+					break;
+				case "VALUE":
+					$strSqlSearch .= "AND (BPE.VALUE LIKE '".$DB->ForSql($val)."')\n";
+					break;
+				case "EXTERNAL_ID":
+				case "XML_ID":
+					$strSqlSearch .= "AND (BPE.XML_ID LIKE '".$DB->ForSql($val)."')\n";
+					break;
+				}
 			}
 		}
 
-		$strSqlOrder = "";
-		DelDuplicateSort($arSqlOrder); for ($i=0; $i<count($arSqlOrder); $i++)
+		$arSqlOrder = array();
+		if(is_array($arOrder))
 		{
-			if($i==0)
-				$strSqlOrder = " ORDER BY ";
-			else
-				$strSqlOrder .= ",";
+			foreach($arOrder as $by => $order)
+			{
+				$by = strtolower($by);
+				$order = strtolower($order);
+				if ($order!="asc")
+					$order = "desc";
 
-			$strSqlOrder .= $arSqlOrder[$i];
+				if ($by == "value")
+					$arSqlOrder["BPE.VALUE"] = "BPE.VALUE ".$order;
+				elseif ($by == "id")
+					$arSqlOrder["BPE.ID"] = "BPE.ID ".$order;
+				elseif ($by == "external_id")
+					$arSqlOrder["BPE.XML_ID"] = "BPE.XML_ID ".$order;
+				elseif ($by == "xml_id")
+					$arSqlOrder["BPE.XML_ID"] = "BPE.XML_ID ".$order;
+				else
+					$arSqlOrder["BPE.SORT"] = "BPE.SORT ".$order;
+			}
 		}
 
-		$strSql =
-			"SELECT BPE.*, BPE.XML_ID as EXTERNAL_ID ".
-			"FROM b_iblock_property_enum BPE, b_iblock_property BP ".
-			"WHERE BPE.PROPERTY_ID=BP.ID ".
-			(is_numeric(substr($PROP_ID, 0, 1))
-			?
-				"	AND BP.ID=".IntVal($PROP_ID)
-			:
-				"	AND BP.CODE='".$DB->ForSql($PROP_ID)."' "
-			)." ".
-			$strSqlSearch.
-			$strSqlOrder;
+		if(empty($arSqlOrder))
+			$strSqlOrder = "";
+		else
+			$strSqlOrder = " ORDER BY ".implode(", ", $arSqlOrder);
 
-		$res = $DB->Query($strSql);
+		$res = $DB->Query($s = "
+			SELECT BPE.*, BPE.XML_ID as EXTERNAL_ID
+			FROM
+				b_iblock_property_enum BPE
+				INNER JOIN b_iblock_property BP ON BP.ID = BPE.PROPERTY_ID
+			WHERE
+			".(
+				is_numeric(substr($PROP_ID, 0, 1))?
+				"BP.ID = ".intval($PROP_ID):
+				"BP.CODE = '".$DB->ForSql($PROP_ID)."'"
+			)."
+			".$strSqlSearch."
+			".$strSqlOrder."
+		");
 
 		return $res;
 	}

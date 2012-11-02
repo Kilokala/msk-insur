@@ -1,4 +1,6 @@
 <?
+define('BX_PUBLIC_MODE', true);
+
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_js.php");
 
@@ -29,6 +31,7 @@ if (strlen($filename) > 0 && ($mess = CFileMan::CheckFileName($filename)) !== tr
 
 if (CAutoSave::Allowed())
 	$AUTOSAVE = new CAutoSave();
+
 $path = $io->CombinePath("/", urldecode($path));
 $site = CFileMan::__CheckSite($site);
 if(!$site)
@@ -171,7 +174,8 @@ if(strlen($strWarning)<=0)
 						"PAGE_EDIT",
 						"main",
 						"",
-						serialize($res_log)
+						serialize($res_log),
+						$_REQUEST["site"]
 					);
 				}
 
@@ -212,11 +216,11 @@ else
 
 /*************************************************/
 
-$obJSPopup->ShowTitlebar(($bEdit ? GetMessage("FILEMAN_FILEEDIT_PAGE_TITLE") : GetMessage("FILEMAN_NEWFILEEDIT_TITLE")).": ".htmlspecialchars($path));
+$obJSPopup->ShowTitlebar(($bEdit ? GetMessage("FILEMAN_FILEEDIT_PAGE_TITLE") : GetMessage("FILEMAN_NEWFILEEDIT_TITLE")).": ".htmlspecialcharsbx($path));
 
 $obJSPopup->StartDescription();
 
-echo '<a href="/bitrix/admin/fileman_file_edit.php?path='.urlencode($path).'&amp;full_src=Y&amp;site='.$site.'&amp;lang='.LANGUAGE_ID.'&amp;back_url='.urlencode($_GET["back_url"]).(!$bEdit? '&amp;new=Y&amp;filename='.urlencode($filename).'&amp;template='.urlencode($template):'').($_REQUEST["templateID"]<>''? '&amp;templateID='.urlencode($_REQUEST["templateID"]):'').'" title="'.htmlspecialchars($path).'">'.GetMessage("public_file_edit_edit_cp").'</a>';
+echo '<a href="/bitrix/admin/fileman_file_edit.php?path='.urlencode($path).'&amp;full_src=Y&amp;site='.$site.'&amp;lang='.LANGUAGE_ID.'&amp;back_url='.urlencode($_GET["back_url"]).(!$bEdit? '&amp;new=Y&amp;filename='.urlencode($filename).'&amp;template='.urlencode($template):'').($_REQUEST["templateID"]<>''? '&amp;templateID='.urlencode($_REQUEST["templateID"]):'').'" title="'.htmlspecialcharsbx($path).'">'.GetMessage("public_file_edit_edit_cp").'</a>';
 
 $obJSPopup->StartContent();
 if (CAutoSave::Allowed())
@@ -227,14 +231,14 @@ if (CAutoSave::Allowed())
 }
 ?>
 
-<input type="hidden" name="site" value="<?= htmlspecialchars($site) ?>">
-<input type="hidden" name="path" value="<?= htmlspecialchars(urlencode($path)) ?>">
+<input type="hidden" name="site" value="<?= htmlspecialcharsbx($site) ?>">
+<input type="hidden" name="path" value="<?= htmlspecialcharsbx(urlencode($path)) ?>">
 <input type="hidden" name="save" value="Y">
 <input type="hidden" name="lang" value="<?echo LANGUAGE_ID ?>">
 <input type="hidden" name="save" value="Y">
-<input type="hidden" name="template" value="<?echo htmlspecialchars($template)?>">
-<input type="hidden" name="back_url" value="<?=htmlspecialchars($back_url)?>">
-<input type="hidden" name="templateID" value="<?=htmlspecialchars($_REQUEST["templateID"])?>">
+<input type="hidden" name="template" value="<?echo htmlspecialcharsbx($template)?>">
+<input type="hidden" name="back_url" value="<?=htmlspecialcharsbx($back_url)?>">
+<input type="hidden" name="templateID" value="<?=htmlspecialcharsbx($_REQUEST["templateID"])?>">
 
 <?=bitrix_sessid_post()?>
 
@@ -246,11 +250,11 @@ if (CAutoSave::Allowed())
 	if (isset($filename2))
 		$filename = $filename2;
 	?>
-	<input type="text" name="filename" style="width:100%" size="40" maxlength="255" value="<?echo htmlspecialchars($filename)?>"><br><br>
+	<input type="text" name="filename" style="width:100%" size="40" maxlength="255" value="<?echo htmlspecialcharsbx($filename)?>"><br><br>
 </div>
 <?endif;?>
 
-<textarea id="bx-filesrc" name="filesrc" style="height: 99%; width: 100%;"><?= htmlspecialchars($filesrc)?></textarea>
+<textarea id="bx-filesrc" name="filesrc" style="height: 99%; width: 100%;"><?= htmlspecialcharsbx($filesrc)?></textarea>
 
 <?
 $ceid = false;
@@ -289,6 +293,10 @@ function TAResize(data)
 
 BX.addCustomEvent(wnd, 'onWindowResizeExt', TAResize);
 TAResize(wnd.GetInnerPos());
+
+<?if ($ceid):?>
+BX.addCustomEvent(window, 'OnCodeEditorReady', function(){TAResize(wnd.GetInnerPos());});
+<?endif;?>
 </script>
 
 <?

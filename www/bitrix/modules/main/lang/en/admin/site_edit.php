@@ -65,4 +65,5 @@ $MESS["M_START_SITE_WIZARD_REWRITE"] = "Replace current solution if applicable";
 $MESS["START_SITE_WIZARD_REWRITE_ERROR"] = "The folder where the solution will be installed is not empty.  Indicate a different folder or check the 'Replace current solution if applicable' option.";
 $MESS["SITE_EDIT_WEEK_START_DEFAULT"] = "0";
 $MESS["SITE_EDIT_WEEK_START"] = "First day of the week:";
+$MESS["FORMAT_NAME"] = "Name format";
 ?>

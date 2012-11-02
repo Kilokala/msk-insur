@@ -1,7 +1,8 @@
 <?
 $MESS["USER_ENTITY_ID"] = "ID";
-$MESS["USER_ENTITY_NAME"] = "Èìÿ";
-$MESS["USER_ENTITY_LAST_NAME"] = "Ôàìèëèÿ";
-$MESS["USER_ENTITY_WORK_POSITION"] = "Äîëæíîñòü";
-$MESS["USER_ENTITY_SHORT_NAME"] = "Ô.È.Î.";
+$MESS["USER_ENTITY_DATE_REGISTER"] = "Ð”Ð°Ñ‚Ð° Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ð¸";
+$MESS["USER_ENTITY_NAME"] = "Ð˜Ð¼Ñ";
+$MESS["USER_ENTITY_LAST_NAME"] = "Ð¤Ð°Ð¼Ð¸Ð»Ð¸Ñ";
+$MESS["USER_ENTITY_WORK_POSITION"] = "Ð”Ð¾Ð»Ð¶Ð½Ð¾ÑÑ‚ÑŒ";
+$MESS["USER_ENTITY_SHORT_NAME"] = "Ð¤.Ð˜.Ðž.";
 ?>

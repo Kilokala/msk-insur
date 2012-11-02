@@ -28,7 +28,7 @@ if ($REQUEST_METHOD=="POST" && strlen($Update)>0 && $isAdmin && check_bitrix_ses
 		{
 			$arResult = CUrlRewriter::GetList(array("SITE_ID" => $site_id, "CONDITION" => $CONDITION));
 			if (count($arResult) > 0)
-				$aMsg[] = array("id"=>"CONDITION", "text"=>str_replace("#CONDITION#", htmlspecialchars($CONDITION), GetMessage("MURL_DUPL_CONDITION")));
+				$aMsg[] = array("id"=>"CONDITION", "text"=>str_replace("#CONDITION#", htmlspecialcharsbx($CONDITION), GetMessage("MURL_DUPL_CONDITION")));
 		}
 	}
 
@@ -94,20 +94,20 @@ if (count($arResultList) <= 0)
 else
 {
 	$arResult = $arResultList[0];
-	$str_CONDITION_OLD = htmlspecialchars($arResult["CONDITION"]);
-	$str_CONDITION = htmlspecialchars($arResult["CONDITION"]);
-	$str_ID = htmlspecialchars($arResult["ID"]);
-	$str_FILE_PATH = htmlspecialchars($arResult["PATH"]);
-	$str_RULE = htmlspecialchars($arResult["RULE"]);
+	$str_CONDITION_OLD = htmlspecialcharsbx($arResult["CONDITION"]);
+	$str_CONDITION = htmlspecialcharsbx($arResult["CONDITION"]);
+	$str_ID = htmlspecialcharsbx($arResult["ID"]);
+	$str_FILE_PATH = htmlspecialcharsbx($arResult["PATH"]);
+	$str_RULE = htmlspecialcharsbx($arResult["RULE"]);
 }
 
 if ($bVarsFromForm)
 {
-	$str_CONDITION_OLD = htmlspecialchars($CONDITION_OLD);
-	$str_CONDITION = htmlspecialchars($CONDITION);
-	$str_ID = htmlspecialchars($ID);
-	$str_FILE_PATH = htmlspecialchars($FILE_PATH);
-	$str_RULE = htmlspecialchars($RULE);
+	$str_CONDITION_OLD = htmlspecialcharsbx($CONDITION_OLD);
+	$str_CONDITION = htmlspecialcharsbx($CONDITION);
+	$str_ID = htmlspecialcharsbx($ID);
+	$str_FILE_PATH = htmlspecialcharsbx($FILE_PATH);
+	$str_RULE = htmlspecialcharsbx($RULE);
 }
 ?>
 
@@ -151,8 +151,8 @@ if($message)
 <?echo GetFilterHiddens("filter_");?>
 <input type="hidden" name="Update" value="Y">
 <input type="hidden" name="lang" value="<?= LANG ?>">
-<input type="hidden" name="site_id" value="<?= htmlspecialchars($site_id) ?>">
-<input type="hidden" name="CONDITION_OLD" value="<?= htmlspecialchars($str_CONDITION_OLD) ?>">
+<input type="hidden" name="site_id" value="<?= htmlspecialcharsbx($site_id) ?>">
+<input type="hidden" name="CONDITION_OLD" value="<?= htmlspecialcharsbx($str_CONDITION_OLD) ?>">
 <?=bitrix_sessid_post()?>
 
 <?

@@ -157,7 +157,7 @@ class CIBlock extends CAllIBlock
 					b_iblock B
 					".$sqlJoinSites."
 					LEFT JOIN b_iblock_element BE ON (BE.IBLOCK_ID=B.ID
-				 		AND (
+						AND (
 							(BE.WF_STATUS_ID=1 AND BE.WF_PARENT_ELEMENT_ID IS NULL )
 							".($arFilter["CNT_ALL"]=="Y"? " OR BE.WF_NEW='Y' ":"")."
 						)

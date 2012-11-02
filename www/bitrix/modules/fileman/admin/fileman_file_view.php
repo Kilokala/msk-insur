@@ -142,7 +142,7 @@ $fileTypeParent = $arFilemanPredifinedFileTypes[CFileMan::GetFileTypeEx($path)][
 	</tr>
 	<tr>
 		<td><?=GetMessage("FILEMAN_FILEVIEW_SIZE")?></td>
-		<td><?=$flTmp->GetFileSize()?></td>
+		<td><?=CFileMan::GetStrFileSize($flTmp->GetFileSize())?></td>
 	</tr>
 	<?$date_format = CDatabase::DateFormatToPHP(CLang::GetDateFormat("FULL"));?>
 	<tr>
@@ -207,6 +207,14 @@ $fileTypeParent = $arFilemanPredifinedFileTypes[CFileMan::GetFileTypeEx($path)][
 		}
 		?></td></tr>
 	<?elseif($fileTypeParent=="image"):?>
+		<?
+			$rsSite = CSite::GetByID($LID); //http://jabber.bx/view.php?id=7726
+			$arSite = $rsSite->GetNext();	
+
+			if(isset($arSite['SITE_URL']))
+				$path = $arSite['SITE_URL'].$path;
+		?>
+
 		<tr class="heading">
 			<td colspan="2"><?= GetMessage('FILEMAN_VIEW_CONT') ?></td>
 		</tr>

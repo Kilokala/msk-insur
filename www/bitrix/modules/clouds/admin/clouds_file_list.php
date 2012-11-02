@@ -257,7 +257,7 @@ if($USER->CanDoOperation("clouds_upload") && is_array($arID))
 					"DETAILS"=>GetMessage("CLO_STORAGE_FILE_UPLOAD_PROGRESS", array(
 						"#bytes#" => CFile::FormatSize($bytes),
 						"#file_size#" => CFile::FormatSize($fileSize),
-					)).'<br /><br /><input type="button" value="'.GetMessage("CLO_STORAGE_FILE_STOP").'" onclick="window.location = \''.CUtil::AddSlashes("/bitrix/admin/clouds_file_list.php?lang=".LANGUAGE_ID."&bucket=".urlencode($bucket)."&path=".urlencode($path)).'\'">',
+					)).'<br /><br /><input type="button" value="'.GetMessage("CLO_STORAGE_FILE_STOP").'" onclick="window.location = \''.CUtil::AddSlashes("/bitrix/admin/clouds_file_list.php?lang=".urlencode(LANGUAGE_ID)."&bucket=".urlencode($obBucket->ID)."&path=".urlencode($path)).'\'">',
 					"HTML"=>true,
 					"TYPE"=>"OK",
 				));
@@ -274,7 +274,7 @@ if($USER->CanDoOperation("clouds_upload") && is_array($arID))
 					"TYPE"=>"OK",
 				));
 				?><script>
-					<?=$sTableID?>.GetAdminList('<?echo $APPLICATION->GetCurPage();?>?lang=<?=LANGUAGE_ID?>&bucket=<?echo $bucket?>&path=<?echo urlencode($path)?>');
+					<?=$sTableID?>.GetAdminList('<?echo CUtil::JSEscape($APPLICATION->GetCurPage().'?lang='.urlencode(LANGUAGE_ID).'&bucket='.urlencode($obBucket->ID).'&path='.urlencode($path))?>');
 				</script><?
 			}
 
@@ -425,7 +425,7 @@ if($USER->CanDoOperation("clouds_upload") && is_array($arID))
 					"DETAILS"=>GetMessage("CLO_STORAGE_FILE_UPLOAD_PROGRESS", array(
 						"#bytes#" => CFile::FormatSize($bytes),
 						"#file_size#" => CFile::FormatSize($fileSize),
-					)).'<br /><br /><input type="button" value="'.GetMessage("CLO_STORAGE_FILE_STOP").'" onclick="window.location = \''.CUtil::AddSlashes("/bitrix/admin/clouds_file_list.php?lang=".LANGUAGE_ID."&bucket=".urlencode($bucket)."&path=".urlencode($path)).'\'">',
+					)).'<br /><br /><input type="button" value="'.GetMessage("CLO_STORAGE_FILE_STOP").'" onclick="window.location = \''.CUtil::JSEscape("/bitrix/admin/clouds_file_list.php?lang=".urlencode(LANGUAGE_ID)."&bucket=".urlencode($obBucket->ID)."&path=".urlencode($path)).'\'">',
 					"HTML"=>true,
 					"TYPE"=>"OK",
 				));
@@ -447,7 +447,7 @@ if($USER->CanDoOperation("clouds_upload") && is_array($arID))
 			if($moveResult == CCloudStorage::FILE_PARTLY_UPLOADED)
 			{
 				$lAdmin->BeginEpilogContent();
-				echo '<script>BX.ready(function(){', $lAdmin->ActionDoGroup($ID, "upload", "bucket=".$obBucket->ID."&path=".urlencode($path)), '});</script>';
+				echo '<script>BX.ready(function(){', $lAdmin->ActionDoGroup($ID, "upload", "bucket=".urlencode($obBucket->ID)."&path=".urlencode($path)), '});</script>';
 				$lAdmin->EndEpilogContent();
 			}
 			break;
@@ -509,12 +509,12 @@ while(is_array($arRes = $rsData->NavNext()))
 		if($arRes["NAME"] === "..")
 		{
 			$row->bReadOnly = true;
-			$row->AddViewField("FILE_NAME", '<div class="clouds_menu_icon_folder_up"></div><a href="'.htmlspecialchars('clouds_file_list.php?lang='.LANGUAGE_ID.'&bucket='.$obBucket->ID.'&path='.urlencode(preg_replace('#([^/]+)/$#', '', $path))).'">'.htmlspecialcharsex($arRes["NAME"]).'</a>');
+			$row->AddViewField("FILE_NAME", '<div class="clouds_menu_icon_folder_up"></div><a href="'.htmlspecialchars('clouds_file_list.php?lang='.urlencode(LANGUAGE_ID).'&bucket='.urlencode($obBucket->ID).'&path='.urlencode(preg_replace('#([^/]+)/$#', '', $path))).'">'.htmlspecialcharsex($arRes["NAME"]).'</a>');
 			$row->AddViewField("FILE_SIZE", '&nbsp;');
 		}
 		else
 		{
-			$row->AddViewField("FILE_NAME", '<div class="clouds_menu_icon_folder"></div><a href="'.htmlspecialchars('clouds_file_list.php?lang='.LANGUAGE_ID.'&bucket='.$obBucket->ID.'&path='.urlencode($path.$arRes["NAME"].'/')).'">'.htmlspecialcharsex($arRes["NAME"]).'</a>');
+			$row->AddViewField("FILE_NAME", '<div class="clouds_menu_icon_folder"></div><a href="'.htmlspecialchars('clouds_file_list.php?lang='.urlencode(LANGUAGE_ID).'&bucket='.urlencode($obBucket->ID).'&path='.urlencode($path.$arRes["NAME"].'/')).'">'.htmlspecialcharsex($arRes["NAME"]).'</a>');
 			if($_GET["size"] === "y")
 			{
 				$arDirFiles = $obBucket->ListFiles($path.$arRes["NAME"]."/", true);
@@ -541,7 +541,7 @@ while(is_array($arRes = $rsData->NavNext()))
 		$arActions[] = array(
 			"ICON"=>"delete",
 			"TEXT"=>GetMessage("CLO_STORAGE_FILE_DELETE"),
-			"ACTION"=>"if(confirm('".GetMessage("CLO_STORAGE_FILE_DELETE_CONF")."')) ".$lAdmin->ActionDoGroup($arRes["ID"], "delete", 'bucket='.$obBucket->ID.'&path='.urlencode($path))
+			"ACTION"=>"if(confirm('".GetMessage("CLO_STORAGE_FILE_DELETE_CONF")."')) ".$lAdmin->ActionDoGroup($arRes["ID"], "delete", 'bucket='.urlencode($obBucket->ID).'&path='.urlencode($path))
 		);
 
 	if(!empty($arActions))
@@ -583,7 +583,7 @@ foreach($arPath as $dir)
 	if($dir != "")
 	{
 		$curPath .= $dir."/";
-		$url = "clouds_file_list.php?lang=".LANGUAGE_ID."&bucket=".$obBucket->ID."&path=".urlencode($curPath);
+		$url = "clouds_file_list.php?lang=".urlencode(LANGUAGE_ID)."&bucket=".urlencode($obBucket->ID)."&path=".urlencode($curPath);
 		$chain->AddItem(array(
 			"TEXT" => htmlspecialcharsex($dir),
 			"LINK" => htmlspecialchars($url),
@@ -596,7 +596,7 @@ $lAdmin->ShowChain($chain);
 $aContext = array(
 	array(
 		"TEXT" => GetMessage("CLO_STORAGE_FILE_SHOW_DIR_SIZE"),
-		"LINK" => "/bitrix/admin/clouds_file_list.php?lang=".LANGUAGE_ID.'&bucket='.$obBucket->ID.'&path='.urlencode($path).'&size=y',
+		"LINK" => "/bitrix/admin/clouds_file_list.php?lang=".urlencode(LANGUAGE_ID).'&bucket='.urlencode($obBucket->ID).'&path='.urlencode($path).'&size=y',
 		"TITLE" => GetMessage("CLO_STORAGE_FILE_SHOW_DIR_SIZE_TITLE"),
 		"ICON" => "btn_list",
 	),
@@ -680,7 +680,7 @@ function get_upload_url(additional_args)
 		+ '&path=<?echo urlencode($path)?>'
 		+ '&path_to_upload=' + BX('path_to_upload').value
 		+ '&<?echo bitrix_sessid_get()?>'
-		+ '&bucket=<?echo $bucket?>'
+		+ '&bucket=<?echo CUtil::JSEscape($obBucket->ID)?>'
 	;
 	if(additional_args)
 	{
@@ -780,7 +780,7 @@ function readFileChunk(opt_startByte, opt_stopByte)
 		var blob = file.mozSlice(start, stop + 1);
 
 	reader.readAsBinaryString(blob);
-  }
+}
 </script>
 <div id="upload_form" style="display:none;height:200px;">
 <div id="upload_progress"></div>

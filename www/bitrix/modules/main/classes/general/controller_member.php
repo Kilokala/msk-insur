@@ -16,7 +16,7 @@ class CControllerClient
 	}
 
 	// Controller's authentication
-	function OnExternalLogin($arParams)
+	function OnExternalLogin(&$arParams)
 	{
 		global $USER, $APPLICATION;
 
@@ -136,9 +136,12 @@ class CControllerClient
 				$arUser['LOGIN'] = $site."\\".$arUser['LOGIN'];
 
 			$USER_ID = CControllerClient::UpdateUser($arUser);
-			$USER->Authorize($USER_ID);
+
 			if($arUser["CONTROLLER_ADMIN"]=="Y")
-				$USER->SetControllerAdmin();
+			{
+				AddEventHandler("main", "OnAfterUserLogin", array("CControllerClient", "OnAfterUserLogin"));
+				$arParams["CONTROLLER_ADMIN"] = "Y";
+			}
 
 			$arParams["REMEMBER"] = "N";
 
@@ -146,6 +149,13 @@ class CControllerClient
 		}
 
 		return false;
+	}
+
+	function OnAfterUserLogin(&$arParams)
+	{
+		global $USER;
+		if($arParams["CONTROLLER_ADMIN"] === "Y")
+			$USER->SetControllerAdmin();
 	}
 
 	function UpdateUser($arFields = Array())
@@ -323,15 +333,15 @@ class CControllerClient
 		// send to controller
 		$arVars =
 			Array(
-				"member_secret_id" =>	$member_secret_id,
-				"ticket_id" 	=>	$ticket_id,
-				"admin_login"	=>	$controller_login,
-				"admin_password"=>	$controller_password,
-				"url"			=>	$arMemberParams["URL"],
-				"name"			=>	$arMemberParams["NAME"],
-				"contact_person"=>	$arMemberParams["CONTACT_PERSON"],
-				"email"			=>	$arMemberParams["EMAIL"],
-				"shared_kernel"	=> ($arMemberParams["SHARED_KERNEL"]?"Y":"N"),
+				"member_secret_id" => $member_secret_id,
+				"ticket_id" => $ticket_id,
+				"admin_login" => $controller_login,
+				"admin_password" => $controller_password,
+				"url" => $arMemberParams["URL"],
+				"name" => $arMemberParams["NAME"],
+				"contact_person" => $arMemberParams["CONTACT_PERSON"],
+				"email" => $arMemberParams["EMAIL"],
+				"shared_kernel" => ($arMemberParams["SHARED_KERNEL"]?"Y":"N"),
 				);
 
 		if($arMemberParams["CONTROLLER_GROUP"]>0)
@@ -361,7 +371,7 @@ class CControllerClient
 		$arMemberParams = Array(
 				"URL" => $site_url,
 				"NAME" => $site_name,
-				"SHARED_KERNEL" =>   $bSharedKernel,
+				"SHARED_KERNEL" => $bSharedKernel,
 				"CONTROLLER_GROUP" => $controller_group
 			);
 
@@ -407,6 +417,12 @@ class CControllerClient
 		{
 			$oRequest = new CControllerClientRequestTo("update_counters");
 			$oResponse = $oRequest->SendWithCheck();
+
+			if($oResponse == false)
+				error_log("CControllerClient::UpdateCounters: unknown error");
+			elseif(!$oResponse->OK())
+				error_log("CControllerClient::UpdateCounters: ".$oResponse->text);
+
 			return "CControllerClient::UpdateCounters();";
 		}
 	}
@@ -613,10 +629,10 @@ class CControllerClient
 				$arSubordGroupID[] = $sub_group_id;
 			}
 
- 			if(!is_set($arBackup["security_subord_groups"], $group_code))
- 			{
+			if(!is_set($arBackup["security_subord_groups"], $group_code))
+			{
 				$arBackup["security_subord_groups"][$group_code] = CGroup::GetSubordinateGroups($group_id);
- 			}
+			}
 
 			CGroup::SetSubordinateGroups($group_id, $arSubordGroupID);
 		}
@@ -637,14 +653,14 @@ class CControllerClient
 				if(in_array($group_code, $arExcludeGroups))
 					continue;
 
-		 		if(($group_id = CGroup::GetIDByCode($group_code))>0)
-		 		{
+				if(($group_id = CGroup::GetIDByCode($group_code))>0)
+				{
 					foreach($perms as $module_id=>$level)
 						CGroup::SetModulePermission($group_id, $module_id, $level);
 
 					if(isset($arBackup["security_subord_groups"][$group_code]))
 						CGroup::SetSubordinateGroups($group_id, $arBackup["security_subord_groups"][$group_code]);
-		 		}
+				}
 				unset($arBackup["security"][$group_code]);
 				unset($arBackup["security_subord_groups"][$group_code]);
 			}
@@ -1108,7 +1124,7 @@ class __CControllerPacketResponse extends __CControllerPacket
 
 			$this->arParameters = $arParameters;
 		}
-		$this->version =  $ar_result['version'];
+		$this->version = $ar_result['version'];
 
 		if(strlen($this->status)<=0 && strlen($this->text)<=0 && strlen($this->member_id)<=0)
 		{

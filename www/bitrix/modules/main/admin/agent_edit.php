@@ -121,7 +121,7 @@ $editTab->BeginNextTab();
 
 	<tr valign="top">
 		<td><span class="required">*</span><?echo GetMessage("MAIN_AGENT_START_EXEC")." (".CLang::GetDateFormat("FULL")."):"?></td>
-		<td><?echo CalendarDate("NEXT_EXEC", htmlspecialchars($a_NEXT_EXEC), "f_agent", 20)?></td>
+		<td><?echo CalendarDate("NEXT_EXEC", htmlspecialcharsbx($a_NEXT_EXEC), "f_agent", 20)?></td>
 	</tr>
 	<tr valign="top">
 		<td><?echo GetMessage('MAIN_AGENT_ACTIVE')?></td>

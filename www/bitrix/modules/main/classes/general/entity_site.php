@@ -18,6 +18,10 @@ class CSiteEntity extends CBaseEntity
 			),
 			'NAME' => array(
 				'data_type' => 'string'
+			),
+			// short name
+			'SITE_NAME' => array(
+				'data_type' => 'string'
 			)
 		);
 	}

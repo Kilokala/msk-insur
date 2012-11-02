@@ -416,7 +416,7 @@ $tabControl->Begin();
 $tabControl->BeginNextTab();
 if ($tabStep == 1):
 ?>
- 	<tr>
+	<tr>
 		<td valign="top" width="30%" class="field-name"><span class="required">*</span><?=GetMessage("USER_IMPORT_FROM")?>:</td>
 		<td valign="top">
 			<input type="radio" name="dataSource" id="source-csv" value="csv"<?if($dataSource == "csv"):?> checked<?endif?>/><label for="source-csv"> <?=GetMessage("USER_IMPORT_FROM_CSV")?></label><br />
@@ -433,7 +433,7 @@ if ($tabStep == 2 && $dataSource == "csv"):
 	<tr>
 		<td class="field-name"><span class="required">*</span><?=GetMessage("USER_IMPORT_DATA_FILE")?>:</td>
 		<td>
-			<input type="text" name="csvDataFile" size="30" value="<?=htmlspecialchars($csvDataFile);?>">
+			<input type="text" name="csvDataFile" size="30" value="<?=htmlspecialcharsbx($csvDataFile);?>">
 			<input type="button" value="<?=GetMessage("USER_IMPORT_OPEN_DIALOG")?>" onclick="SelectCSVFile()">
 			<?
 			CAdminFileDialog::ShowScript
@@ -495,7 +495,7 @@ endif;
 
 	<tr>
 		<td class="field-name" valign="top"><?=GetMessage("USER_IMPORT_IMAGE_PATH")?>:</td>
-		<td valign="top"><input type="text" name="pathToImages" size="30" value="<?=htmlspecialchars($pathToImages)?>">
+		<td valign="top"><input type="text" name="pathToImages" size="30" value="<?=htmlspecialcharsbx($pathToImages)?>">
 		<input type="button" value="<?=GetMessage("USER_IMPORT_OPEN_DIALOG")?>" onclick="SelectImagePath()">
 		<?
 		CAdminFileDialog::ShowScript
@@ -825,13 +825,13 @@ $tabControl->Buttons();
 <?endif?>
 
 <?if ($tabStep != 2):?>
-	<input type="hidden" name="csvDataFile" value="<?=htmlspecialchars($csvDataFile)?>" />
+	<input type="hidden" name="csvDataFile" value="<?=htmlspecialcharsbx($csvDataFile)?>" />
 	<input type="hidden" name="delimeter" value="<?=$delimeter?>" />
 	<input type="hidden" name="sendEmail" value="<?=$sendEmail?>" />
-	<input type="hidden" name="eventLangID" value="<?=htmlspecialchars($eventLangID)?>" />
-	<input type="hidden" name="eventLdapLangID" value="<?=htmlspecialchars($eventLdapLangID)?>" />
+	<input type="hidden" name="eventLangID" value="<?=htmlspecialcharsbx($eventLangID)?>" />
+	<input type="hidden" name="eventLdapLangID" value="<?=htmlspecialcharsbx($eventLdapLangID)?>" />
 	<input type="hidden" name="ignoreDuplicate" value="<?=$ignoreDuplicate?>" />
-	<input type="hidden" name="pathToImages" value="<?=htmlspecialchars($pathToImages)?>" />
+	<input type="hidden" name="pathToImages" value="<?=htmlspecialcharsbx($pathToImages)?>" />
 	<input type="hidden" name="ldapServer" value="<?=$ldapServer?>" />
 	<input type="hidden" name="attachIBlockID" value="<?=$attachIBlockID?>" />
 	<?foreach ($userGroups as $groupID):?>
@@ -841,7 +841,7 @@ $tabControl->Buttons();
 
 <?if(is_array($_REQUEST["LDAPMAP"])):?>
 	<?foreach($_REQUEST["LDAPMAP"] as $map=>$y):?>
-		<input type="hidden" name="LDAPMAP[<?=htmlspecialchars($map)?>]" value="<?=htmlspecialchars($y)?>" />
+		<input type="hidden" name="LDAPMAP[<?=htmlspecialcharsbx($map)?>]" value="<?=htmlspecialcharsbx($y)?>" />
 	<?endforeach?>
 <?endif?>
 

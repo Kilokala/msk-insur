@@ -131,7 +131,7 @@ if(
 				.GetMessage("main_cache_files_deleted_count", array("#value#" => "<b>".intval($_SESSION["CACHE_STAT"]["deleted"])."</b>"))."<br>"
 				.GetMessage("main_cache_files_deleted_size", array("#value#" => "<b>".CFile::FormatSize($_SESSION["CACHE_STAT"]["space_freed"])."</b>"))."<br>"
 				.GetMessage("main_cache_files_delete_errors", array("#value#" => "<b>".intval($_SESSION["CACHE_STAT"]["errors"])."</b>"))."<br>"
-				.GetMessage("main_cache_files_last_path", array("#value#" => "<b>".htmlspecialchars($currentPath)."</b>"))."<br>"
+				.GetMessage("main_cache_files_last_path", array("#value#" => "<b>".htmlspecialcharsbx($currentPath)."</b>"))."<br>"
 			,
 			"HTML"=>true,
 			"TYPE"=>"OK",
@@ -292,7 +292,7 @@ function DoNext(path)
 {
 	var queryString = 'ajax=y'
 		+ '&clearcache=Y'
-		+ '&lang=<?echo htmlspecialchars(LANG)?>'
+		+ '&lang=<?echo htmlspecialcharsbx(LANG)?>'
 		+ '&<?echo bitrix_sessid_get()?>'
 	;
 
@@ -490,13 +490,13 @@ $tabControl->Begin();
 <tr>
 	<td><?echo GetMessage("MAIN_OPTION_HTML_CACHE_INC_MASK");?>:</td>
 	<td>
-		<input type="text" size="45" name="html_cache_include_mask" value="<?echo htmlspecialchars($arHTMLCacheOptions["INCLUDE_MASK"])?>">
+		<input type="text" size="45" name="html_cache_include_mask" value="<?echo htmlspecialcharsbx($arHTMLCacheOptions["INCLUDE_MASK"])?>">
 	</td>
 </tr>
 <tr>
 	<td><?echo GetMessage("MAIN_OPTION_HTML_CACHE_EXC_MASK");?>:</td>
 	<td>
-		<input type="text" size="45" name="html_cache_exclude_mask" value="<?echo htmlspecialchars($arHTMLCacheOptions["EXCLUDE_MASK"])?>">
+		<input type="text" size="45" name="html_cache_exclude_mask" value="<?echo htmlspecialcharsbx($arHTMLCacheOptions["EXCLUDE_MASK"])?>">
 	</td>
 </tr>
 <tr>

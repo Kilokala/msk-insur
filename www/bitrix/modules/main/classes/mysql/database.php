@@ -223,7 +223,7 @@ class CDatabase extends CAllDatabase
 				}
 
 				if($this->debug || (@session_start() && $_SESSION["SESS_AUTH"]["ADMIN"]))
-					echo $error_position."<br><font color=#ff0000>MySQL Query Error: ".htmlspecialchars($strSql)."</font>[".htmlspecialchars($this->db_Error)."]<br>";
+					echo $error_position."<br><font color=#ff0000>MySQL Query Error: ".htmlspecialcharsbx($strSql)."</font>[".htmlspecialcharsbx($this->db_Error)."]<br>";
 
 				$error_position = preg_replace("#<br[^>]*>#i","\n",$error_position);
 				SendError($error_position."\nMySQL Query Error:\n".$strSql." \n [".$this->db_Error."]\n---------------\n\n");
@@ -268,30 +268,30 @@ class CDatabase extends CAllDatabase
 //		static $replace = array("%Y", "%m", "%d", "%H", "%i", "%s");
 
 		static $search  = array(
-		    "YYYY",
-		    "MMMM",
-		    "MM",
-		    "MI",
-		    "DD",
-		    "HH",
-		    "GG",
-		    "G",
-		    "SS",
-		    "TT",
-		    "T"
+			"YYYY",
+			"MMMM",
+			"MM",
+			"MI",
+			"DD",
+			"HH",
+			"GG",
+			"G",
+			"SS",
+			"TT",
+			"T"
 		);
 		static $replace = array(
-		    "%Y",
-		    "%M",
-		    "%m",
-		    "%i",
-		    "%d",
-		    "%H",
-		    "%h",
-		    "%l",
-		    "%s",
-		    "%p",
-		    "%p"
+			"%Y",
+			"%M",
+			"%m",
+			"%i",
+			"%d",
+			"%H",
+			"%h",
+			"%l",
+			"%s",
+			"%p",
+			"%p"
 		);
 
 		foreach ($search as $k=>$v)
@@ -549,39 +549,41 @@ class CDatabase extends CAllDatabase
 
 	function Insert($table, $arFields, $error_position="", $DEBUG=false, $EXIST_ID="", $ignore_errors=false)
 	{
-		if(is_array($arFields))
+		if (!is_array($arFields))
+			return false;
+
+		$str1 = "";
+		$str2 = "";
+		foreach ($arFields as $field => $value)
 		{
-			$str1 = "";
-			$str2 = "";
-			foreach($arFields as $field => $value)
-			{
-				$str1 .= ($str1 <> ""? ", ":"")."`".$field."`";
-				if(strlen($value) <= 0)
-					$str2 .= ($str2 <> ""? ", ":"")."'".$value."'";
-				else
-					$str2 .= ($str2 <> ""? ", ":"").$value;
-			}
-			if (strlen($EXIST_ID)>0)
-			{
-				$strSql = "INSERT INTO ".$table."(ID,".$str1.") VALUES ('".$this->ForSql($EXIST_ID)."',".$str2.")";
-			}
+			$str1 .= ($str1 <> ""? ", ":"")."`".$field."`";
+			if (strlen($value) <= 0)
+				$str2 .= ($str2 <> ""? ", ":"")."''";
 			else
-			{
-				$strSql = "INSERT INTO ".$table."(".$str1.") VALUES (".$str2.")";
-			}
-			if ($DEBUG) echo "<br>".$strSql."<br>";
-			$this->Query($strSql, $ignore_errors, $error_position);
-			if (strlen($EXIST_ID)>0)
-			{
-				$ID = $EXIST_ID;
-			}
-			else
-			{
-				$ID = $this->LastID();
-			}
-			return $ID;
+				$str2 .= ($str2 <> ""? ", ":"").$value;
 		}
-		else return false;
+
+		if (strlen($EXIST_ID)>0)
+		{
+			$strSql = "INSERT INTO ".$table."(ID,".$str1.") VALUES ('".$this->ForSql($EXIST_ID)."',".$str2.")";
+		}
+		else
+		{
+			$strSql = "INSERT INTO ".$table."(".$str1.") VALUES (".$str2.")";
+		}
+
+		if ($DEBUG)
+			echo "<br>".htmlspecialcharsEx($strSql)."<br>";
+
+		$res = $this->Query($strSql, $ignore_errors, $error_position);
+
+		if ($res === false)
+			return false;
+
+		if (strlen($EXIST_ID) > 0)
+			return $EXIST_ID;
+		else
+			return $this->LastID();
 	}
 
 	function Update($table, $arFields, $WHERE="", $error_position="", $DEBUG=false, $ignore_errors=false, $additional_check=true)
@@ -589,25 +591,39 @@ class CDatabase extends CAllDatabase
 		$rows = 0;
 		if(is_array($arFields))
 		{
-			$str = "";
+			$ar = array();
 			foreach($arFields as $field => $value)
 			{
 				if (strlen($value)<=0)
-					$str .= "`".$field."` = '', ";
+					$ar[] = "`".$field."` = ''";
 				else
-					$str .= "`".$field."` = ".$value.", ";
+					$ar[] = "`".$field."` = ".$value."";
 			}
-			$str = TrimEx($str,",");
-			$strSql = "UPDATE ".$table." SET ".$str." ".$WHERE;
-			if ($DEBUG) echo "<br>".$strSql."<br>";
-			$w = $this->Query($strSql, $ignore_errors, $error_position);
-			$rows = $w->AffectedRowsCount();
-			if ($DEBUG) echo "affected_rows = ".$rows."<br>";
-			if (intval($rows)<=0 && $additional_check)
+
+			if (!empty($ar))
 			{
-				$w = $this->Query("SELECT 'x' FROM ".$table." ".$WHERE, $ignore_errors, $error_position);
-				if ($w->Fetch()) $rows = $w->SelectedRowsCount();
-				if ($DEBUG) echo "num_rows = ".$rows."<br>";
+				$strSql = "UPDATE ".$table." SET ".implode(", ", $ar)." ".$WHERE;
+				if ($DEBUG)
+					echo "<br>".htmlspecialcharsEx($strSql)."<br>";
+				$w = $this->Query($strSql, $ignore_errors, $error_position);
+				if (is_object($w))
+				{
+					$rows = $w->AffectedRowsCount();
+					if ($DEBUG)
+						echo "affected_rows = ".$rows."<br>";
+
+					if ($rows <= 0 && $additional_check)
+					{
+						$w = $this->Query("SELECT 'x' FROM ".$table." ".$WHERE, $ignore_errors, $error_position);
+						if (is_object($w))
+						{
+							if ($w->Fetch())
+								$rows = $w->SelectedRowsCount();
+							if ($DEBUG)
+								echo "num_rows = ".$rows."<br>";
+						}
+					}
+				}
 			}
 		}
 		return $rows;
@@ -729,10 +745,10 @@ class CDatabase extends CAllDatabase
 					{
 						$$varnameTo = array();
 						foreach($$varnameFrom as $k=>$v)
-							$$varnameTo[$k] = htmlspecialchars($v);
+							$$varnameTo[$k] = htmlspecialcharsbx($v);
 					}
 					else
-						$$varnameTo = htmlspecialchars($$varnameFrom);
+						$$varnameTo = htmlspecialcharsbx($$varnameFrom);
 				}
 			}
 		}
@@ -891,6 +907,7 @@ class CDatabase extends CAllDatabase
 					$arSlaveStatus['Seconds_Behind_Master'] > $max_slave_delay
 					|| $arSlaveStatus['Last_SQL_Error'] != ''
 					|| $arSlaveStatus['Last_IO_Error'] != ''
+					|| $arSlaveStatus['Slave_SQL_Running'] === 'No'
 				)
 				{
 					unset($arSlaves[$i]);

@@ -325,7 +325,7 @@ else
 	{
 		ShowError(GetMessage("MAIN_ADM_CONTROLLER_ERR7").' '.$oResponse->text.'. '.GetMessage("MAIN_ADM_CONTROLLER_ERR7_AGAIN"));
 		if(strlen($_SERVER['HTTP_REFERER'])>0)
-			echo '<br>'.'<a href="'.htmlspecialchars($_SERVER['HTTP_REFERER']).'">'.GetMessage("MAIN_ADM_CONTROLLER_BACK_URL").'</a>';
+			echo '<br>'.'<a href="'.htmlspecialcharsbx($_SERVER['HTTP_REFERER']).'">'.GetMessage("MAIN_ADM_CONTROLLER_BACK_URL").'</a>';
 	}
 	require_once(dirname(__FILE__)."/../include/epilog.php");
 }

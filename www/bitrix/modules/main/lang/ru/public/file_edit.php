@@ -1,11 +1,11 @@
 <?
-$MESS ['PUBLIC_EDIT_TITLE'] = "Ðåäàêòèðîâàíèå ñòðàíèöû";
-$MESS ['PUBLIC_EDIT_TITLE_COMP'] = "Ðåäàêòèðîâàíèå âêëþ÷àåìîé îáëàñòè";
-$MESS ['PUBLIC_EDIT_DESCRIPTION'] = "ðåäàêòèðóåìûé ôàéë:";
-$MESS ['PUBLIC_EDIT_CLOSE'] = "Çàêðûòü";
-$MESS ['PUBLIC_EDIT_CLOSE_TITLE'] = "Çàêðûòü";
-$MESS ['PUBLIC_EDIT_SAVE'] = "Ñîõðàíèòü";
-$MESS ['PUBLIC_EDIT_SAVE_TITLE'] = "Ñîõðàíèòü";
-$MESS ['PUBLIC_EDIT_SAVE_TOOLBAR_TITLE'] = "Êíîïêà ñîõðàíåíèÿ";
-$MESS ['PUBLIC_EDIT_EXIT_CONFIRM'] = "Âíèìàíèå, âñå íåñîõðàíåííûå äàííûå áóäóò ïîòåðÿíû! Âû äåéñòâèòåëüíî õîòèòå çàêðûòü äèàëîã?";
+$MESS ['PUBLIC_EDIT_TITLE'] = "Ð ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ñ‹";
+$MESS ['PUBLIC_EDIT_TITLE_COMP'] = "Ð ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð²ÐºÐ»ÑŽÑ‡Ð°ÐµÐ¼Ð¾Ð¹ Ð¾Ð±Ð»Ð°ÑÑ‚Ð¸";
+$MESS ['PUBLIC_EDIT_DESCRIPTION'] = "Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€ÑƒÐµÐ¼Ñ‹Ð¹ Ñ„Ð°Ð¹Ð»:";
+$MESS ['PUBLIC_EDIT_CLOSE'] = "Ð—Ð°ÐºÑ€Ñ‹Ñ‚ÑŒ";
+$MESS ['PUBLIC_EDIT_CLOSE_TITLE'] = "Ð—Ð°ÐºÑ€Ñ‹Ñ‚ÑŒ";
+$MESS ['PUBLIC_EDIT_SAVE'] = "Ð¡Ð¾Ñ…Ñ€Ð°Ð½Ð¸Ñ‚ÑŒ";
+$MESS ['PUBLIC_EDIT_SAVE_TITLE'] = "Ð¡Ð¾Ñ…Ñ€Ð°Ð½Ð¸Ñ‚ÑŒ";
+$MESS ['PUBLIC_EDIT_SAVE_TOOLBAR_TITLE'] = "ÐšÐ½Ð¾Ð¿ÐºÐ° ÑÐ¾Ñ…Ñ€Ð°Ð½ÐµÐ½Ð¸Ñ";
+$MESS ['PUBLIC_EDIT_EXIT_CONFIRM'] = "Ð’Ð½Ð¸Ð¼Ð°Ð½Ð¸Ðµ, Ð²ÑÐµ Ð½ÐµÑÐ¾Ñ…Ñ€Ð°Ð½ÐµÐ½Ð½Ñ‹Ðµ Ð´Ð°Ð½Ð½Ñ‹Ðµ Ð±ÑƒÐ´ÑƒÑ‚ Ð¿Ð¾Ñ‚ÐµÑ€ÑÐ½Ñ‹! Ð’Ñ‹ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð·Ð°ÐºÑ€Ñ‹Ñ‚ÑŒ Ð´Ð¸Ð°Ð»Ð¾Ð³?";
 ?>

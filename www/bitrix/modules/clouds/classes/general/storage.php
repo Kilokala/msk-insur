@@ -263,6 +263,8 @@ class CCloudStorage
 				}
 				else
 				{
+					$callbackData["cacheOBJ"]->AbortDataCache();
+
 					unlink($callbackData["tmpFile"]);
 					@rmdir(substr($callbackData["tmpFile"], 0, -strlen(bx_basename($callbackData["tmpFile"]))));
 
@@ -272,7 +274,6 @@ class CCloudStorage
 					// $cacheImageFile not clear what to do
 					return false;
 				}
-
 			}
 			else //the file is already in the cloud
 			{
@@ -652,6 +653,9 @@ class CCloudStorage
 				$newName = md5(uniqid(mt_rand(), true)).$strFileExt;
 			}
 
+			//check for double extension vulnerability
+			$newName = RemoveScriptExtension($newName);
+
 			while(true)
 			{
 				$strRand = md5(mt_rand());
@@ -870,16 +874,30 @@ class CCloudStorage
 	{
 		if(defined("BX_CHECK_SHORT_URI") && BX_CHECK_SHORT_URI)
 		{
+			$upload_dir = "/".trim(COption::GetOptionString("main", "upload_dir", "upload"), "/")."/";
 			foreach(CCloudStorageBucket::GetAllBuckets() as $arBucket)
 			{
 				if($arBucket["ACTIVE"] == "Y")
 				{
 					$obBucket = new CCloudStorageBucket($arBucket["ID"]);
-					if($obBucket->Init() && $obBucket->FileExists($_SERVER["REQUEST_URI"]))
+					if($obBucket->Init())
 					{
-						if(COption::GetOptionString("clouds", "log_404_errors") === "Y")
-							CEventLog::Log("WARNING", "CLOUDS_404", "clouds", $_SERVER["REQUEST_URI"], $_SERVER["HTTP_REFERER"]);
-						LocalRedirect($obBucket->GetFileSRC($_SERVER["REQUEST_URI"]), true);
+						if($obBucket->FileExists($_SERVER["REQUEST_URI"]))
+						{
+							if(COption::GetOptionString("clouds", "log_404_errors") === "Y")
+								CEventLog::Log("WARNING", "CLOUDS_404", "clouds", $_SERVER["REQUEST_URI"], $_SERVER["HTTP_REFERER"]);
+							LocalRedirect($obBucket->GetFileSRC($_SERVER["REQUEST_URI"]), true);
+						}
+						elseif(strpos($_SERVER["REQUEST_URI"], $upload_dir) === 0)
+						{
+							$check_url = substr($_SERVER["REQUEST_URI"], strlen($upload_dir)-1);
+							if($obBucket->FileExists($check_url))
+							{
+								if(COption::GetOptionString("clouds", "log_404_errors") === "Y")
+									CEventLog::Log("WARNING", "CLOUDS_404", "clouds", $_SERVER["REQUEST_URI"], $_SERVER["HTTP_REFERER"]);
+								LocalRedirect($obBucket->GetFileSRC($check_url), true);
+							}
+						}
 					}
 				}
 			}
@@ -900,6 +918,35 @@ class CCloudStorage
 			"change_case"=>false,
 			"max_len"=>255,
 		));
+	}
+
+	function FixFileContentType(&$arFile)
+	{
+		global $DB;
+		$fixedContentType = "";
+
+		if($arFile["CONTENT_TYPE"] === "image/jpg")
+			$fixedContentType = "image/jpeg";
+		else
+		{
+			$hexContentType = unpack("H*", $arFile["CONTENT_TYPE"]);
+			if(
+				$hexContentType[1] === "e0f3e4e8ee2f6d706567"
+				|| $hexContentType[1] === "d0b0d183d0b4d0b8d0be2f6d706567"
+			)
+				$fixedContentType = "audio/mpeg";
+		}
+
+		if($fixedContentType !== "")
+		{
+			$arFile["CONTENT_TYPE"] = $fixedContentType;
+			$DB->Query("
+				UPDATE b_file
+				SET CONTENT_TYPE = '".$DB->ForSQL($fixedContentType)."'
+				WHERE ID = ".intval($arFile["ID"])."
+			");
+			CFile::CleanCache($arFile["ID"]);
+		}
 	}
 }
 ?>

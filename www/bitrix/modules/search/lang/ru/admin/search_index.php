@@ -1,3 +1,3 @@
 <?
-$MESS ['search_index_title'] = "Óïðàâëåíèå ïîèñêîì";
+$MESS ['search_index_title'] = "Ð£Ð¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð¸ÑÐºÐ¾Ð¼";
 ?>

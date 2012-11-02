@@ -6,7 +6,7 @@
 # mailto:admin@bitrixsoft.com                #
 ##############################################
 
-//т.к. у Формы action не меняется без клиентских скриптов, поэтому просто будем включать файл для групового изменения прав
+//because Form's action don't changes without client's scripts, so just let's include the file for rights grouping change
 error_reporting(E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR|E_PARSE);
 
 // We prevent displaying WAF form and redirecting with JS errors
@@ -40,6 +40,8 @@ if($_SERVER["REQUEST_METHOD"]=="POST" && strlen($_GET["fu_action"]) > 0 && check
 	CFilemanUtils::Request($_GET["fu_action"], $site);
 	die();
 }
+
+$searchSess="";
 
 $bSearch = isset($_REQUEST["search"]) && $_REQUEST["search"] == 'Y';
 if ($bSearch) // Disable logical
@@ -227,7 +229,7 @@ if ($lAdmin->EditAction() && ($USER->CanDoOperation('fileman_admin_files') || $U
 						{
 							$res_log['path'] = substr($pathTo, 1);
 							if (is_dir($documentRoot.$pathTo))
-							    CEventLog::Log(
+								CEventLog::Log(
 									"content",
 									"SECTION_RENAME",
 									"fileman",
@@ -457,6 +459,7 @@ $db_DirContent = new CAdminResult($db_DirContent, $sTableID);
 $db_DirContent->NavStart(20);
 
 // Init list params
+
 $lAdmin->NavText($db_DirContent->GetNavPrint(GetMessage("FILEMAN_PAGES")));
 
 // List header
@@ -530,6 +533,13 @@ while($Elem = $db_DirContent->NavNext(true, "f_"))
 	$fpath = $bSearch ? $Elem['ABS_PATH'] : $path."/".$Elem["NAME"];
 	$fpathUrl = urlencode($fpath);
 	$fname = $documentRoot.$path."/".$Elem["NAME"];
+	$fnameConverted = CBXVirtualIoFileSystem::ConvertCharset($fname); //http://www.jabber.bx/view.php?id=26893
+	
+	if(!file_exists($fnameConverted))
+	{
+		$lAdmin->AddGroupError(GetMessage("FILEMAN_ADMIN_FLIST_ERROR"));
+		break;
+	}
 
 	if ($bSearch)
 		$f_NAME = $Elem['ABS_PATH'];
@@ -608,7 +618,7 @@ while($Elem = $db_DirContent->NavNext(true, "f_"))
 		$row->AddViewField("LOGIC_NAME", $showField);
 	}
 
-	$row->AddField("SIZE", (($Elem["TYPE"]=="F") ? CFileMan::GetStrFileSize($f_SIZE) : ""));
+	$row->AddField("SIZE", (($Elem["TYPE"] == "F") ? CFile::FormatSize($f_SIZE) : ""));
 	$row->AddField("DATE", $f_DATE);
 
 	$row->AddField("TYPE", ($Elem["TYPE"] == "D") ? GetMessage('FILEMAN_FOLDER') : htmlspecialchars($arFilemanPredifinedFileTypes[$curFileType]["name"]));
@@ -624,8 +634,8 @@ while($Elem = $db_DirContent->NavNext(true, "f_"))
 				$showField .= '<span title="'.$UnixFP[1].'">'.$UnixFP[0].'</span>';
 				if(function_exists("posix_getpwuid") && function_exists("posix_getgrgid"))
 				{
-					$arrFileOwner = posix_getpwuid(fileowner($fname));
-					$arrFileGroup = posix_getgrgid(filegroup($fname));
+					$arrFileOwner = posix_getpwuid(fileowner($fnameConverted));
+					$arrFileGroup = posix_getgrgid(filegroup($fnameConverted));
 					$showField .= " ".$arrFileOwner['name']." ".$arrFileGroup['name'];
 				}
 			}
@@ -753,7 +763,7 @@ while($Elem = $db_DirContent->NavNext(true, "f_"))
 					}
 				}
 
-				if($USER->CanDoFileOperation('fm_view_file', $arPath) && ($USER->CanDoOperation('edit_php') || $USER->CanDoFileOperation('fm_lpa', $arPath) || !(HasScriptExtension($f_NAME) || substr($Elem["NAME"], 0, 1) == ".")))				
+				if($USER->CanDoFileOperation('fm_view_file', $arPath) && ($USER->CanDoOperation('edit_php') || $USER->CanDoFileOperation('fm_lpa', $arPath) || !(HasScriptExtension($f_NAME) || substr($Elem["NAME"], 0, 1) == ".")))
 				{
 					$arActions[] = array(
 						"ICON" => "btn_fileman_view",
@@ -768,7 +778,7 @@ while($Elem = $db_DirContent->NavNext(true, "f_"))
 					$arActions[] = array(
 						"ICON" => "btn_download",
 						"TEXT" => GetMessage("FILEMAN_DOWNLOAD"),
-						"ACTION" => $lAdmin->ActionRedirect("fileman_file_download.php?path=".$fpathUrl."&site=".$site."&".$addUrl)
+						"ACTION" => $lAdmin->ActionRedirect("fileman_file_download.php?path=".$fpathUrl."&site=".$site."&".$addUrl)." setTimeout(function(){ CloseWaitWindow(); }, 3000);"
 					);
 				}
 
@@ -879,7 +889,7 @@ while($Elem = $db_DirContent->NavNext(true, "f_"))
 			}
 		}
 
-	}
+	}	
 	$row->AddActions($arActions);
 }
 $arPath = Array($site, $path);// arPath for current folder
@@ -1126,7 +1136,7 @@ else
 $aContext[] = Array(
 	"TEXT" => $bSearch ? GetMessage("FILEMAN_NEW_SEARCH") : GetMessage("FILEMAN_SEARCH"),
 	"ICON" => "btn_fileman_search",
-	"LINK" => "javascript: window.SearchReplaceRun('".CUtil::JSEscape($path)."', ".($bSearch ? 'true' : 'false').", '".CUtil::JSEscape($searchSess)."', ".$sFormValues.");",
+	"LINK" => "javascript: window.SearchReplaceRun('".CUtil::JSEscape($path)."', ".($bSearch ? 'true' : 'false').", '".CUtil::JSEscape($searchSess)."', ".urlencode($sFormValues).");",
 	"TITLE" => GetMessage("FILEMAN_SEARCH_TITLE")
 );
 
@@ -1435,7 +1445,12 @@ $oFilter->End();
 </form>
 <? endif;?>
 
-<?$lAdmin->DisplayList();?>
+<?
+if(empty($arGrActionAr))	
+	$lAdmin->bCanBeEdited = false;
+
+$lAdmin->DisplayList();
+?>
 
 <? CFilemanUtils::BuildDialogContent($site);?>
 

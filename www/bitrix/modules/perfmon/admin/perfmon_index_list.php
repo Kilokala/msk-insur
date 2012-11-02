@@ -72,29 +72,32 @@ if(
 						{
 							$i = 0;
 							$arExplain = array();
-							$rsData = $DB->Query("explain ".$strSQL);
-							while($arRes = $rsData->Fetch())
+							$rsData = $DB->Query("explain ".$strSQL, true);
+							if(is_object($rsData))
 							{
-								$i++;
-								$arExplain[] = $arRes;
-								if(
-									$arRes["type"] === "ALL"
-									&& strlen($arRes["key"]) == 0
-									&& is_object($q)
-									&& ($i > 1 || $q->has_where($arRes["table"]))
-								)
+								while($arRes = $rsData->Fetch())
 								{
-									$missed_keys = $q->suggest_index($arRes["table"]);
-									if($missed_keys)
-										$arMissedKeys = array_merge($arMissedKeys, $missed_keys);
-									elseif($q->has_where())
+									$i++;
+									$arExplain[] = $arRes;
+									if(
+										$arRes["type"] === "ALL"
+										&& strlen($arRes["key"]) == 0
+										&& is_object($q)
+										&& ($i > 1 || $q->has_where($arRes["table"]))
+									)
 									{
-										//Check if it is possible to find missed keys on joined tables
-										foreach($q->table_joins($arRes["table"]) as $alias => $join_columns)
+										$missed_keys = $q->suggest_index($arRes["table"]);
+										if($missed_keys)
+											$arMissedKeys = array_merge($arMissedKeys, $missed_keys);
+										elseif($q->has_where())
 										{
-											$missed_keys = $q->suggest_index($alias);
-											if($missed_keys)
-												$arMissedKeys = array_merge($arMissedKeys, $missed_keys);
+											//Check if it is possible to find missed keys on joined tables
+											foreach($q->table_joins($arRes["table"]) as $alias => $join_columns)
+											{
+												$missed_keys = $q->suggest_index($alias);
+												if($missed_keys)
+													$arMissedKeys = array_merge($arMissedKeys, $missed_keys);
+											}
 										}
 									}
 								}

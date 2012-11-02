@@ -446,7 +446,7 @@ if($USER->CanDoOperation('edit_all_users') || $USER->CanDoOperation('edit_subord
 		);
 		$aMenu[] = array(
 			"TEXT"	=> GetMessage("MAIN_COPY_RECORD"),
-			"LINK"	=> "/bitrix/admin/user_edit.php?lang=".LANGUAGE_ID.htmlspecialchars("&COPY_ID=").$ID,
+			"LINK"	=> "/bitrix/admin/user_edit.php?lang=".LANGUAGE_ID.htmlspecialcharsbx("&COPY_ID=").$ID,
 			"ICON"	=> "btn_copy",
 			"TITLE"	=> GetMessage("MAIN_COPY_RECORD_TITLE"),
 		);
@@ -559,7 +559,7 @@ if(!CMain::IsHTTPS() && COption::GetOptionString('main', 'use_encrypted_auth', '
 ?>
 	<tr id="bx_pass_row" style="display:<?=($str_EXTERNAL_AUTH_ID <> ''? 'none':'')?>;">
 		<td><?if($ID<=0 || $COPY_ID>0):?><span class="required">*</span><?endif?><?echo GetMessage('NEW_PASSWORD_REQ')?><sup><span class="required">1</span></sup>:</td>
-		<td><input type="password" name="NEW_PASSWORD" size="30" maxlength="50" value="<? echo htmlspecialchars($NEW_PASSWORD) ?>" autocomplete="off" style="vertical-align:middle;">
+		<td><input type="password" name="NEW_PASSWORD" size="30" maxlength="50" value="<? echo htmlspecialcharsbx($NEW_PASSWORD) ?>" autocomplete="off" style="vertical-align:middle;">
 <?if($bSecure):?>
 				<span class="bx-auth-secure" id="bx_auth_secure" title="<?echo GetMessage("AUTH_SECURE_NOTE")?>" style="display:none">
 					<div class="bx-auth-secure-icon"></div>
@@ -577,7 +577,7 @@ document.getElementById('bx_auth_secure').style.display = 'inline-block';
 	</tr>
 	<tr id="bx_pass_confirm_row" style="display:<?=($str_EXTERNAL_AUTH_ID <> ''? 'none':'')?>;">
 		<td><?if($ID<=0 || $COPY_ID>0):?><span class="required">*</span><?endif?><?echo GetMessage('NEW_PASSWORD_CONFIRM')?></td>
-		<td><input type="password" name="NEW_PASSWORD_CONFIRM" size="30" maxlength="50" value="<? echo htmlspecialchars($NEW_PASSWORD_CONFIRM) ?>" autocomplete="off"></td>
+		<td><input type="password" name="NEW_PASSWORD_CONFIRM" size="30" maxlength="50" value="<? echo htmlspecialcharsbx($NEW_PASSWORD_CONFIRM) ?>" autocomplete="off"></td>
 	</tr>
 <?
 $tabControl->EndCustomField("PASSWORD");
@@ -667,15 +667,15 @@ if($showGroupTabs):
 						?> />
 					</td>
 					<td width="0%" nowrap>
-						<label for="GROUP_ID_ACT_ID_<?= $ind ?>"><?=htmlspecialchars($arGroups["NAME"])?> [<a href="/bitrix/admin/group_edit.php?ID=<?=$arGroups["ID"]?>&lang=<?=LANGUAGE_ID?>" title="<?=GetMessage("MAIN_VIEW_GROUP")?>"><?echo intval($arGroups["ID"])?></a>]</label>
+						<label for="GROUP_ID_ACT_ID_<?= $ind ?>"><?=htmlspecialcharsbx($arGroups["NAME"])?> [<a href="/bitrix/admin/group_edit.php?ID=<?=$arGroups["ID"]?>&lang=<?=LANGUAGE_ID?>" title="<?=GetMessage("MAIN_VIEW_GROUP")?>"><?echo intval($arGroups["ID"])?></a>]</label>
 					</td>
 					<td width="0%" nowrap align="center" style="padding-right:10px; padding-left:10px">
 						<?= GetMessage('USER_GROUP_DATE_FROM')?>
-						<?= CalendarDate("GROUP_ID_FROM_".$ind, (array_key_exists($arGroups["ID"], $str_GROUP_ID) ? htmlspecialchars($str_GROUP_ID[$arGroups["ID"]]["DATE_ACTIVE_FROM"]) : ""), $tabControl->GetFormName(), "10")?>
+						<?= CalendarDate("GROUP_ID_FROM_".$ind, (array_key_exists($arGroups["ID"], $str_GROUP_ID) ? htmlspecialcharsbx($str_GROUP_ID[$arGroups["ID"]]["DATE_ACTIVE_FROM"]) : ""), $tabControl->GetFormName(), "10")?>
 					</td>
 					<td width="0%" nowrap align="center">
 						<?= GetMessage('USER_GROUP_DATE_TO')?>
-						<?= CalendarDate("GROUP_ID_TO_".$ind, (array_key_exists($arGroups["ID"], $str_GROUP_ID) ? htmlspecialchars($str_GROUP_ID[$arGroups["ID"]]["DATE_ACTIVE_TO"]) : ""), $tabControl->GetFormName(), "10")?>
+						<?= CalendarDate("GROUP_ID_TO_".$ind, (array_key_exists($arGroups["ID"], $str_GROUP_ID) ? htmlspecialcharsbx($str_GROUP_ID[$arGroups["ID"]]["DATE_ACTIVE_TO"]) : ""), $tabControl->GetFormName(), "10")?>
 					</td>
 				</tr>
 				<?

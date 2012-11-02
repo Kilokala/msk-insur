@@ -98,14 +98,14 @@ class CLightHTMLEditor // LHE
 			'bSetDefaultCodeView' => isset($arParams['bSetDefaultCodeView']) && $arParams['bSetDefaultCodeView'],
 			'bBBParseImageSize' => isset($arParams['bBBParseImageSize']) && $arParams['bBBParseImageSize'],
 			'smileCountInToolbar' => intVal($arParams['smileCountInToolbar']),
-			'bQuoteFromSelection' => $arParams['bQuoteFromSelection'],
-			'bConvertContentFromBBCodes' => $arParams['bConvertContentFromBBCodes'],
+			'bQuoteFromSelection' => isset($arParams['bQuoteFromSelection']) && $arParams['bQuoteFromSelection'],
+			'bConvertContentFromBBCodes' => isset($arParams['bConvertContentFromBBCodes']) && $arParams['bConvertContentFromBBCodes'],
 			'oneGif' => '/bitrix/images/1.gif',
 			'imagePath' => '/bitrix/images/fileman/light_htmledit/'
 		);
 
 		// Set editor from visual mode to textarea for mobile devices
-		if (CLightHTMLEditor::IsMobileDevice())
+		if (!isset($this->JSConfig['bSetDefaultCodeView']) && CLightHTMLEditor::IsMobileDevice())
 			$this->JSConfig['bSetDefaultCodeView'] = true;
 
 		if (isset($arParams['width']) && intVal($arParams['width']) > 0)
@@ -209,11 +209,7 @@ class CLightHTMLEditor // LHE
 				try{
 				<?= $scripts?>
 				}catch(e){alert('Errors in customization scripts! ' + e);}
-
-				/*setTimeout(function()
-				{*/
 				top.<?=$this->jsObjName?> = window.<?=$this->jsObjName?> = new window.JCLightHTMLEditor(<?=CUtil::PhpToJSObject($this->JSConfig)?>);
-				/*}, 100);*/
 			});
 		}
 

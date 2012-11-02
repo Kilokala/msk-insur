@@ -185,9 +185,9 @@ $n = 0;
 foreach($aThemes as $theme):
 ?>
 	<tr>
-		<td style="border-right:none; padding-right:0px;"><input type="radio" name="theme_id" id="theme_<?echo $n?>" value="<?echo htmlspecialchars($theme["ID"])?>"<?if($aUserOpt["theme_id"] == $theme["ID"]) echo " checked"?>></td>
-		<td style="border-left:none;"><label for="theme_<?echo $n?>" title="<?echo htmlspecialchars($theme["DESCRIPTION"])?>"><?echo htmlspecialchars($theme["NAME"])?></label></td>
-		<td><a href="fileman_admin.php?lang=<?echo LANGUAGE_ID?>&amp;path=<?echo ADMIN_THEMES_PATH."/".$theme["ID"]?>" title="<?echo GetMessage("user_sett_files_title")?>"><?echo htmlspecialchars($theme["ID"])?></a></td>
+		<td style="border-right:none; padding-right:0px;"><input type="radio" name="theme_id" id="theme_<?echo $n?>" value="<?echo htmlspecialcharsbx($theme["ID"])?>"<?if($aUserOpt["theme_id"] == $theme["ID"]) echo " checked"?>></td>
+		<td style="border-left:none;"><label for="theme_<?echo $n?>" title="<?echo htmlspecialcharsbx($theme["DESCRIPTION"])?>"><?echo htmlspecialcharsbx($theme["NAME"])?></label></td>
+		<td><a href="fileman_admin.php?lang=<?echo LANGUAGE_ID?>&amp;path=<?echo ADMIN_THEMES_PATH."/".$theme["ID"]?>" title="<?echo GetMessage("user_sett_files_title")?>"><?echo htmlspecialcharsbx($theme["ID"])?></a></td>
 		<td>
 <?
 if($theme["PREVIEW"] <> "")
@@ -199,7 +199,7 @@ if($theme["PREVIEW"] <> "")
 		if($aSize !== false)
 		{
 			CFile::OutputJSImgShw();
-			echo '<a title="'.GetMessage("user_sett_screen").'" href="'.htmlspecialchars($previewName).'" onclick="ImgShw(\''.htmlspecialchars(CUtil::JSEscape($previewName)).'\', '.$aSize[0].', '.$aSize[1].', \'\'); return false;"><img src="/bitrix/images/main/preview.gif" width="16" height="16" alt="'.GetMessage("user_sett_screen").'" border="0"></a>';
+			echo '<a title="'.GetMessage("user_sett_screen").'" href="'.htmlspecialcharsbx($previewName).'" onclick="ImgShw(\''.htmlspecialcharsbx(CUtil::JSEscape($previewName)).'\', '.$aSize[0].', '.$aSize[1].', \'\'); return false;"><img src="/bitrix/images/main/preview.gif" width="16" height="16" alt="'.GetMessage("user_sett_screen").'" border="0"></a>';
 		}
 	}
 }
@@ -241,7 +241,7 @@ endforeach;
 	</tr>
 	<tr valign="top">
 		<td><?echo GetMessage("MAIN_OPTION_PANEL_COLOR")?></td>
-		<td><input type="text" name="panel_color" id="panel_color" onchange="_PanelSetColor(this.value)" size="7" value="<?=htmlspecialchars($aUserOpt['panel_color'])?>" align="left">
+		<td><input type="text" name="panel_color" id="panel_color" onchange="_PanelSetColor(this.value)" size="7" value="<?=htmlspecialcharsbx($aUserOpt['panel_color'])?>" align="left">
 			<style>
 			table.tcell td {height: 30px; width: 30px;}
 			</style>
@@ -290,7 +290,7 @@ endforeach;
 	<tr valign="top">
 		<td><?echo GetMessage("user_sett_start_links")?></td>
 		<td>
-			<input type="text" name="start_menu_links" value="<?echo htmlspecialchars($aUserOpt["start_menu_links"])?>" size="10"><br>
+			<input type="text" name="start_menu_links" value="<?echo htmlspecialcharsbx($aUserOpt["start_menu_links"])?>" size="10"><br>
 			<a href="javascript:if(confirm('<?echo CUtil::addslashes(GetMessage("user_sett_del_links_conf"))?>'))window.location='user_settings.php?action=clear_links&lang=<?echo LANG?>&<?echo bitrix_sessid_get()?>';"><?echo GetMessage("user_sett_del_links")?></a>
 		</td>
 	</tr>
@@ -321,7 +321,7 @@ CAdminFileDialog::ShowScript(
 	)
 );
 ?>
-			<input type="text" name="sound_login" value="<?echo htmlspecialchars($aUserOpt["sound_login"])?>" size="40">
+			<input type="text" name="sound_login" value="<?echo htmlspecialcharsbx($aUserOpt["sound_login"])?>" size="40">
 			<input type="button" value="..." title="<?echo GetMessage("user_sett_sounds_button_title")?>" onclick="OpenFileBrowserWindFile()">
 		</td>
 	</tr>

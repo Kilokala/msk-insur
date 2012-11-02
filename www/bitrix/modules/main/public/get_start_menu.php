@@ -28,7 +28,7 @@ function __GetSubmenu($menu)
 		);
 		if($item["url"] <> "")
 		{
-			$link = $item["url"];
+			$link = htmlspecialcharsback($item["url"]);
 			if(strpos($link, "/bitrix/admin/") !== 0)
 				$link = "/bitrix/admin/".$link;
 			$aItem["ACTION"] = "jsStartMenu.OpenURL(this, arguments, '".
@@ -180,10 +180,10 @@ else
 			}
 		
 			$aFav[] = array(
-				"TEXT"=>htmlspecialchars($db_fav_arr["NAME"]),
-				"TITLE"=>htmlspecialchars($sTitle),
+				"TEXT"=>htmlspecialcharsbx($db_fav_arr["NAME"]),
+				"TITLE"=>htmlspecialcharsbx($sTitle),
 				"ICON"=>"favorites",
-				"ACTION"=>"jsUtils.Redirect(arguments, '".CUtil::JSEscape(htmlspecialchars($db_fav_arr["URL"]))."');",
+				"ACTION"=>"jsUtils.Redirect(arguments, '".CUtil::JSEscape($db_fav_arr["URL"])."');",
 			);
 		}
 		$aPopup[] = array("SEPARATOR"=>true);
@@ -212,9 +212,9 @@ else
 			if($i > $nLinks)
 				break;
 			$aPopup[] = array(
-				"TEXT"=>htmlspecialchars($recent["text"]),
-				"TITLE"=>($aUserOpt['start_menu_title'] <> 'N'? htmlspecialchars($recent["title"]):''),
-				"ICON"=>htmlspecialchars($recent["icon"]),
+				"TEXT"=>htmlspecialcharsbx($recent["text"]),
+				"TITLE"=>($aUserOpt['start_menu_title'] <> 'N'? htmlspecialcharsbx($recent["title"]):''),
+				"ICON"=>htmlspecialcharsbx($recent["icon"]),
 				"ACTION"=>"jsStartMenu.OpenURL(this, arguments, '".CUtil::JSEscape($recent["url"])."'".($_REQUEST["back_url_pub"]<>''? ", '".CUtil::JSEscape($_REQUEST["back_url_pub"])."'":"").");",
 			);
 		}

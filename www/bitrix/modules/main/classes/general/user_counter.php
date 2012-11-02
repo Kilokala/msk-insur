@@ -107,7 +107,7 @@ class CAllUserCounter
 
 		$strSQL = "
 			DELETE FROM b_user_counter 
-			WHERE TAG like '%".$DB->ForSQL($tag)."%' AND CODE = '".$DB->ForSQL($code)."'
+			WHERE TAG = '".$DB->ForSQL($tag)."' AND CODE = '".$DB->ForSQL($code)."'
 			AND (SITE_ID = '".$site_id."' OR SITE_ID = '**')";
 		$dbRes = $DB->Query($strSQL, false, "File: ".__FILE__."<br>Line: ".__LINE__);
 

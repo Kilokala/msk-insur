@@ -24,6 +24,9 @@ class CUserEntity extends CBaseEntity
 			'ACTIVE' => array(
 				'data_type' => 'boolean'
 			),
+			'DATE_REGISTER' => array(
+				'data_type' => 'datetime'
+			),
 			'NAME' => array(
 				'data_type' => 'string'
 			),

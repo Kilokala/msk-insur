@@ -261,7 +261,7 @@ class CUserAuthProvider extends CAuthProvider implements IProviderInterface
 		{
 			$arItem = Array(
 				"ID" => "U".$arUser["ID"],
-				"NAME" => CUser::FormatName('#NAME# #LAST_NAME#', $arUser, true, false),
+				"NAME" => CUser::FormatName(CSite::GetNameFormat(false), $arUser, true, false),
 			);
 			$elements .= CFinder::GetFinderItem($arFinderParams, $arItem);
 		}
@@ -291,7 +291,7 @@ class CUserAuthProvider extends CAuthProvider implements IProviderInterface
 			{
 				$arItem = Array(
 					"ID" => "U".$arUser["ID"],
-					"NAME" => CUser::FormatName('#NAME# #LAST_NAME#', $arUser, true, false),
+					"NAME" => CUser::FormatName(CSite::GetNameFormat(false), $arUser, true, false),
 				);
 				$elements .= CFinder::GetFinderItem($arFinderParams, $arItem);
 			}
@@ -325,7 +325,7 @@ class CUserAuthProvider extends CAuthProvider implements IProviderInterface
 			$arResult = array();
 			$res = CUser::GetList(($by="id"), ($order=""), array("ID"=>implode("|", $aID)));
 			while($arUser = $res->Fetch())
-				$arResult["U".$arUser["ID"]] = array("provider"=>GetMessage("authprov_user1"), "name"=>CUser::FormatName('#NAME# #LAST_NAME#', $arUser, true, false));
+				$arResult["U".$arUser["ID"]] = array("provider"=>GetMessage("authprov_user1"), "name"=>CUser::FormatName(CSite::GetNameFormat(false), $arUser, true, false));
 				
 			return $arResult;
 		}
@@ -351,7 +351,7 @@ class COtherAuthProvider implements IProviderInterface
 		$arItem = Array(
 			"ID" => "U".$USER->GetID(),
 			"AVATAR" => "/bitrix/js/main/core/images/access/avatar-user-auth.png",
-			"NAME" => (($s = trim($USER->GetFullName())) <> ''? $s : $USER->GetLogin()),
+			"NAME" => (($s = trim($USER->GetFormattedName(false))) <> ''? $s : $USER->GetLogin()),
 			"DESC" => GetMessage("authprov_user_curr"),
 		);
 		$elements .= CFinder::GetFinderItem($arFinderParams, $arItem);

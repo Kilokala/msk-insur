@@ -333,7 +333,7 @@ class CDataXML
 		if (file_exists($file))
 		{
 			$content = file_get_contents($file);
-			$charset = "windows-1251";
+			$charset = (defined("BX_DEFAULT_CHARSET")? BX_DEFAULT_CHARSET : "windows-1251");
 			if (preg_match("/<"."\?XML[^>]{1,}encoding=[\"']([^>\"']{1,})[\"'][^>]{0,}\?".">/i", $content, $matches))
 			{
 				$charset = Trim($matches[1]);

@@ -37,6 +37,13 @@ abstract class CBaseEntity
 		$instances;
 
 
+	/**
+	 * @static
+	 *
+	 * @param string $entityName
+	 *
+	 * @return CBaseEntity
+	 */
 	public static function GetInstance($entityName)
 	{
 		return self::getInstanceDirect('C' . $entityName . 'Entity');
@@ -95,8 +102,6 @@ abstract class CBaseEntity
 
 	public function PostInitialize()
 	{
-		global $DBType;
-
 		// базовые свойства
 		$this->name = substr($this->className, 1, -6);
 		//$this->dbTableName = strtolower($this->name);
@@ -254,6 +259,9 @@ abstract class CBaseEntity
 
 			if (strlen($this->uf_id))
 			{
+				/**
+				 * @var $USER_FIELD_MANAGER CAllUserTypeManager
+				 */
 				global $USER_FIELD_MANAGER;
 
 				foreach ($USER_FIELD_MANAGER->GetUserFields($this->uf_id) as $info)

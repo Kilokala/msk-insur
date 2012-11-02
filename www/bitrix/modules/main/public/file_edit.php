@@ -271,7 +271,8 @@ if(strlen($strWarning) <= 0)
 						"PAGE_EDIT",
 						"main",
 						"",
-						serialize($res_log)
+						serialize($res_log),
+						$_REQUEST["site"]
 					);
 				}
 
@@ -405,23 +406,23 @@ if (CAutoSave::Allowed())
 <input type="submit" name="submitbtn" style="display: none;" />
 <input type="hidden" name="mode" id="mode" value="public" />
 <input type="hidden" name="save" id="save" value="Y" />
-<input type="hidden" name="site" id="site" value="<?=htmlspecialchars($site)?>" />
-<input type="hidden" name="template" id="template" value="<?echo htmlspecialchars($template)?>" />
-<input type="hidden" name="templateID" id="templateID" value="<?echo htmlspecialchars($_REQUEST['templateID'])?>" />
-<input type="hidden" name="subdialog" value="<?echo htmlspecialchars($_REQUEST['subdialog'])?>" />
+<input type="hidden" name="site" id="site" value="<?=htmlspecialcharsbx($site)?>" />
+<input type="hidden" name="template" id="template" value="<?echo htmlspecialcharsbx($template)?>" />
+<input type="hidden" name="templateID" id="templateID" value="<?echo htmlspecialcharsbx($_REQUEST['templateID'])?>" />
+<input type="hidden" name="subdialog" value="<?echo htmlspecialcharsbx($_REQUEST['subdialog'])?>" />
 <?if (is_set($_REQUEST, 'back_url')):?>
-	<input type="hidden" name="back_url" value="<?=htmlspecialchars($_REQUEST['back_url'])?>" />
+	<input type="hidden" name="back_url" value="<?=htmlspecialcharsbx($_REQUEST['back_url'])?>" />
 <?endif;?>
 <?if (is_set($_REQUEST, 'edit_new_file_undo')):?>
-	<input type="hidden" name="edit_new_file_undo" value="<?=htmlspecialchars($_REQUEST['edit_new_file_undo'])?>" />
+	<input type="hidden" name="edit_new_file_undo" value="<?=htmlspecialcharsbx($_REQUEST['edit_new_file_undo'])?>" />
 <?endif;?>
 <?if(!$bEdit):?>
 	<input type="hidden" name="new" id="new" value="Y" />
-	<input type="hidden" name="filename" id="filename" value="<?echo htmlspecialchars($filename)?>" />
-	<input type="hidden" name="path" id="path" value="<?=htmlspecialchars($path.'/'.$filename)?>" />
+	<input type="hidden" name="filename" id="filename" value="<?echo htmlspecialcharsbx($filename)?>" />
+	<input type="hidden" name="path" id="path" value="<?=htmlspecialcharsbx($path.'/'.$filename)?>" />
 <?else:?>
-	<input type="hidden" name="title" value="<?=htmlspecialchars($title)?>" />
-	<input type="hidden" name="path" id="path" value="<?=htmlspecialchars($path)?>" />
+	<input type="hidden" name="title" value="<?=htmlspecialcharsbx($title)?>" />
+	<input type="hidden" name="path" id="path" value="<?=htmlspecialcharsbx($path)?>" />
 <?endif;?>
 
 <script>
@@ -570,7 +571,7 @@ BX.WindowManager.Get().__expand();
 <?
 else: //if ($bDisableEditor)
 ?>
-<textarea name="<?=htmlspecialchars($editor_name)?>" id="<?=htmlspecialchars($editor_name)?>" style="height: 99%; width: 100%;"><?=htmlspecialcharsex($filesrc)?></textarea>
+<textarea name="<?=htmlspecialcharsbx($editor_name)?>" id="<?=htmlspecialcharsbx($editor_name)?>" style="height: 99%; width: 100%;"><?=htmlspecialcharsex($filesrc)?></textarea>
 <script type="text/javascript">
 var border = null, ta = null, wnd = BX.WindowManager.Get();
 

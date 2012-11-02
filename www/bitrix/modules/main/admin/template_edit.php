@@ -412,7 +412,7 @@ if($loadEditor):
 		)
 	);
 else:?>
-	<textarea rows="28" cols="60" style="width:100%" id="bxed_CONTENT" name="CONTENT" wrap="off"><?echo htmlspecialchars(htmlspecialcharsback($str_CONTENT))?></textarea>
+	<textarea rows="28" cols="60" style="width:100%" id="bxed_CONTENT" name="CONTENT" wrap="off"><?echo htmlspecialcharsbx(htmlspecialcharsback($str_CONTENT))?></textarea>
 <?endif;?>
 		</td>
 	</tr>
@@ -501,10 +501,10 @@ $tabControl->BeginNextTab();
 					?>
 					<tr>
 						<td  valign="top" >
-							<input type="text" name="CODE_<?=$i?>" id="CODE_<?=$i?>" value="<?=htmlspecialchars($style_)?>" size="30">
+							<input type="text" name="CODE_<?=$i?>" id="CODE_<?=$i?>" value="<?=htmlspecialcharsbx($style_)?>" size="30">
 						</td>
 						<td>
-							<input type="text" name="VALUE_<?=$i?>" id="VALUE_<?=$i?>" value="<?=htmlspecialchars($title_)?>" size="60">
+							<input type="text" name="VALUE_<?=$i?>" id="VALUE_<?=$i?>" value="<?=htmlspecialcharsbx($title_)?>" size="60">
 						</td>
 					</tr>
 					<?
@@ -516,7 +516,7 @@ $tabControl->BeginNextTab();
 				<tr>
 					<td colspan="2">
 						<input type="hidden" id="maxind" name="maxind" value="<?echo $ind; ?>">
-						<input type="hidden" id="styles_path" name="styles_path" value="<?=htmlspecialchars($stylesPath)?>">
+						<input type="hidden" id="styles_path" name="styles_path" value="<?=htmlspecialcharsbx($stylesPath)?>">
 						<input type="button" name="propeditmore"  value="<?echo GetMessage("MAIN_STYLE_MORE")?>" onClick="_MoreRProps()">
 					</td>
 				</tr>
@@ -551,11 +551,11 @@ $tabControl->BeginNextTab();
 				$fType = GetFileType($arFiles["NAME"]);
 			?>
 			<tr>
-				<td><?=htmlspecialchars($arFiles["NAME"])?></td>
-				<td><?=htmlspecialchars($arFiles["DESCRIPTION"])?></td>
+				<td><?=htmlspecialcharsbx($arFiles["NAME"])?></td>
+				<td><?=htmlspecialcharsbx($arFiles["DESCRIPTION"])?></td>
 				<td>
 					<?if($fType == 'SOURCE'):?>
-						<a title ="<?=GetMessage("MAIN_MOD_FILE").htmlspecialchars($arFiles["NAME"])?>" href="fileman_file_edit.php?lang=<?=LANG?>&amp;full_src=Y&amp;path=<?=urlencode($arFiles["ABS_PATH"])?>&amp;back_url=<?=urlencode($_SERVER["REQUEST_URI"])?>"><?echo GetMessage("MAIN_T_EDIT_CHANGE")?></a>
+						<a title ="<?=GetMessage("MAIN_MOD_FILE").htmlspecialcharsbx($arFiles["NAME"])?>" href="fileman_file_edit.php?lang=<?=LANG?>&amp;full_src=Y&amp;path=<?=urlencode($arFiles["ABS_PATH"])?>&amp;back_url=<?=urlencode($_SERVER["REQUEST_URI"])?>"><?echo GetMessage("MAIN_T_EDIT_CHANGE")?></a>
 					<?elseif($fType == 'IMAGE' || $fType == 'FLASH'):?>
 						<?echo ShowImage($arFiles["ABS_PATH"], $iMaxW=50, $iMaxH=50, $sParams=null, $strImageUrl="", $bPopup=true, $sPopupTitle=GetMessage("template_edit_open_pic"));?>
 					<?endif?>
@@ -581,7 +581,7 @@ $dis = (!$edit_php && !$lpa);
 <input <?echo ($dis ? "disabled":"")?> type="submit" name="save" value="<?=GetMessage("admin_lib_edit_save")?>" title="<?=GetMessage("admin_lib_edit_save_title")?>">
 <input <?echo ($dis ? "disabled":"")?> type="submit" name="apply" value="<?=GetMessage("admin_lib_edit_apply")?>" title="<?GetMessage("admin_lib_edit_apply_title")?>">
 <?if ($USER->CanDoOperation('edit_other_settings') || $USER->CanDoOperation('lpa_template_edit')):?>
-<input type="button" value="<?=GetMessage('FILEMAN_PREVIEW_TEMPLATE')?>" name="cancel" onClick="preview_template('<?=htmlspecialchars(CUtil::JSEscape($ID))?>', '<?= bitrix_sessid()?>');" title="<?=GetMessage('FILEMAN_PREVIEW_TEMPLATE_TITLE')?>">
+<input type="button" value="<?=GetMessage('FILEMAN_PREVIEW_TEMPLATE')?>" name="cancel" onClick="preview_template('<?=htmlspecialcharsbx(CUtil::JSEscape($ID))?>', '<?= bitrix_sessid()?>');" title="<?=GetMessage('FILEMAN_PREVIEW_TEMPLATE_TITLE')?>">
 <?endif;?>
 <input type="button" value="<?=GetMessage("admin_lib_edit_cancel")?>" name="cancel" onClick="window.location='<?=CUtil::JSEscape($aParams["back_url"])?>'" title="<?=GetMessage("admin_lib_edit_cancel_title")?>">
 <?$tabControl->End();?>

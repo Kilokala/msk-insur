@@ -124,7 +124,7 @@ class CUserTypeFile
 		';
 		if($bVarsFromForm)
 		{
-			$value = htmlspecialchars($GLOBALS[$arHtmlControl["NAME"]]["EXTENSIONS"]);
+			$value = htmlspecialcharsbx($GLOBALS[$arHtmlControl["NAME"]]["EXTENSIONS"]);
 			$result .= '
 			<tr valign="top">
 				<td>'.GetMessage("USER_TYPE_FILE_EXTENSIONS").':</td>
@@ -143,7 +143,7 @@ class CUserTypeFile
 			$value = array();
 			if(is_array($arExt))
 				foreach($arExt as $ext=>$flag)
-					$value[] = htmlspecialchars($ext);
+					$value[] = htmlspecialcharsbx($ext);
 			$result .= '
 			<tr valign="top">
 				<td>'.GetMessage("USER_TYPE_FILE_EXTENSIONS").':</td>

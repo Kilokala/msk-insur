@@ -17,7 +17,7 @@ function UserInfo($USER_ID)
 		return "";
 	$user = CUser::GetByID($USER_ID);
 	if($user_arr = $user->Fetch())
-		return '[<a title="'.GetMessage("MAIN_USER_PROFILE").'" href="user_edit.php?ID='.$user_arr["ID"].'&amp;lang='.LANG.'">'.$user_arr["ID"].'</a>] ('.htmlspecialchars($user_arr["LOGIN"]).') '.htmlspecialchars($user_arr["NAME"]).' '.htmlspecialchars($user_arr["LAST_NAME"]);
+		return '[<a title="'.GetMessage("MAIN_USER_PROFILE").'" href="user_edit.php?ID='.$user_arr["ID"].'&amp;lang='.LANG.'">'.$user_arr["ID"].'</a>] ('.htmlspecialcharsbx($user_arr["LOGIN"]).') '.htmlspecialcharsbx($user_arr["NAME"]).' '.htmlspecialcharsbx($user_arr["LAST_NAME"]);
 }
 
 if(!$USER->CanDoOperation('edit_own_profile') && !$USER->CanDoOperation('edit_other_settings') && !$USER->CanDoOperation('view_other_settings'))
@@ -96,8 +96,8 @@ if($_SERVER['REQUEST_METHOD']=="POST" && ($_POST['save']<>"" || $_POST['apply']<
 
 if($_REQUEST["encoded"] == "Y")
 	CUtil::decodeURIComponent($_REQUEST["name"]);
-$str_NAME = htmlspecialchars($_REQUEST["name"]);
-$str_URL = htmlspecialchars($_REQUEST["addurl"]);
+$str_NAME = htmlspecialcharsbx($_REQUEST["name"]);
+$str_URL = htmlspecialcharsbx($_REQUEST["addurl"]);
 $str_C_SORT = 100;
 $str_COMMON = 'N';
 $str_USER_ID = $USER->GetID();
@@ -164,7 +164,7 @@ $tabControl = new CAdminTabControl("tabControl", $aTabs);
 <input type="hidden" name="ID" value=<?=$ID?>>
 <input type="hidden" name="lang" value="<?=LANGUAGE_ID?>">
 <?if($_REQUEST["addurl"]<>""):?>
-<input type="hidden" name="addurl" value="<?echo htmlspecialchars($_REQUEST["addurl"])?>">
+<input type="hidden" name="addurl" value="<?echo htmlspecialcharsbx($_REQUEST["addurl"])?>">
 <?endif;?>
 <?
 $tabControl->Begin();
@@ -231,7 +231,7 @@ if($isAdmin):
 $a = CModule::GetDropDownList();
 while($ar = $a->Fetch()):
 ?>
-	<option value="<?echo htmlspecialchars($ar["REFERENCE_ID"])?>"<?if($ar["REFERENCE_ID"] == $str_MODULE_ID) echo " selected"?>><?echo htmlspecialchars($ar["REFERENCE"])?></option>
+	<option value="<?echo htmlspecialcharsbx($ar["REFERENCE_ID"])?>"<?if($ar["REFERENCE_ID"] == $str_MODULE_ID) echo " selected"?>><?echo htmlspecialcharsbx($ar["REFERENCE"])?></option>
 <?endwhile?>
 </select>
 <script type="text/javascript">

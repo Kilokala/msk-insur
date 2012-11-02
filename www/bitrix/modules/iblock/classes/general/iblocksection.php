@@ -449,6 +449,8 @@ class CAllIBlockSection
 				CFile::SaveForDB($arFields, "DETAIL_PICTURE", "iblock");
 			}
 
+			CIBlock::_transaction_lock($IBLOCK_ID);
+
 			unset($arFields["ID"]);
 			$ID = intval($DB->Add("b_iblock_section", $arFields, Array("DESCRIPTION","SEARCHABLE_CONTENT"), "iblock"));
 
@@ -577,19 +579,21 @@ class CAllIBlockSection
 
 			if($arIBlock["FIELDS"]["LOG_SECTION_ADD"]["IS_REQUIRED"] == "Y")
 			{
+				$USER_ID = is_object($USER)? intval($USER->GetID()) : 0;
 				$db_events = GetModuleEvents("main", "OnBeforeEventLog");
 				$arEvent = $db_events->Fetch();
-				if(!$arEvent || ExecuteModuleEventEx($arEvent, array(is_object($USER)? intval($USER->GetID()) : 0 ))===false)
+				if(!$arEvent || ExecuteModuleEventEx($arEvent, array($USER_ID))===false)
 				{
 					$rsSection = CIBlockSection::GetList(array(), array("=ID"=>$ID), false,  array("LIST_PAGE_URL", "NAME", "CODE"));
 					$arSection = $rsSection->GetNext();
 					$res = array(
-							"ID" => $ID,
-							"CODE" => $arSection["CODE"],
-							"NAME" => $arSection["NAME"],
-							"SECTION_NAME" => $arIBlock["SECTION_NAME"],
-							"IBLOCK_PAGE_URL" => $arSection["LIST_PAGE_URL"]
-							);
+						"ID" => $ID,
+						"CODE" => $arSection["CODE"],
+						"NAME" => $arSection["NAME"],
+						"SECTION_NAME" => $arIBlock["SECTION_NAME"],
+						"USER_ID" => $USER_ID,
+						"IBLOCK_PAGE_URL" => $arSection["LIST_PAGE_URL"],
+					);
 					CEventLog::Log(
 						"IBLOCK",
 						"IBLOCK_SECTION_ADD",
@@ -930,6 +934,8 @@ class CAllIBlockSection
 			if(array_key_exists("DETAIL_PICTURE", $arFields))
 				$arFields["DETAIL_PICTURE"] = $SAVED_DETAIL_PICTURE;
 
+			CIBlock::_transaction_lock($db_record["IBLOCK_ID"]);
+
 			if(strlen($strUpdate) > 0)
 			{
 				$strSql = "UPDATE b_iblock_section SET ".$strUpdate." WHERE ID = ".$ID;
@@ -1176,19 +1182,21 @@ class CAllIBlockSection
 
 			if($arIBlock["FIELDS"]["LOG_SECTION_EDIT"]["IS_REQUIRED"] == "Y")
 			{
+				$USER_ID = is_object($USER)? intval($USER->GetID()) : 0;
 				$db_events = GetModuleEvents("main", "OnBeforeEventLog");
 				$arEvent = $db_events->Fetch();
-				if(!$arEvent || ExecuteModuleEventEx($arEvent,  array(is_object($USER)? intval($USER->GetID()) : 0 ))===false)
+				if(!$arEvent || ExecuteModuleEventEx($arEvent,  array($USER_ID))===false)
 				{
 					$rsSection = CIBlockSection::GetList(array(), array("=ID"=>$ID), false,  array("LIST_PAGE_URL", "NAME", "CODE"));
 					$arSection = $rsSection->GetNext();
 					$res = array(
-							"ID" => $ID,
-							"CODE" => $arSection["CODE"],
-							"NAME" => $arSection["NAME"],
-							"SECTION_NAME" => $arIBlock["SECTION_NAME"],
-							"IBLOCK_PAGE_URL" => $arSection["LIST_PAGE_URL"]
-							);
+						"ID" => $ID,
+						"CODE" => $arSection["CODE"],
+						"NAME" => $arSection["NAME"],
+						"SECTION_NAME" => $arIBlock["SECTION_NAME"],
+						"USER_ID" => $USER_ID,
+						"IBLOCK_PAGE_URL" => $arSection["LIST_PAGE_URL"],
+					);
 					CEventLog::Log(
 						"IBLOCK",
 						"IBLOCK_SECTION_EDIT",
@@ -1226,7 +1234,7 @@ class CAllIBlockSection
 	function Delete($ID, $bCheckPermissions = true)
 	{
 		$err_mess = "FILE: ".__FILE__."<br>LINE: ";
-		global $DB, $APPLICATION;
+		global $DB, $APPLICATION, $USER;
 		$ID = IntVal($ID);
 
 		$APPLICATION->ResetException();
@@ -1244,6 +1252,8 @@ class CAllIBlockSection
 		$s = CIBlockSection::GetList(Array(), Array("ID"=>$ID, "CHECK_PERMISSIONS"=>($bCheckPermissions? "Y": "N")));
 		if($s = $s->Fetch())
 		{
+			CIBlock::_transaction_lock($s["IBLOCK_ID"]);
+
 			$iblockelements = CIBlockElement::GetList(Array(), Array("SECTION_ID"=>$ID, "SHOW_HISTORY"=>"Y", "IBLOCK_ID"=>$s["IBLOCK_ID"]), false, false, array("ID", "IBLOCK_ID", "WF_PARENT_ELEMENT_ID"));
 			while($iblockelement = $iblockelements->Fetch())
 			{
@@ -1411,10 +1421,10 @@ class CAllIBlockSection
 			$arIBlockFields = CIBlock::GetArrayByID($s["IBLOCK_ID"], "FIELDS");
 			if($arIBlockFields["LOG_SECTION_DELETE"]["IS_REQUIRED"] == "Y")
 			{
+				$USER_ID = is_object($USER)? intval($USER->GetID()) : 0;
 				$db_events = GetModuleEvents("main", "OnBeforeEventLog");
 				$arEvent = $db_events->Fetch();
-				global $USER;
-				if(!$arEvent || ExecuteModuleEventEx($arEvent,  array(is_object($USER)? intval($USER->GetID()) : 0 ))===false)
+				if(!$arEvent || ExecuteModuleEventEx($arEvent,  array($USER_ID))===false)
 				{
 					$rsSection = CIBlockSection::GetList(
 						array(),
@@ -1424,12 +1434,13 @@ class CAllIBlockSection
 					);
 					$arSection = $rsSection->GetNext();
 					$res = array(
-							"ID" => $ID,
-							"CODE" => $arSection["CODE"],
-							"NAME" => $arSection["NAME"],
-							"SECTION_NAME" => CIBlock::GetArrayByID($s["IBLOCK_ID"], "SECTION_NAME"),
-							"IBLOCK_PAGE_URL" => $arSection["LIST_PAGE_URL"]
-							);
+						"ID" => $ID,
+						"CODE" => $arSection["CODE"],
+						"NAME" => $arSection["NAME"],
+						"SECTION_NAME" => CIBlock::GetArrayByID($s["IBLOCK_ID"], "SECTION_NAME"),
+						"USER_ID" => $USER_ID,
+						"IBLOCK_PAGE_URL" => $arSection["LIST_PAGE_URL"],
+					);
 					CEventLog::Log(
 						"IBLOCK",
 						"IBLOCK_SECTION_DELETE",

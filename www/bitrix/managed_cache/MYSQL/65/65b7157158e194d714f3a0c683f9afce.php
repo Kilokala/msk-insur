@@ -1,0 +1,7 @@
+<?
+if($INCLUDE_FROM_CACHE!='Y')return false;
+$datecreate = '001351863299';
+$dateexpire = '001351866899';
+$ser_content = 'a:2:{s:7:"CONTENT";s:0:"";s:4:"VARS";a:11:{s:21:"beono.mastercomponent";a:2:{s:2:"ID";s:21:"beono.mastercomponent";s:11:"DATE_ACTIVE";s:19:"2012-11-02 17:34:59";}s:20:"bitrix.sitecorporate";a:2:{s:2:"ID";s:20:"bitrix.sitecorporate";s:11:"DATE_ACTIVE";s:19:"2012-11-02 17:29:52";}s:6:"clouds";a:2:{s:2:"ID";s:6:"clouds";s:11:"DATE_ACTIVE";s:19:"2012-11-02 17:29:53";}s:11:"compression";a:2:{s:2:"ID";s:11:"compression";s:11:"DATE_ACTIVE";s:19:"2012-11-02 17:29:54";}s:7:"fileman";a:2:{s:2:"ID";s:7:"fileman";s:11:"DATE_ACTIVE";s:19:"2012-11-02 17:29:54";}s:6:"iblock";a:2:{s:2:"ID";s:6:"iblock";s:11:"DATE_ACTIVE";s:19:"2012-11-02 17:29:55";}s:4:"main";a:2:{s:2:"ID";s:4:"main";s:11:"DATE_ACTIVE";s:19:"2012-11-02 17:29:51";}s:7:"perfmon";a:2:{s:2:"ID";s:7:"perfmon";s:11:"DATE_ACTIVE";s:19:"2012-11-02 17:29:56";}s:6:"search";a:2:{s:2:"ID";s:6:"search";s:11:"DATE_ACTIVE";s:19:"2012-11-02 17:29:57";}s:3:"seo";a:2:{s:2:"ID";s:3:"seo";s:11:"DATE_ACTIVE";s:19:"2012-11-02 17:29:58";}s:14:"socialservices";a:2:{s:2:"ID";s:14:"socialservices";s:11:"DATE_ACTIVE";s:19:"2012-11-02 17:29:58";}}}';
+return true;
+?>

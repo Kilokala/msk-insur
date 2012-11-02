@@ -4,6 +4,8 @@
 // JS  /bitrix/js/main/file_dialog.js, /bitrix/js/main/file_dialog_engine.js
 // CSS  /bitrix/themes/.default/file_dialog.css
 
+define('PUBLIC_AJAX_MODE', true);
+
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
 if(!$USER->CanDoOperation('fileman_view_file_structure'))
 	$APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));

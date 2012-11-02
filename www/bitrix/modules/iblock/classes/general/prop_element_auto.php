@@ -174,7 +174,7 @@ class CIBlockPropertyElementAutoComplete
 		$arRepSym = array_fill(0,sizeof($arBanSym),$strRepSym);
 		$arResult = array(
 			'BAN_SYM' => $arBanSym,
-		 	'REP_SYM' => array_fill(0,sizeof($arBanSym),$strRepSym),
+			'REP_SYM' => array_fill(0,sizeof($arBanSym),$strRepSym),
 			'BAN_SYM_STRING' => $strBanSym,
 			'REP_SYM_STRING' => $strRepSym,
 		);

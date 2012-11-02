@@ -43,7 +43,7 @@ $arJSCoreConfig = array(
 	'translit' => array(
 		'js' => $pathJS.'/core_translit.js',
 		'lang' => $pathLang.'/js_core_translit.php',
-		'lang_additional' => array('BING_KEY' => COption::GetOptionString('main', 'translate_key_bing', '')),
+/*		'lang_additional' => array('BING_KEY' => COption::GetOptionString('main', 'translate_key_bing', '')),*/
 	),
 	'window' => array(
 		'js' => $pathJS.'/core_window.js',
@@ -66,6 +66,7 @@ $arJSCoreConfig = array(
 		'css' => $pathCSS.'/core_date.css',
 		'lang' => $pathLang.'/date_format.php',
 		'lang_additional' => array('WEEK_START' => CSite::GetWeekStart()),
+		'rel' => array('popup'),
 	),
 	'ls' => array(
 		'js' => $pathJS.'/core_ls.js',

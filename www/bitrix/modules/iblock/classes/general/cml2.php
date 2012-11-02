@@ -1655,6 +1655,25 @@ class CIBlockCMLImport
 		return $res2;
 	}
 
+	function Unserialize($string)
+	{
+		if(defined("BX_UTF"))
+		{
+			//                                 1      2   3
+			$decoded_string = preg_replace_callback('/(s:\d+:")(.*?)(";)/s', array($this, "__unserialize_callback"), $string);
+		}
+		else
+		{
+			$decoded_string = $string;
+		}
+		return unserialize($decoded_string);
+	}
+
+	function __unserialize_callback($match)
+	{
+		return 's:'.CUtil::BinStrlen($match[2]).':"'.$match[2].'";';
+	}
+
 	function CheckIfElementIsActive($arXMLElement)
 	{
 		$bActive = true; //by default
@@ -1699,7 +1718,7 @@ class CIBlockCMLImport
 
 		$bMatch = false;
 		if($arDBElement = $rsElement->Fetch())
- 			$bMatch = ($arElement["TMP_ID"] == $arDBElement["TMP_ID"]);
+			$bMatch = ($arElement["TMP_ID"] == $arDBElement["TMP_ID"]);
 
 		if($bMatch && $this->use_crc)
 		{
@@ -2117,7 +2136,7 @@ class CIBlockCMLImport
 							if(substr($k, 0, $lPV) === $strPV)
 							{
 								if(array_key_exists(GetMessage("IBLOCK_XML2_SERIALIZED"), $prop_value))
-									$prop_value[GetMessage("IBLOCK_XML2_VALUE")] = unserialize($prop_value[GetMessage("IBLOCK_XML2_VALUE")]);
+									$prop_value[GetMessage("IBLOCK_XML2_VALUE")] = $this->Unserialize($prop_value[GetMessage("IBLOCK_XML2_VALUE")]);
 								if($prop_type=="F")
 								{
 									$prop_value[GetMessage("IBLOCK_XML2_VALUE")] = $this->MakeFileArray($prop_value[GetMessage("IBLOCK_XML2_VALUE")]);
@@ -3241,7 +3260,7 @@ class CIBlockCMLExport
 			$SECTION_MAP[$arSection["ID"]] = $xml_id;
 
 			fwrite($this->fp,
-				 $white_space."\t<".GetMessage("IBLOCK_XML2_GROUP").">\n"
+				$white_space."\t<".GetMessage("IBLOCK_XML2_GROUP").">\n"
 				.$this->formatXMLNode($level, GetMessage("IBLOCK_XML2_ID"), $xml_id)
 				.$this->formatXMLNode($level, GetMessage("IBLOCK_XML2_NAME"), $arSection["NAME"])
 			);
@@ -3250,7 +3269,7 @@ class CIBlockCMLExport
 			if($this->bExtended)
 			{
 				fwrite($this->fp,
-					 $this->formatXMLNode($level, GetMessage("IBLOCK_XML2_BX_ACTIVE"), ($arSection["ACTIVE"]=="Y"? "true": "false"))
+					$this->formatXMLNode($level, GetMessage("IBLOCK_XML2_BX_ACTIVE"), ($arSection["ACTIVE"]=="Y"? "true": "false"))
 					.$this->formatXMLNode($level, GetMessage("IBLOCK_XML2_BX_SORT"), intval($arSection["SORT"]))
 					.$this->formatXMLNode($level, GetMessage("IBLOCK_XML2_BX_CODE"), $arSection["CODE"])
 					.$this->formatXMLNode($level, GetMessage("IBLOCK_XML2_BX_PICTURE"), $this->ExportFile($arSection["PICTURE"]))
@@ -3369,7 +3388,7 @@ class CIBlockCMLExport
 					if($this->bExtended)
 					{
 						fwrite($this->fp,
-							 "\t\t\t\t\t<".GetMessage("IBLOCK_XML2_CHOICE").">\n"
+							"\t\t\t\t\t<".GetMessage("IBLOCK_XML2_CHOICE").">\n"
 							.$this->formatXMLNode(6, GetMessage("IBLOCK_XML2_ID"), $arEnum["XML_ID"])
 							.$this->formatXMLNode(6, GetMessage("IBLOCK_XML2_VALUE"), $arEnum["VALUE"])
 							.$this->formatXMLNode(6, GetMessage("IBLOCK_XML2_BY_DEFAULT"), ($arEnum["DEF"]=="Y"? "true": "false"))
@@ -3384,7 +3403,7 @@ class CIBlockCMLExport
 			if($this->bExtended)
 			{
 				fwrite($this->fp,
-					 $this->formatXMLNode(4, GetMessage("IBLOCK_XML2_BX_SORT"), intval($arProp["SORT"]))
+					$this->formatXMLNode(4, GetMessage("IBLOCK_XML2_BX_SORT"), intval($arProp["SORT"]))
 					.$this->formatXMLNode(4, GetMessage("IBLOCK_XML2_BX_CODE"), $arProp["CODE"])
 					.$this->formatXMLNode(4, GetMessage("IBLOCK_XML2_BX_PROPERTY_TYPE"), $arProp["PROPERTY_TYPE"])
 					.$this->formatXMLNode(4, GetMessage("IBLOCK_XML2_BX_ROWS"), $arProp["ROW_COUNT"])
@@ -3453,7 +3472,7 @@ class CIBlockCMLExport
 			if($this->bExtended)
 			{
 				fwrite($this->fp,
-					 $this->formatXMLNode(2, GetMessage("IBLOCK_XML2_BX_CODE"), $this->arIBlock["CODE"])
+					$this->formatXMLNode(2, GetMessage("IBLOCK_XML2_BX_CODE"), $this->arIBlock["CODE"])
 					.$this->formatXMLNode(2, GetMessage("IBLOCK_XML2_BX_SORT"), intval($this->arIBlock["SORT"]))
 					.$this->formatXMLNode(2, GetMessage("IBLOCK_XML2_BX_LIST_URL"), $this->arIBlock["LIST_PAGE_URL"])
 					.$this->formatXMLNode(2, GetMessage("IBLOCK_XML2_BX_DETAIL_URL"), $this->arIBlock["DETAIL_PAGE_URL"])

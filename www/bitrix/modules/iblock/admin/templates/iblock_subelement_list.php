@@ -122,10 +122,10 @@ if ((true == defined('B_ADMIN_SUBELEMENTS_LIST')) && (true == B_ADMIN_SUBELEMENT
 				continue;
 			$subID = IntVal($subID);
 
-	   		$arRes = CIBlockElement::GetByID($subID);
-	   		$arRes = $arRes->Fetch();
-	   		if (!$arRes)
-	   			continue;
+			$arRes = CIBlockElement::GetByID($subID);
+			$arRes = $arRes->Fetch();
+			if (!$arRes)
+				continue;
 
 			$WF_ID = $subID;
 			if ($boolSubWorkFlow)
@@ -481,11 +481,11 @@ if ((true == defined('B_ADMIN_SUBELEMENTS_LIST')) && (true == B_ADMIN_SUBELEMENT
 			if (strlen($subID)<=0)
 				continue;
 
-	   		$subID = IntVal($subID);
-	   		$arRes = CIBlockElement::GetByID($subID);
-	   		$arRes = $arRes->Fetch();
-	   		if (!$arRes)
-	   			continue;
+			$subID = IntVal($subID);
+			$arRes = CIBlockElement::GetByID($subID);
+			$arRes = $arRes->Fetch();
+			if (!$arRes)
+				continue;
 
 			$WF_ID = $subID;
 			if ($boolSubWorkFlow)
@@ -1087,7 +1087,7 @@ if (!((false == B_ADMIN_SUBELEMENTS_LIST) && ($bCopy)))
 	{
 		$arRes_orig = $arRes;
 		// in workflow mode show latest changes
- 		if ($boolSubWorkFlow)
+		if ($boolSubWorkFlow)
 		{
 			$LAST_ID = CIBlockElement::WF_GetLast($arRes['ID']);
 			if ($LAST_ID!=$arRes['ID'])
@@ -1727,12 +1727,12 @@ if (!((false == B_ADMIN_SUBELEMENTS_LIST) && ($bCopy)))
 						"TEXT" => GetMessage("IBEL_A_CHANGE"),
 						"DEFAULT" => true,
 						"ACTION"=>"javascript:(new BX.CAdminDialog({
-			    			'content_url': '/bitrix/admin/iblock_subelement_edit.php?WF=Y&type=".CUtil::JSEscape(htmlspecialchars($strSubIBlockType))."&IBLOCK_ID=".$intSubIBlockID."&lang=".LANGUAGE_ID."&PRODUCT_ID=".$ID."&ID=".$row->arRes['orig']['ID']."&TMP_ID=".urlencode($strSubTMP_ID).$sThisSectionUrl."',
-			    			'content_post': '".(!(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1) ? '&bxsku=Y' : '')."&bxpublic=Y',
+							'content_url': '/bitrix/admin/iblock_subelement_edit.php?WF=Y&type=".CUtil::JSEscape(htmlspecialchars($strSubIBlockType))."&IBLOCK_ID=".$intSubIBlockID."&lang=".LANGUAGE_ID."&PRODUCT_ID=".$ID."&ID=".$row->arRes['orig']['ID']."&TMP_ID=".urlencode($strSubTMP_ID).$sThisSectionUrl."',
+							'content_post': '".(!(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1) ? '&bxsku=Y' : '')."&bxpublic=Y',
 							'draggable': true,
 							'resizable': true,
 							'buttons': [BX.CAdminDialog.btnSave, BX.CAdminDialog.btnCancel]
-							})).Show();",
+						})).Show();",
 					);
 				}
 
@@ -1744,12 +1744,12 @@ if (!((false == B_ADMIN_SUBELEMENTS_LIST) && ($bCopy)))
 						"ICON" => "copy",
 						"TEXT" => GetMessage("IBEL_A_COPY_ELEMENT"),
 						"ACTION"=>"javascript:(new BX.CAdminDialog({
-			    			'content_url': '/bitrix/admin/iblock_subelement_edit.php?WF=Y&type=".CUtil::JSEscape(htmlspecialchars($strSubIBlockType))."&IBLOCK_ID=".$intSubIBlockID."&lang=".LANGUAGE_ID."&PRODUCT_ID=".$ID."&ID=".$row->arRes['orig']['ID']."&TMP_ID=".urlencode($strSubTMP_ID)."&action=copy".$sThisSectionUrl."',
-			    			'content_post': '".(!(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1) ? '&bxsku=Y' : '')."&bxpublic=Y',
+							'content_url': '/bitrix/admin/iblock_subelement_edit.php?WF=Y&type=".CUtil::JSEscape(htmlspecialchars($strSubIBlockType))."&IBLOCK_ID=".$intSubIBlockID."&lang=".LANGUAGE_ID."&PRODUCT_ID=".$ID."&ID=".$row->arRes['orig']['ID']."&TMP_ID=".urlencode($strSubTMP_ID)."&action=copy".$sThisSectionUrl."',
+							'content_post': '".(!(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1) ? '&bxsku=Y' : '')."&bxpublic=Y',
 							'draggable': true,
 							'resizable': true,
 							'buttons': [BX.CAdminDialog.btnSave, BX.CAdminDialog.btnCancel]
-							})).Show();",
+						})).Show();",
 					);
 				}
 
@@ -1841,24 +1841,24 @@ if (!((false == B_ADMIN_SUBELEMENTS_LIST) && ($bCopy)))
 					"TEXT" => GetMessage("IBEL_A_CHANGE"),
 					"DEFAULT" => true,
 					"ACTION"=>"javascript:(new BX.CAdminDialog({
-			    		'content_url': '/bitrix/admin/iblock_subelement_edit.php?WF=Y&type=".CUtil::JSEscape(htmlspecialchars($strSubIBlockType))."&IBLOCK_ID=".$intSubIBlockID."&lang=".LANGUAGE_ID."&PRODUCT_ID=".$ID."&ID=".$row->arRes['orig']['ID']."&TMP_ID=".urlencode($strSubTMP_ID).$sThisSectionUrl."',
-			    		'content_post': '".(!(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1) ? '&bxsku=Y' : '')."&bxpublic=Y',
+						'content_url': '/bitrix/admin/iblock_subelement_edit.php?WF=Y&type=".CUtil::JSEscape(htmlspecialchars($strSubIBlockType))."&IBLOCK_ID=".$intSubIBlockID."&lang=".LANGUAGE_ID."&PRODUCT_ID=".$ID."&ID=".$row->arRes['orig']['ID']."&TMP_ID=".urlencode($strSubTMP_ID).$sThisSectionUrl."',
+						'content_post': '".(!(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1) ? '&bxsku=Y' : '')."&bxpublic=Y',
 						'draggable': true,
 						'resizable': true,
 						'buttons': [BX.CAdminDialog.btnSave, BX.CAdminDialog.btnCancel]
-						})).Show();",
+					})).Show();",
 				);
 
 				$arActions[] = array(
 					"ICON" => "copy",
 					"TEXT" => GetMessage("IBEL_A_COPY_ELEMENT"),
 					"ACTION"=>"javascript:(new BX.CAdminDialog({
-			    		'content_url': '/bitrix/admin/iblock_subelement_edit.php?WF=Y&type=".CUtil::JSEscape(htmlspecialchars($strSubIBlockType))."&IBLOCK_ID=".$intSubIBlockID."&lang=".LANGUAGE_ID."&PRODUCT_ID=".$ID."&ID=".$row->arRes['orig']['ID']."&TMP_ID=".urlencode($strSubTMP_ID)."&action=copy".$sThisSectionUrl."',
-			    		'content_post': '".(!(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1) ? '&bxsku=Y' : '')."&bxpublic=Y',
+						'content_url': '/bitrix/admin/iblock_subelement_edit.php?WF=Y&type=".CUtil::JSEscape(htmlspecialchars($strSubIBlockType))."&IBLOCK_ID=".$intSubIBlockID."&lang=".LANGUAGE_ID."&PRODUCT_ID=".$ID."&ID=".$row->arRes['orig']['ID']."&TMP_ID=".urlencode($strSubTMP_ID)."&action=copy".$sThisSectionUrl."',
+						'content_post': '".(!(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1) ? '&bxsku=Y' : '')."&bxpublic=Y',
 						'draggable': true,
 						'resizable': true,
 						'buttons': [BX.CAdminDialog.btnSave, BX.CAdminDialog.btnCancel]
-						})).Show();",
+					})).Show();",
 				);
 
 /*			$arActions[] = array(
@@ -1889,12 +1889,12 @@ if (!((false == B_ADMIN_SUBELEMENTS_LIST) && ($bCopy)))
 					"TEXT" => GetMessage("IBEL_A_CHANGE"),
 					"DEFAULT" => true,
 					"ACTION"=>"javascript:(new BX.CAdminDialog({
-			    		'content_url': '/bitrix/admin/iblock_subelement_edit.php?WF=Y&type=".CUtil::JSEscape(htmlspecialchars($strSubIBlockType))."&IBLOCK_ID=".$intSubIBlockID."&lang=".LANGUAGE_ID."&PRODUCT_ID=".$ID."&ID=".$row->arRes['orig']['ID']."&TMP_ID=".urlencode($strSubTMP_ID).$sThisSectionUrl."',
-			    		'content_post': '".(!(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1) ? '&bxsku=Y' : '')."&bxpublic=Y',
+						'content_url': '/bitrix/admin/iblock_subelement_edit.php?WF=Y&type=".CUtil::JSEscape(htmlspecialchars($strSubIBlockType))."&IBLOCK_ID=".$intSubIBlockID."&lang=".LANGUAGE_ID."&PRODUCT_ID=".$ID."&ID=".$row->arRes['orig']['ID']."&TMP_ID=".urlencode($strSubTMP_ID).$sThisSectionUrl."',
+						'content_post': '".(!(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1) ? '&bxsku=Y' : '')."&bxpublic=Y',
 						'draggable': true,
 						'resizable': true,
 						'buttons': [BX.CAdminDialog.btnSave, BX.CAdminDialog.btnCancel]
-						})).Show();",
+					})).Show();",
 				);
 			}
 
@@ -1905,12 +1905,12 @@ if (!((false == B_ADMIN_SUBELEMENTS_LIST) && ($bCopy)))
 					"ICON" => "copy",
 					"TEXT" => GetMessage("IBEL_A_COPY_ELEMENT"),
 					"ACTION"=>"javascript:(new BX.CAdminDialog({
-			    		'content_url': '/bitrix/admin/iblock_subelement_edit.php?WF=Y&type=".CUtil::JSEscape(htmlspecialchars($strSubIBlockType))."&IBLOCK_ID=".$intSubIBlockID."&lang=".LANGUAGE_ID."&PRODUCT_ID=".$ID."&ID=".$row->arRes['orig']['ID']."&TMP_ID=".urlencode($strSubTMP_ID)."&action=copy".$sThisSectionUrl."',
-			    		'content_post': '".(!(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1) ? '&bxsku=Y' : '')."&bxpublic=Y',
+						'content_url': '/bitrix/admin/iblock_subelement_edit.php?WF=Y&type=".CUtil::JSEscape(htmlspecialchars($strSubIBlockType))."&IBLOCK_ID=".$intSubIBlockID."&lang=".LANGUAGE_ID."&PRODUCT_ID=".$ID."&ID=".$row->arRes['orig']['ID']."&TMP_ID=".urlencode($strSubTMP_ID)."&action=copy".$sThisSectionUrl."',
+						'content_post': '".(!(defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1) ? '&bxsku=Y' : '')."&bxpublic=Y',
 						'draggable': true,
 						'resizable': true,
 						'buttons': [BX.CAdminDialog.btnSave, BX.CAdminDialog.btnCancel]
-						})).Show();",
+					})).Show();",
 				);
 			}
 
@@ -2012,12 +2012,12 @@ function ShowNewOffer(id)
 		PostParams.PRODUCT_NAME = mxProductName;
 		PostParams.sessid = BX.bitrix_sessid();
 		(new BX.CAdminDialog({
-		    'content_url': '/bitrix/admin/iblock_subelement_edit.php?WF=Y&type=<? echo CUtil::JSEscape(htmlspecialchars($strSubIBlockType)); ?>&IBLOCK_ID=<? echo $intSubIBlockID; ?>&lang=<? echo LANGUAGE_ID; ?>&PRODUCT_ID=<? echo $intSubPropValue; ?>&ID=0&TMP_ID=<? echo urlencode($strSubTMP_ID).$sThisSectionUrl; ?>',
-		    'content_post': PostParams,
+			'content_url': '/bitrix/admin/iblock_subelement_edit.php?WF=Y&type=<? echo CUtil::JSEscape(htmlspecialchars($strSubIBlockType)); ?>&IBLOCK_ID=<? echo $intSubIBlockID; ?>&lang=<? echo LANGUAGE_ID; ?>&PRODUCT_ID=<? echo $intSubPropValue; ?>&ID=0&TMP_ID=<? echo urlencode($strSubTMP_ID).$sThisSectionUrl; ?>',
+			'content_post': PostParams,
 			'draggable': true,
 			'resizable': true,
 			'buttons': [BX.CAdminDialog.btnSave, BX.CAdminDialog.btnCancel]
-			})).Show();
+		})).Show();
 	}
 }
 </script><?

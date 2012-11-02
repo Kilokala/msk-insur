@@ -58,6 +58,9 @@ $DOC_ROOT = CSite::GetSiteDocRoot($site);
 $abs_path = $io->CombinePath($DOC_ROOT, $path);
 $arPath = Array($site, $path);
 
+if(GetFileType($abs_path) == "IMAGE")
+	$strWarning = GetMessage("FILEMAN_FILEEDIT_FILE_IMAGE_ERROR");
+
 if((strlen($new) <= 0 || strtolower($new) != 'y' || strlen($filename) <= 0) && !$io->FileExists($abs_path))
 {
 	$p = strrpos($path, "/");
@@ -101,9 +104,10 @@ if
 {
 	$strWarning = GetMessage("ACCESS_DENIED");
 }
-else
+elseif(strlen($strWarning) <= 0)
 {
-	if(strlen($new) > 0 && strtolower($new) == 'y' && strlen($filename) > 0 && $io->FileExists($abs_path))// если мы хотим создать новый файл, но уже такой есть - ругаемся
+	if(strlen($new) > 0 && strtolower($new) == 'y' && strlen($filename) > 0 && $io->FileExists($abs_path)) // if we want to create new file, but the file with same name is alredy exists - lets abuse
+
 	{
 		$strWarning = GetMessage("FILEMAN_FILEEDIT_FILE_EXISTS");
 		$bEdit = false;
@@ -304,10 +308,10 @@ if(strlen($strWarning)<=0)
 							serialize($res_log)
 						);
 				}
-				// сохранение меню
+				// menu saving
 				if($add_to_menu=="Y" && strlen($menutype)>0 && $USER->CanDoOperation('fileman_add_element_to_menu') && $USER->CanDoFileOperation('fm_add_to_menu',$arPath))
 				{
-					$menu_path = $io->CombinePath($arParsedPath["PREV"], $menutype.".menu.php");
+					$menu_path = $io->CombinePath($arParsedPath["PREV"], ".".$menutype.".menu.php");
 					if($USER->CanDoFileOperation('fm_edit_existent_file',Array($site,$menu_path)))
 					{
 						$res = CFileMan::GetMenuArray($DOC_ROOT.$menu_path);
@@ -315,20 +319,20 @@ if(strlen($strWarning)<=0)
 						$sMenuTemplateTmp = $res["sMenuTemplate"];
 
 						$menuitem = IntVal($menuitem);
-						if($itemtype=="e") //значит в существующий пункт
+						if($itemtype=="e") //means in exist item
 						{
 							$menuitem = $menuitem - 1;
-							if($menuitem < count($aMenuLinksTmp)) //номер пункта должен быть в пределах количества текущего меню
+							if($menuitem < count($aMenuLinksTmp)) // number of item must be in bounds of amount of current menu
 								$aMenuLinksTmp[$menuitem][2][] = $path;
 						}
-						else //иначе в новый
+						else //else in new
 						{
 							$menuitem = $newppos-1;
-							//если номер пункта выходит за пределы количества текущего меню
+							// if number of item goes out from bounds of amount of current menu
 							if($menuitem < 0 || $menuitem >= count($aMenuLinksTmp))
 								$menuitem = count($aMenuLinksTmp);
 
-							for($i=count($aMenuLinksTmp)-1; $i>=$menuitem; $i--)//сдвинем вправо все пункты > нашего
+							for($i=count($aMenuLinksTmp)-1; $i>=$menuitem; $i--)//shift to the right all items > our
 								$aMenuLinksTmp[$i+1] = $aMenuLinksTmp[$i];
 							$aMenuLinksTmp[$menuitem] = Array($newp, $path, Array(), Array(), "");
 						}

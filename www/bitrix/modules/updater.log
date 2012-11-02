@@ -1,0 +1,314 @@
+2012-11-02 17:33:16 -  - exec CUpdateClient::GetUpdatesList
+2012-11-02 17:33:16 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:33:16 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.6&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.6&bitm_compression=11.0.0&bitm_clouds=11.5.2&bitm_perfmon=11.5.0&bitm_search=11.5.0&bitm_socialservices=11.0.1&bitm_iblock=11.5.1&bitm_fileman=11.5.6&bitm_seo=11.0.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:33:16 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:33:17 -  - TIME GetUpdatesList(request) 0.797 sec
+2012-11-02 17:33:17 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:33:21 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:33:21 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:33:21 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.6&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.6&bitm_compression=11.0.0&bitm_clouds=11.5.2&bitm_perfmon=11.5.0&bitm_search=11.5.0&bitm_socialservices=11.0.1&bitm_iblock=11.5.1&bitm_fileman=11.5.6&bitm_seo=11.0.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:33:21 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:33:21 -  - TIME LoadModulesUpdates(request) 0.235 sec
+2012-11-02 17:33:21 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:33:21 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:33:21 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:33:21 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:33:21 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:33:23 - DOWNLOAD - Time - 2.1700530052185 sec
+2012-11-02 17:33:23 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:33:23 -  - TIME UnGzipArchive 0.062 sec
+2012-11-02 17:33:23 - CSURUS1 - Run updater '/bitrix/updates/update_m1351863203/main/updater11.5.7.php'
+2012-11-02 17:33:23 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863203/main/updater11.5.7.php': CopyFiles(install/components, components)
+2012-11-02 17:33:23 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863203/main/updater11.5.7.php': CopyFiles(install/themes, themes)
+2012-11-02 17:33:23 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863203/main/updater11.5.7.php': CopyFiles(install/gadgets, gadgets)
+2012-11-02 17:33:23 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863203/main/updater11.5.7.php': CopyFiles(install/image_uploader, image_uploader)
+2012-11-02 17:33:23 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863203/main/updater11.5.7.php': CopyFiles(install/js, js)
+2012-11-02 17:33:23 - CRUPDCDF2 - Run updater '/bitrix/updates/update_m1351863203/main/updater11.5.7.php': Query(Array, )
+2012-11-02 17:33:23 - CRUPDCDF2 - Run updater '/bitrix/updates/update_m1351863203/main/updater11.5.7.php': Query(UPDATE b_lang SET FORMAT_NAME = '#NOBR##LAST_NAME# #NAME##/NOBR#' WHERE LID = 's1', )
+2012-11-02 17:33:23 - CRUPDCDF2 - Run updater '/bitrix/updates/update_m1351863203/main/updater11.5.7.php': Query(Array, )
+2012-11-02 17:33:23 - CRUPDCDF2 - Run updater '/bitrix/updates/update_m1351863203/main/updater11.5.7.php': Query(Array, )
+2012-11-02 17:33:23 - CRUPDCDF2 - Run updater '/bitrix/updates/update_m1351863203/main/updater11.5.7.php': Query(Array, )
+2012-11-02 17:33:24 -  - TIME UpdateStepModules 0.108 sec
+2012-11-02 17:33:24 - UPD_SUCCESS - Updated: main (11.5.7)<br><li>Исправления интерфейсных ошибок. <li>Улучшение производительности. <li>Транслитерирование с переводом теперь использует сервис Яндекс.Перевод. 
+2012-11-02 17:33:24 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:33:24 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:33:24 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.7&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.7&bitm_compression=11.0.0&bitm_clouds=11.5.2&bitm_perfmon=11.5.0&bitm_search=11.5.0&bitm_socialservices=11.0.1&bitm_iblock=11.5.1&bitm_fileman=11.5.6&bitm_seo=11.0.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:33:24 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:33:24 -  - TIME LoadModulesUpdates(request) 0.262 sec
+2012-11-02 17:33:24 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:33:24 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:33:24 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:33:24 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:33:24 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:33:28 - DOWNLOAD - Time - 4.2253520488739 sec
+2012-11-02 17:33:28 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:33:28 -  - TIME UnGzipArchive 0.058 sec
+2012-11-02 17:33:28 - CSURUS1 - Run updater '/bitrix/updates/update_m1351863208/main/updater11.5.8.php'
+2012-11-02 17:33:28 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863208/main/updater11.5.8.php': CopyFiles(install/components, components)
+2012-11-02 17:33:28 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863208/main/updater11.5.8.php': CopyFiles(install/gadgets, gadgets)
+2012-11-02 17:33:28 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863208/main/updater11.5.8.php': CopyFiles(install/js, js)
+2012-11-02 17:33:28 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863208/main/updater11.5.8.php': CopyFiles(install/bitrix, )
+2012-11-02 17:33:28 - CRUPDCDF2 - Run updater '/bitrix/updates/update_m1351863208/main/updater11.5.8.php': Query(UPDATE b_lang SET FORMAT_NAME = '#NOBR##NAME# #LAST_NAME##/NOBR#' WHERE LID = 's1', )
+2012-11-02 17:33:28 - CRUPDCDF2 - Run updater '/bitrix/updates/update_m1351863208/main/updater11.5.8.php': Query(UPDATE b_language SET FORMAT_NAME = '#NOBR##NAME# #LAST_NAME##/NOBR#' WHERE LID = 'ru', )
+2012-11-02 17:33:28 -  - TIME UpdateStepModules 0.073 sec
+2012-11-02 17:33:28 - UPD_SUCCESS - Updated: main (11.5.8)<br><li>Добавлена возможность загрузки файлов с русскими именами. <li>В настройках модуля добавлена опция \"Производить транслитерацию имени файла\" при загрузке. <li>Исправления интерфейсных ошибок. 
+2012-11-02 17:33:29 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:33:29 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:33:29 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.8&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.8&bitm_compression=11.0.0&bitm_clouds=11.5.2&bitm_perfmon=11.5.0&bitm_search=11.5.0&bitm_socialservices=11.0.1&bitm_iblock=11.5.1&bitm_fileman=11.5.6&bitm_seo=11.0.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:33:29 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:33:29 -  - TIME LoadModulesUpdates(request) 0.245 sec
+2012-11-02 17:33:29 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:33:29 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:33:29 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:33:29 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:33:29 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:33:32 - DOWNLOAD - Time - 3.122654914856 sec
+2012-11-02 17:33:32 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:33:32 -  - TIME UnGzipArchive 0.006 sec
+2012-11-02 17:33:32 - CSURUS1 - Run updater '/bitrix/updates/update_m1351863212/fileman/updater11.5.7.php'
+2012-11-02 17:33:32 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863212/fileman/updater11.5.7.php': CopyFiles(install/components, components)
+2012-11-02 17:33:32 -  - TIME UpdateStepModules 0.008 sec
+2012-11-02 17:33:32 - UPD_SUCCESS - Updated: fileman (11.5.7)<br><li>Обновлен плеер JW Player for Flash до версии 5.10. 
+2012-11-02 17:33:32 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:33:32 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:33:32 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.8&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.8&bitm_compression=11.0.0&bitm_clouds=11.5.2&bitm_perfmon=11.5.0&bitm_search=11.5.0&bitm_socialservices=11.0.1&bitm_iblock=11.5.1&bitm_fileman=11.5.7&bitm_seo=11.0.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:33:32 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:33:33 -  - TIME LoadModulesUpdates(request) 0.309 sec
+2012-11-02 17:33:33 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:33:33 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:33:33 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:33:33 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:33:33 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:33:35 - DOWNLOAD - Time - 2.4816081523895 sec
+2012-11-02 17:33:35 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:33:35 -  - TIME UnGzipArchive 0.003 sec
+2012-11-02 17:33:35 - CSURUS1 - Run updater '/bitrix/updates/update_m1351863215/fileman/updater11.5.8.php'
+2012-11-02 17:33:35 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863215/fileman/updater11.5.8.php': CopyFiles(install/components, components)
+2012-11-02 17:33:35 -  - TIME UpdateStepModules 0.006 sec
+2012-11-02 17:33:35 - UPD_SUCCESS - Updated: fileman (11.5.8)<br><li>Незначительные изменения. 
+2012-11-02 17:33:35 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:33:35 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:33:35 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.8&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.8&bitm_compression=11.0.0&bitm_clouds=11.5.2&bitm_perfmon=11.5.0&bitm_search=11.5.0&bitm_socialservices=11.0.1&bitm_iblock=11.5.1&bitm_fileman=11.5.8&bitm_seo=11.0.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:33:35 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:33:36 -  - TIME LoadModulesUpdates(request) 0.275 sec
+2012-11-02 17:33:36 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:33:36 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:33:36 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:33:36 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:33:36 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:33:40 - DOWNLOAD - Time - 4.6341361999512 sec
+2012-11-02 17:33:40 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:33:40 -  - TIME UnGzipArchive 0.037 sec
+2012-11-02 17:33:40 - CSURUS1 - Run updater '/bitrix/updates/update_m1351863220/fileman/updater11.5.9.php'
+2012-11-02 17:33:40 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863220/fileman/updater11.5.9.php': CopyFiles(install/admin, admin)
+2012-11-02 17:33:40 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863220/fileman/updater11.5.9.php': CopyFiles(install/components, components)
+2012-11-02 17:33:40 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863220/fileman/updater11.5.9.php': CopyFiles(install/js, js)
+2012-11-02 17:33:40 -  - TIME UpdateStepModules 0.048 sec
+2012-11-02 17:33:40 - UPD_SUCCESS - Updated: fileman (11.5.9)<br><li>Улучшена поддержка браузеров IE, Chrome. <li>Исправлены недочеты в работе с файловой системой, в т.ч. с символьными ссылками. <li>Исправлены недочеты в работе карт Яндекса и Google. <li>Исправлен список воспроизведения в видеоплейере. <li>Исправлен показ диалога перезаписи архива на UTF-установках. <li>Исправлены опции диалога копирования в административной панели. <li>Исправлены другие незначительные ошибки. 
+2012-11-02 17:33:40 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:33:40 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:33:40 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.8&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.8&bitm_compression=11.0.0&bitm_clouds=11.5.2&bitm_perfmon=11.5.0&bitm_search=11.5.0&bitm_socialservices=11.0.1&bitm_iblock=11.5.1&bitm_fileman=11.5.9&bitm_seo=11.0.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:33:40 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:33:41 -  - TIME LoadModulesUpdates(request) 0.255 sec
+2012-11-02 17:33:41 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:33:41 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:33:41 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:33:41 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:33:41 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:33:50 - DOWNLOAD - Time - 9.5105009078979 sec
+2012-11-02 17:33:50 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:33:50 -  - TIME UnGzipArchive 0.117 sec
+2012-11-02 17:33:51 - CSURUS1 - Run updater '/bitrix/updates/update_m1351863230/main/updater11.5.9.php'
+2012-11-02 17:33:51 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863230/main/updater11.5.9.php': CopyFiles(install/components, components)
+2012-11-02 17:33:51 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863230/main/updater11.5.9.php': CopyFiles(install/gadgets, gadgets)
+2012-11-02 17:33:51 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863230/main/updater11.5.9.php': CopyFiles(install/js, js)
+2012-11-02 17:33:51 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863230/main/updater11.5.9.php': CopyFiles(install/themes, themes)
+2012-11-02 17:33:51 -  - TIME UpdateStepModules 0.167 sec
+2012-11-02 17:33:51 - UPD_SUCCESS - Updated: main (11.5.9)<br><li>Добавлено распространение авторизации по доменам для внешних источников авторизации. <li>Исправлен ряд интерфейсных ошибок. 
+2012-11-02 17:33:51 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:33:51 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:33:51 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.9&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.9&bitm_compression=11.0.0&bitm_clouds=11.5.2&bitm_perfmon=11.5.0&bitm_search=11.5.0&bitm_socialservices=11.0.1&bitm_iblock=11.5.1&bitm_fileman=11.5.9&bitm_seo=11.0.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:33:51 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:33:51 -  - TIME LoadModulesUpdates(request) 0.313 sec
+2012-11-02 17:33:51 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:33:51 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:33:51 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:33:51 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:33:51 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:02 - DOWNLOAD - Time - 10.525701999664 sec
+2012-11-02 17:34:02 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:34:02 -  - TIME UnGzipArchive 0.329 sec
+2012-11-02 17:34:02 - CSURUS1 - Run updater '/bitrix/updates/update_m1351863242/fileman/updater11.5.10.php'
+2012-11-02 17:34:02 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863242/fileman/updater11.5.10.php': CopyFiles(install/components, components)
+2012-11-02 17:34:02 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863242/fileman/updater11.5.10.php': CopyFiles(install/js, js)
+2012-11-02 17:34:03 -  - TIME UpdateStepModules 0.42 sec
+2012-11-02 17:34:03 - UPD_SUCCESS - Updated: fileman (11.5.10)<br><li>Улучшена работа компонента bitrix:player с плейлистами. <li>Улучшена поддержка мобильных устройств в Лайтредакторе. <li>Улучшена работа при многосайтовой конфигурации. <li>Добавлена возможность скачивать файлы, превышающие размер выделенный для работы скрипта памяти. <li>Устранены недочеты, возникавшие при назначении прав на папку. <li>Устранены другие незначительные ошибки.
+2012-11-02 17:34:03 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:03 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:03 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.9&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.9&bitm_compression=11.0.0&bitm_clouds=11.5.2&bitm_perfmon=11.5.0&bitm_search=11.5.0&bitm_socialservices=11.0.1&bitm_iblock=11.5.1&bitm_fileman=11.5.10&bitm_seo=11.0.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:34:03 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:34:03 -  - TIME LoadModulesUpdates(request) 0.239 sec
+2012-11-02 17:34:03 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:03 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:34:03 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:03 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:03 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:05 - DOWNLOAD - Time - 1.7067060470581 sec
+2012-11-02 17:34:05 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:34:05 -  - TIME UnGzipArchive 0.009 sec
+2012-11-02 17:34:05 - CSURUS1 - Run updater '/bitrix/updates/update_m1351863245/fileman/updater11.5.11.php'
+2012-11-02 17:34:05 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863245/fileman/updater11.5.11.php': CopyFiles(install/js, js)
+2012-11-02 17:34:05 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863245/fileman/updater11.5.11.php': CopyFiles(install/admin, admin)
+2012-11-02 17:34:05 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863245/fileman/updater11.5.11.php': CopyFiles(install/js, js)
+2012-11-02 17:34:05 -  - TIME UpdateStepModules 0.014 sec
+2012-11-02 17:34:05 - UPD_SUCCESS - Updated: fileman (11.5.11)<br><li>Значительно улучшена работа редактора кода с подсветкой синтаксиса.
+2012-11-02 17:34:05 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:05 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:05 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.9&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.9&bitm_compression=11.0.0&bitm_clouds=11.5.2&bitm_perfmon=11.5.0&bitm_search=11.5.0&bitm_socialservices=11.0.1&bitm_iblock=11.5.1&bitm_fileman=11.5.11&bitm_seo=11.0.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:34:05 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:34:05 -  - TIME LoadModulesUpdates(request) 0.248 sec
+2012-11-02 17:34:05 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:05 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:34:05 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:05 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:05 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:09 - DOWNLOAD - Time - 3.1825649738312 sec
+2012-11-02 17:34:09 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:34:09 -  - TIME UnGzipArchive 0.049 sec
+2012-11-02 17:34:09 - CSURUS1 - Run updater '/bitrix/updates/update_m1351863249/iblock/updater11.5.2.php'
+2012-11-02 17:34:09 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863249/iblock/updater11.5.2.php': CopyFiles(install/components, components)
+2012-11-02 17:34:09 -  - TIME UpdateStepModules 0.074 sec
+2012-11-02 17:34:09 - UPD_SUCCESS - Updated: iblock (11.5.2)<br><li>Снижена вероятность возникновения блокировок БД при операциях изменения разделов. <li>Исправления компонента iblock.tv. <li>Исправлен XML импорт значения свойства типа HTML/текст. <li>Исправления ошибок.
+2012-11-02 17:34:09 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:09 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:09 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.9&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.9&bitm_compression=11.0.0&bitm_clouds=11.5.2&bitm_perfmon=11.5.0&bitm_search=11.5.0&bitm_socialservices=11.0.1&bitm_iblock=11.5.2&bitm_fileman=11.5.11&bitm_seo=11.0.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:34:09 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:34:09 -  - TIME LoadModulesUpdates(request) 0.226 sec
+2012-11-02 17:34:09 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:09 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:34:09 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:09 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:09 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:10 - DOWNLOAD - Time - 1.2742140293121 sec
+2012-11-02 17:34:10 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:34:10 -  - TIME UnGzipArchive 0.008 sec
+2012-11-02 17:34:10 - CSURUS1 - Run updater '/bitrix/updates/update_m1351863250/search/updater11.5.1.php'
+2012-11-02 17:34:10 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863250/search/updater11.5.1.php': CopyFiles(install/components, components)
+2012-11-02 17:34:10 -  - TIME UpdateStepModules 0.014 sec
+2012-11-02 17:34:10 - UPD_SUCCESS - Updated: search (11.5.1)<br><li>Улучшен парсинг поисковых запросов. <li>Улучшено автоопределение языка. <li>Улучшения морфологического анализа. 
+2012-11-02 17:34:11 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:11 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:11 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.9&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.9&bitm_compression=11.0.0&bitm_clouds=11.5.2&bitm_perfmon=11.5.0&bitm_search=11.5.1&bitm_socialservices=11.0.1&bitm_iblock=11.5.2&bitm_fileman=11.5.11&bitm_seo=11.0.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:34:11 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:34:11 -  - TIME LoadModulesUpdates(request) 0.327 sec
+2012-11-02 17:34:11 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:11 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:34:11 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:11 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:11 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:12 - DOWNLOAD - Time - 0.5889139175415 sec
+2012-11-02 17:34:12 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:34:12 -  - TIME UnGzipArchive 0.008 sec
+2012-11-02 17:34:12 - CSURUS1 - Run updater '/bitrix/updates/update_m1351863252/search/updater11.5.2.php'
+2012-11-02 17:34:12 - CRUPDCF1 - Run updater '/bitrix/updates/update_m1351863252/search/updater11.5.2.php': CopyFiles(install/components, components)
+2012-11-02 17:34:12 -  - TIME UpdateStepModules 0.018 sec
+2012-11-02 17:34:12 - UPD_SUCCESS - Updated: search (11.5.2)<br><li>Исправлены незначительные ошибки. 
+2012-11-02 17:34:12 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:12 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:12 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.9&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.9&bitm_compression=11.0.0&bitm_clouds=11.5.2&bitm_perfmon=11.5.0&bitm_search=11.5.2&bitm_socialservices=11.0.1&bitm_iblock=11.5.2&bitm_fileman=11.5.11&bitm_seo=11.0.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:34:12 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:34:12 -  - TIME LoadModulesUpdates(request) 0.212 sec
+2012-11-02 17:34:12 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:12 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:34:12 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:12 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:12 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:13 - DOWNLOAD - Time - 0.47636580467224 sec
+2012-11-02 17:34:13 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:34:13 -  - TIME UnGzipArchive 0.002 sec
+2012-11-02 17:34:13 -  - TIME UpdateStepModules 0.003 sec
+2012-11-02 17:34:13 - UPD_SUCCESS - Updated: perfmon (11.5.1)<br><li>Исправлена ошибка анализатора запросов.
+2012-11-02 17:34:13 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:13 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:13 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.9&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.9&bitm_compression=11.0.0&bitm_clouds=11.5.2&bitm_perfmon=11.5.1&bitm_search=11.5.2&bitm_socialservices=11.0.1&bitm_iblock=11.5.2&bitm_fileman=11.5.11&bitm_seo=11.0.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:34:13 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:34:13 -  - TIME LoadModulesUpdates(request) 0.247 sec
+2012-11-02 17:34:13 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:13 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:34:13 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:13 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:13 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:13 - DOWNLOAD - Time - 0.31042194366455 sec
+2012-11-02 17:34:13 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:34:13 -  - TIME UnGzipArchive 0.002 sec
+2012-11-02 17:34:13 -  - TIME UpdateStepModules 0.003 sec
+2012-11-02 17:34:13 - UPD_SUCCESS - Updated: seo (11.5.0)<br><li>Заменен счетчик по умолчанию для английского языка. <li>Исправления интерфейсных ошибок. <li>Исправления языковых фраз. 
+2012-11-02 17:34:13 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:13 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:13 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.9&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.9&bitm_compression=11.0.0&bitm_clouds=11.5.2&bitm_perfmon=11.5.1&bitm_search=11.5.2&bitm_socialservices=11.0.1&bitm_iblock=11.5.2&bitm_fileman=11.5.11&bitm_seo=11.5.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:34:13 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:34:14 -  - TIME LoadModulesUpdates(request) 0.222 sec
+2012-11-02 17:34:14 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:14 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:34:14 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:14 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:14 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:14 - DOWNLOAD - Time - 0.61889481544495 sec
+2012-11-02 17:34:14 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:34:14 -  - TIME UnGzipArchive 0.004 sec
+2012-11-02 17:34:14 -  - TIME UpdateStepModules 0.004 sec
+2012-11-02 17:34:14 - UPD_SUCCESS - Updated: clouds (11.5.3)<br><li>Исправления ошибок и оптимизация. 
+2012-11-02 17:34:15 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:15 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:15 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.9&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.9&bitm_compression=11.0.0&bitm_clouds=11.5.3&bitm_perfmon=11.5.1&bitm_search=11.5.2&bitm_socialservices=11.0.1&bitm_iblock=11.5.2&bitm_fileman=11.5.11&bitm_seo=11.5.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:34:15 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:34:18 -  - TIME LoadModulesUpdates(request) 3.231 sec
+2012-11-02 17:34:18 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:18 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:34:18 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:18 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:18 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:18 - DOWNLOAD - Time - 0.39702200889587 sec
+2012-11-02 17:34:18 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:34:18 -  - TIME UnGzipArchive 0.008 sec
+2012-11-02 17:34:18 -  - TIME UpdateStepModules 0.013 sec
+2012-11-02 17:34:18 - UPD_SUCCESS - Updated: bitrixcloud ()
+2012-11-02 17:34:18 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:18 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:18 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.9&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.9&bitm_compression=11.0.0&bitm_clouds=11.5.3&bitm_perfmon=11.5.1&bitm_search=11.5.2&bitm_socialservices=11.0.1&bitm_iblock=11.5.2&bitm_fileman=11.5.11&bitm_bitrixcloud=11.5.0&bitm_seo=11.5.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:34:18 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:34:19 -  - TIME LoadModulesUpdates(request) 0.219 sec
+2012-11-02 17:34:19 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:19 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:34:19 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:19 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:19 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:19 - DOWNLOAD - Time - 0.41046690940857 sec
+2012-11-02 17:34:19 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:34:19 -  - TIME UnGzipArchive 0.011 sec
+2012-11-02 17:34:19 - CSURUS1 - Run updater '/bitrix/updates/update_m1351863259/bitrixcloud/updater11.5.1.php'
+2012-11-02 17:34:19 -  - TIME UpdateStepModules 0.017 sec
+2012-11-02 17:34:19 - UPD_SUCCESS - Updated: bitrixcloud (11.5.1)<br><li>Облачные сервисы. 
+2012-11-02 17:34:19 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:19 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:19 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.9&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.9&bitm_compression=11.0.0&bitm_clouds=11.5.3&bitm_perfmon=11.5.1&bitm_search=11.5.2&bitm_socialservices=11.0.1&bitm_iblock=11.5.2&bitm_fileman=11.5.11&bitm_bitrixcloud=11.5.1&bitm_seo=11.5.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:34:19 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:34:20 -  - TIME LoadModulesUpdates(request) 0.225 sec
+2012-11-02 17:34:20 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:20 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:34:20 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:20 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:20 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:20 - DOWNLOAD - Time - 0.29959106445312 sec
+2012-11-02 17:34:20 -  - exec CUpdateClient::UnGzipArchive
+2012-11-02 17:34:20 -  - TIME UnGzipArchive 0.002 sec
+2012-11-02 17:34:20 -  - TIME UpdateStepModules 0.003 sec
+2012-11-02 17:34:20 - UPD_SUCCESS - Updated: bitrixcloud (11.5.2)<br><li>Исправлена ошибка отключения ускорения сайта при ошибках обновления конфигурации. 
+2012-11-02 17:34:20 -  - exec CUpdateClient::LoadModulesUpdates
+2012-11-02 17:34:20 -  - exec CUpdateClient::CollectRequestData
+2012-11-02 17:34:20 -  - LICENSE_KEY=X&lang=ru&SUPD_VER=11.0.12&VERSION=11.5.9&TYPENC=D&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&CANGZIP=Y&CLIENT_PHPVER=5.3.3&stable=Y&bitm_main=11.5.9&bitm_compression=11.0.0&bitm_clouds=11.5.3&bitm_perfmon=11.5.1&bitm_search=11.5.2&bitm_socialservices=11.0.1&bitm_iblock=11.5.2&bitm_fileman=11.5.11&bitm_bitrixcloud=11.5.2&bitm_seo=11.5.0&bitl_en=&bitl_ru=&bith_ru=&bith_en=
+2012-11-02 17:34:20 -  - exec CUpdateClient::GetHTTPPage
+2012-11-02 17:34:20 -  - TIME LoadModulesUpdates(request) 0.207 sec
+2012-11-02 17:34:20 -  - exec CUpdateClient::ParseServerData
+2012-11-02 17:34:20 - STEP - Finish - NOUPDATES
+2012-11-02 17:34:20 - STEP - Finish - NOUPDATES

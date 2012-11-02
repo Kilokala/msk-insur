@@ -64,7 +64,7 @@ $MESS["FM_UTIL_SAVE"] = "Save";
 $MESS["FM_SA_OK"] = "Done";
 $MESS["FM_SA_ERROR"] = "Error";
 $MESS["FM_SA_IN_PROC"] = "Processing";
-$MESS["FM_SA_STOP_TITLE"] = "Abort applying new premissions (this command does not undo the changes made)";
+$MESS["FM_SA_STOP_TITLE"] = "Abort applying new permissions (this command does not undo the changes made)";
 $MESS["FM_SA_RETURN"] = "Back";
 $MESS["FM_SA_RETURN_TITLE"] = "Back";
 $MESS["FM_SA_STOPED"] = "Stopped";
@@ -115,4 +115,5 @@ $MESS["FM_UTIL_PACK_FINISH"] = "Finishing...";
 $MESS["FM_UTIL_PACK_CANCEL"] = "Cancel";
 $MESS["FM_PACK_AUTO_RENAME"] = "Auto rename";
 $MESS["FM_UTIL_ARC_ERROR"] = "Failed to create an archive object";
+$MESS["FM_UTIL_PACK_FNAME_ERROR"] = "Invalid archive name.";
 ?>

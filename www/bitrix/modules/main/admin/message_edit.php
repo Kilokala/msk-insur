@@ -19,10 +19,6 @@ ClearVars();
 
 IncludeModuleLangFile(__FILE__);
 
-/***************************************************************************
- POST
-****************************************************************************/
-
 $strError="";
 $bVarsFromForm = false;
 $ID=IntVal($ID);
@@ -80,8 +76,8 @@ if($REQUEST_METHOD=="POST" && (strlen($save)>0 || strlen($apply)>0)&& $isAdmin &
 			else
 				LocalRedirect(BX_ROOT."/admin/message_admin.php?lang=".LANGUAGE_ID);
 		}
-		else/*if($new=="Y")*/
-			LocalRedirect(BX_ROOT."/admin/message_edit.php?lang=".LANGUAGE_ID."&ID=".$ID."&type=".htmlspecialchars($_REQUEST["type"])."&".$tabControl->ActiveTabParam());
+		else
+			LocalRedirect(BX_ROOT."/admin/message_edit.php?lang=".LANGUAGE_ID."&ID=".$ID."&type=".$_REQUEST["type"]."&".$tabControl->ActiveTabParam());
 	}
 }
 $str_ACTIVE="Y";
@@ -110,10 +106,6 @@ if($ID>0 && $COPY_ID<=0)
 else
 	$APPLICATION->SetTitle(GetMessage("NEW_MESSAGE_TITLE"));
 
-/***************************************************************************
-							   HTML форма
-****************************************************************************/
-
 require($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/include/prolog_admin_after.php");
 ?>
 <form method="POST" action="<?echo $APPLICATION->GetCurPage()?>" name="form1">
@@ -121,7 +113,7 @@ require($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/include/prolog_admin_af
 <input type="hidden" name="lang" value="<?echo LANG?>" />
 <input type="hidden" name="ID" value="<?echo $ID?>" />
 <input type="hidden" name="COPY_ID" value="<?echo $COPY_ID?>" />
-<input type="hidden" name="type" value="<?echo htmlspecialchars($_REQUEST["type"])?>" />
+<input type="hidden" name="type" value="<?echo htmlspecialcharsbx($_REQUEST["type"])?>" />
 <script type="text/javascript" language="JavaScript">
 <!--
 var t=null;
@@ -150,7 +142,7 @@ if (intval($ID)>0 && $COPY_ID<=0)
 {
 	$aMenu[] = array(
 		"TEXT"	=> GetMessage("TYPE_EDIT"),
-		"LINK"	=> "/bitrix/admin/type_edit.php?EVENT_NAME=".htmlspecialchars($str_EVENT_NAME)."&amp;lang=".LANGUAGE_ID,
+		"LINK"	=> "/bitrix/admin/type_edit.php?EVENT_NAME=".htmlspecialcharsbx($str_EVENT_NAME)."&amp;lang=".LANGUAGE_ID,
 		"TITLE"	=> GetMessage("TYPE_EDIT_TITLE"),
 		"ICON"	=> "btn_list"
 		);
@@ -166,7 +158,7 @@ if (intval($ID)>0 && $COPY_ID<=0)
 
 	$aMenu[] = array(
 		"TEXT"	=> GetMessage("MAIN_COPY_RECORD"),
-		"LINK"	=> "/bitrix/admin/message_edit.php?lang=".LANGUAGE_ID.htmlspecialchars("&COPY_ID=").$ID,
+		"LINK"	=> "/bitrix/admin/message_edit.php?lang=".LANGUAGE_ID.htmlspecialcharsbx("&COPY_ID=").$ID,
 		"TITLE"	=> GetMessage("MAIN_COPY_RECORD_TITLE"),
 		"ICON"	=> "btn_copy"
 		);
@@ -224,33 +216,33 @@ $tabControl->BeginNextTab();
 			if($ID>0 && $COPY_ID<=0)
 			{
 				$arType = $event_type_ref[$str_EVENT_NAME];
-				$type_DESCRIPTION = htmlspecialchars($arType["DESCRIPTION"]);
-				$type_NAME = htmlspecialchars($arType["NAME"]);
+				$type_DESCRIPTION = htmlspecialcharsbx($arType["DESCRIPTION"]);
+				$type_NAME = htmlspecialcharsbx($arType["NAME"]);
 				?><input type="hidden" name="EVENT_NAME" value="<? echo $str_EVENT_NAME?>"><?echo $type_NAME?><?
 			}
 			else
 			{
 				$id_1st = false;
 				?>
-				<select name="EVENT_NAME" onChange="window.location='<?=$APPLICATION->GetCurPage()?>?EVENT_NAME='+this[this.selectedIndex].value">
+				<select name="EVENT_NAME" onChange="window.location='message_edit.php?lang=<?=LANGUAGE_ID?>&EVENT_NAME='+this[this.selectedIndex].value">
 				<?
 				foreach($event_type_ref as $ev_name=>$arType):
 					if($id_1st===false)
 						$id_1st = $ev_name;
 				?>
-                	<option value="<?=htmlspecialchars($arType["EVENT_NAME"])?>"<?
-                    	if($str_EVENT_NAME==$arType["EVENT_NAME"])
-                        {
-                        	echo " selected";
-                            $id_1st = $ev_name;
-						}
-                    ?>><?=htmlspecialchars($arType["NAME"])?></option>
+					<option value="<?=htmlspecialcharsbx($arType["EVENT_NAME"])?>"<?
+					if($str_EVENT_NAME==$arType["EVENT_NAME"])
+					{
+						echo " selected";
+						$id_1st = $ev_name;
+										}
+					?>><?=htmlspecialcharsbx($arType["NAME"])?></option>
 				<?
 				endforeach;
-                ?>
-                </select>
-                <?
-   				$type_DESCRIPTION = htmlspecialchars($event_type_ref[$id_1st]["DESCRIPTION"]);
+				?>
+				</select>
+				<?
+				$type_DESCRIPTION = htmlspecialcharsbx($event_type_ref[$id_1st]["DESCRIPTION"]);
 			}
 		?></td>
 	</tr>

@@ -61,7 +61,7 @@ if (isset($_REQUEST["public"]))
 	$suri = CBXShortUri::GetList(array(), array("URI_EXACT" => $str_URI));
 	if ($a = $suri->Fetch())
 		$ID = $a["ID"];
-	$str_URI = htmlspecialchars($str_URI);
+	$str_URI = htmlspecialcharsbx($str_URI);
 }
 
 if($ID>0)

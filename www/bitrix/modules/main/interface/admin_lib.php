@@ -256,7 +256,7 @@ var phpVars = {
 				$APPLICATION->IncludeComponent("bitrix:player",	"",
 					Array(
 						"PLAYER_TYPE" => "flv",
-						"PATH" => htmlspecialchars($aUserOptGlobal["sound_login"]),
+						"PATH" => htmlspecialcharsbx($aUserOptGlobal["sound_login"]),
 						"WIDTH" => "1",
 						"HEIGHT" => "1",
 						"CONTROLBAR" => "none",
@@ -679,7 +679,7 @@ class CAdminMenu
 			echo '<td><div class="menuindent"></div></td>'."\n";
 
 		if(isset($aMenu["dynamic"]) && $aMenu["dynamic"] == true && !$bSectionActive)
-			echo '<td><div class="sign signplus" onclick="JsAdminMenu.ToggleDynSection(this, \''.htmlspecialchars(CUtil::addslashes($aMenu["module_id"])).'\', \''.htmlspecialchars(CUtil::addslashes($aMenu["items_id"])).'\', '.($level+1).')"></div></td>';
+			echo '<td><div class="sign signplus" onclick="JsAdminMenu.ToggleDynSection(this, \''.htmlspecialcharsbx(CUtil::addslashes($aMenu["module_id"])).'\', \''.htmlspecialcharsbx(CUtil::addslashes($aMenu["items_id"])).'\', '.($level+1).')"></div></td>';
 		else
 			echo '<td><div class="sign '.($bSubmenu? ($bSectionActive? 'signminus':'signplus'):'signdot').'"'.($bSubmenu? "onclick=\"JsAdminMenu.ToggleSection(this, '".$aMenu["items_id"]."', ".($level+1).")\"":"").'></div></td>';
 
@@ -988,10 +988,10 @@ class CAdminFilter
 		if($this->popup)
 		{
 			echo '
-			 		<td><div class="section-separator first"></div></td>
+					<td><div class="section-separator first"></div></td>
 					<td><a href="javascript:void(0)" onclick="this.blur();'.$this->id.'.ToggleAllFilterRows(true);" hidefocus="true" title="'.GetMessage("admin_lib_filter_show_all_title").'" class="context-button icon" id="filtershow"></a></td>
 					<td><a href="javascript:void(0)" onclick="this.blur();'.$this->id.'.ToggleAllFilterRows(false);" hidefocus="true" title="'.GetMessage("admin_lib_filter_hide_all_title").'" class="context-button icon" id="filterhide"></a></td>
-			 		<td><div class="separator"></div></td>
+					<td><div class="separator"></div></td>
 					<td><a href="javascript:void(0);" onClick="this.blur();'.$this->id.'_menu.ShowMenu(this, null);return false;" hidefocus="true" title="'.GetMessage("admin_lib_filter_more_title").'" class="context-button icon" id="filtermore">'.GetMessage("admin_lib_filter_more").'<img src="'.ADMIN_THEMES_PATH.'/'.ADMIN_THEME_ID.'/images/arr_down.gif" class="arrow" alt=""></a></td>
 ';
 		}
@@ -1012,7 +1012,7 @@ class CAdminFilter
 
 	function Buttons($aParams=false)
 	{
-		$hkInst=CHotKeys::getInstance();
+		$hkInst = CHotKeys::getInstance();
 
 		echo '
 			</table>
@@ -1031,20 +1031,20 @@ class CAdminFilter
 
 			if(isset($aParams['report']) && $aParams['report'])
 				echo '
-<input type="submit" name="set_filter" value="'.GetMessage("admin_lib_filter_set_rep").'" title="'.GetMessage("admin_lib_filter_set_rep_title").$hkInst->GetTitle("set_filter").'" onClick="'.htmlspecialchars($this->id.'.OnSet(\''.CUtil::AddSlashes($aParams["table_id"]).'\', \''.CUtil::AddSlashes($url).'\'); return false;').'">
-<input type="submit" name="del_filter" value="'.GetMessage("admin_lib_filter_clear_rep").'" title="'.GetMessage("admin_lib_filter_clear_rep_title").$hkInst->GetTitle("del_filter").'" onClick="'.htmlspecialchars($this->id.'.OnClear(\''.CUtil::AddSlashes($aParams["table_id"]).'\', \''.CUtil::AddSlashes($url).'\'); return false;').'">
+<input type="submit" name="set_filter" value="'.GetMessage("admin_lib_filter_set_rep").'" title="'.GetMessage("admin_lib_filter_set_rep_title").$hkInst->GetTitle("set_filter").'" onClick="'.htmlspecialcharsbx($this->id.'.OnSet(\''.CUtil::AddSlashes($aParams["table_id"]).'\', \''.CUtil::AddSlashes($url).'\'); return false;').'">
+<input type="submit" name="del_filter" value="'.GetMessage("admin_lib_filter_clear_rep").'" title="'.GetMessage("admin_lib_filter_clear_rep_title").$hkInst->GetTitle("del_filter").'" onClick="'.htmlspecialcharsbx($this->id.'.OnClear(\''.CUtil::AddSlashes($aParams["table_id"]).'\', \''.CUtil::AddSlashes($url).'\'); return false;').'">
 ';
 			else
 				echo '
-<input type="submit" name="set_filter" value="'.GetMessage("admin_lib_filter_set_butt").'" title="'.GetMessage("admin_lib_filter_set_butt_title").$hkInst->GetTitle("set_filter").'" onClick="'.htmlspecialchars($this->id.'.OnSet(\''.CUtil::AddSlashes($aParams["table_id"]).'\', \''.CUtil::AddSlashes($url).'\'); return false;').'">
-<input type="submit" name="del_filter" value="'.GetMessage("admin_lib_filter_clear_butt").'" title="'.GetMessage("admin_lib_filter_clear_butt_title").$hkInst->GetTitle("del_filter").'" onClick="'.htmlspecialchars($this->id.'.OnClear(\''.CUtil::AddSlashes($aParams["table_id"]).'\', \''.CUtil::AddSlashes($url).'\'); return false;').'">
+<input type="submit" name="set_filter" value="'.GetMessage("admin_lib_filter_set_butt").'" title="'.GetMessage("admin_lib_filter_set_butt_title").$hkInst->GetTitle("set_filter").'" onClick="'.htmlspecialcharsbx($this->id.'.OnSet(\''.CUtil::AddSlashes($aParams["table_id"]).'\', \''.CUtil::AddSlashes($url).'\'); return false;').'">
+<input type="submit" name="del_filter" value="'.GetMessage("admin_lib_filter_clear_butt").'" title="'.GetMessage("admin_lib_filter_clear_butt_title").$hkInst->GetTitle("del_filter").'" onClick="'.htmlspecialcharsbx($this->id.'.OnClear(\''.CUtil::AddSlashes($aParams["table_id"]).'\', \''.CUtil::AddSlashes($url).'\'); return false;').'">
 ';
 		}
 	}
 
 	function End()
 	{
-		$hkInst=CHotKeys::getInstance();
+		$hkInst = CHotKeys::getInstance();
 		echo '
 			</div>
 		</td>
@@ -1078,7 +1078,7 @@ var '.$this->id.' = new JCAdminFilter("'.$this->id.'", ['.$sRowIds.']);
 '.$this->id.'.InitFilter({'.$sVisRowsIds.'});
 </script>
 ';
-			$Execs=$hkInst->GetCodeByClassName("CAdminFilter");
+			$Execs = $hkInst->GetCodeByClassName("CAdminFilter");
 			echo $hkInst->PrintJSExecs($Execs);
 
 	}
@@ -1116,9 +1116,10 @@ class CAdminContextMenu
 
 	function Show()
 	{
-		$hkInst=CHotKeys::getInstance();
 		if (defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1)
 			return;
+
+		$hkInst = CHotKeys::getInstance();
 
 		$db_events = GetModuleEvents("main", "OnAdminContextMenuShow");
 		while($arEvent = $db_events->Fetch())
@@ -1156,7 +1157,7 @@ class CAdminContextMenu
 				if(!empty($item["MENU"]))
 				{
 					$bWasPopup = true;
-					$sMenuUrl = "jsToolBar_popup.ShowMenu(this, ".htmlspecialchars(CAdminPopup::PhpToJavaScript($item["MENU"])).");";
+					$sMenuUrl = "jsToolBar_popup.ShowMenu(this, ".htmlspecialcharsbx(CAdminPopup::PhpToJavaScript($item["MENU"])).");";
 					echo '<td><a href="javascript:void(0);" hidefocus="true" onClick="this.blur();'.$sMenuUrl.'return false;" title="'.$item["TITLE"].'" class="context-button'.(!empty($item["ICON"])? ' icon" id="'.$item["ICON"].'"':'"').'>'.$item["TEXT"].'<img src="'.ADMIN_THEMES_PATH.'/'.ADMIN_THEME_ID.'/images/arr_down.gif" class="arrow" alt=""></a></td>';
 				}
 				elseif(isset($item["HTML"]) && $item["HTML"] <> "")
@@ -1165,11 +1166,12 @@ class CAdminContextMenu
 				}
 				else
 				{
-					echo '<td><a href="'.($item["ONCLICK"] <> ''? 'javascript:void(0)' : htmlspecialchars(htmlspecialcharsback($item["LINK"]))).'" hidefocus="true" title="'.$item["TITLE"].$hkInst->GetTitle($item["ICON"]).'" '.$item["LINK_PARAM"].' class="context-button'.(!empty($item["ICON"])? ' icon" id="'.$item["ICON"].'"':'"').($item["ONCLICK"] <> ''? ' onclick="'.htmlspecialchars($item["ONCLICK"]).'"':'').'>'.$item["TEXT"].'</a>';
-					$arExecs=$hkInst->GetCodeByClassName($item["ICON"]);
-					echo $hkInst->PrintJSExecs($arExecs,"",true,true);
-					echo '</td>';
+					echo '<td><a href="'.($item["ONCLICK"] <> ''? 'javascript:void(0)' : htmlspecialcharsbx(htmlspecialcharsback($item["LINK"]))).'" hidefocus="true" title="'.$item["TITLE"].$hkInst->GetTitle($item["ICON"]).'" '.$item["LINK_PARAM"].' class="context-button'.(!empty($item["ICON"])? ' icon" id="'.$item["ICON"].'"':'"').($item["ONCLICK"] <> ''? ' onclick="'.htmlspecialcharsbx($item["ONCLICK"]).'"':'').'>'.$item["TEXT"].'</a>';
 
+					$arExecs = $hkInst->GetCodeByClassName($item["ICON"]);
+					echo $hkInst->PrintJSExecs($arExecs, "", true, true);
+
+					echo '</td>';
 				}
 				$bWasSeparator = false;
 			}
@@ -1316,7 +1318,7 @@ class CAdminSorting
 		$url = $path.$sep.$this->by_name."=".$sort_by."&".$this->ord_name."=".($class <> ""? $ord:"");
 
 		echo '
-<table cellspacing="0" class="sorting" onClick="'.$this->table_id.'.Sort(\''.htmlspecialchars(CUtil::addslashes($url)).'\', '.($class <> ""? "false" : "true").', arguments);" title="'.$title.'">
+<table cellspacing="0" class="sorting" onClick="'.$this->table_id.'.Sort(\''.htmlspecialcharsbx(CUtil::addslashes($url)).'\', '.($class <> ""? "false" : "true").', arguments);" title="'.$title.'">
 <tr>
 <td>'.$text.'</td>
 <td class="sign'.$class.'"><div class="empty"></div></td>
@@ -1488,7 +1490,8 @@ class CAdminTabControl
 
 	function Begin()
 	{
-		$hkInst=CHotKeys::getInstance();
+		$hkInst = CHotKeys::getInstance();
+
 		$db_events = GetModuleEvents("main", "OnAdminTabControlBegin");
 		while($arEvent = $db_events->Fetch())
 			ExecuteModuleEventEx($arEvent, array(&$this));
@@ -1497,18 +1500,14 @@ class CAdminTabControl
 
 		if ($this->bPublicMode)
 		{
-			$tabs_html = '';
-			$tabs_html .= '<span class="tabs">';
+			$tabs_html = '<span class="tabs">';
 
-			$nTabs = count($this->tabs);
-			$i = 0;
 			foreach($this->tabs as $tab)
 			{
 				$bSelected = ($tab["DIV"] == $this->selectedTab);
 				$tabs_html .= '
 					<a href="javascript:void(0)" hidefocus="hidefocus" title="'.$tab["TITLE"].$hkInst->GetTitle("tab-container").'" id="tab_cont_'.$tab["DIV"].'" class="tab-container'.($bSelected? "-selected":"").'" onclick="return false;"><span class="tab-left"><span class="tab-right" onclick="'.$this->name.'.SelectTab(\''.$tab["DIV"].'\');">'.htmlspecialcharsex($tab["TAB"]).'</span></span></a>
 ';
-				$i++;
 			}
 
 			$tabs_html .= '</span>';
@@ -1670,7 +1669,8 @@ class CAdminTabControl
 
 	function Buttons($aParams=false)
 	{
-		$hkInst=CHotKeys::getInstance();
+		$hkInst = CHotKeys::getInstance();
+
 		while($this->tabIndex < count($this->tabs))
 			$this->BeginNextTab();
 
@@ -1680,7 +1680,7 @@ class CAdminTabControl
 
 		if (!$this->bPublicMode)
 		{
-		echo '
+			echo '
 					</td>
 				</tr>
 			</table>';
@@ -1698,7 +1698,7 @@ class CAdminTabControl
 			if ($this->bPublicMode)
 			{
 				if (strlen($_REQUEST['from_module']))
-					echo '<input type="hidden" name="from_module" value="'.htmlspecialchars($_REQUEST['from_module']).'" />';
+					echo '<input type="hidden" name="from_module" value="'.htmlspecialcharsbx($_REQUEST['from_module']).'" />';
 
 				if(is_array($aParams['buttons']))
 				{
@@ -1720,7 +1720,7 @@ class CAdminTabControl
 				echo '
 <input'.($aParams["disabled"] === true? " disabled":"").' type="submit" name="save" value="'.GetMessage("admin_lib_edit_save").'" title="'.GetMessage("admin_lib_edit_save_title").$hkInst->GetTitle("Edit_Save_Button").'" />
 <input'.($aParams["disabled"] === true? " disabled":"").' type="submit" name="apply" value="'.GetMessage("admin_lib_edit_apply").'" title="'.GetMessage("admin_lib_edit_apply_title").$hkInst->GetTitle("Edit_Apply_Button").'" />
-'.($aParams["back_url"] <> '' && !preg_match('/(javascript|data)[\s\0-\13]*:/i', $aParams["back_url"])? '<input type="button" value="'.GetMessage("admin_lib_edit_cancel").'" name="cancel" onClick="window.location=\''.htmlspecialchars(CUtil::addslashes($aParams["back_url"])).'\'" title="'.GetMessage("admin_lib_edit_cancel_title").$hkInst->GetTitle("Edit_Cancel_Button").'" />':'');
+'.($aParams["back_url"] <> '' && !preg_match('/(javascript|data)[\s\0-\13]*:/i', $aParams["back_url"])? '<input type="button" value="'.GetMessage("admin_lib_edit_cancel").'" name="cancel" onClick="window.location=\''.htmlspecialcharsbx(CUtil::addslashes($aParams["back_url"])).'\'" title="'.GetMessage("admin_lib_edit_cancel_title").$hkInst->GetTitle("Edit_Cancel_Button").'" />':'');
 
 			echo $hkInst->PrintJSExecs($hkInst->GetCodeByClassName("Edit_Save_Button"));
 			echo $hkInst->PrintJSExecs($hkInst->GetCodeByClassName("Edit_Apply_Button"));
@@ -1741,7 +1741,7 @@ class CAdminTabControl
 		if ($this->bPublicMode)
 		{
 			if (strlen($_REQUEST['from_module']))
-				echo '<input type="hidden" name="from_module" value="'.htmlspecialchars($_REQUEST['from_module']).'" />';
+				echo '<input type="hidden" name="from_module" value="'.htmlspecialcharsbx($_REQUEST['from_module']).'" />';
 
 			if ($arJSButtons === false)
 			{
@@ -1772,7 +1772,8 @@ class CAdminTabControl
 
 	function End()
 	{
-		$hkInst=CHotKeys::getInstance();
+		$hkInst = CHotKeys::getInstance();
+
 		if(!$this->bButtons)
 		{
 			while ($this->tabIndex < count($this->tabs))
@@ -1811,13 +1812,13 @@ class CAdminTabControl
 </table>';
 		}
 
-		$Execs=$hkInst->GetCodeByClassName("CAdminTabControl");
-		echo $hkInst->PrintJSExecs($Execs,$this->name);
+		$Execs = $hkInst->GetCodeByClassName("CAdminTabControl");
+		echo $hkInst->PrintJSExecs($Execs, $this->name);
 
 		echo '
 </div>
 
-<input type="hidden" id="'.$this->name.'_active_tab" name="'.$this->name.'_active_tab" value="'.htmlspecialchars($this->selectedTab).'">
+<input type="hidden" id="'.$this->name.'_active_tab" name="'.$this->name.'_active_tab" value="'.htmlspecialcharsbx($this->selectedTab).'">
 
 <script>';
 		$s = "";
@@ -2235,7 +2236,7 @@ class CAdminList
 			$aContext[] = array(
 				"TEXT"=>"Excel",
 				"TITLE"=>GetMessage("admin_lib_excel"),
-				"LINK"=>htmlspecialchars($link),
+				"LINK"=>htmlspecialcharsbx($link),
 				"ICON"=>"btn_excel",
 			);
 		}
@@ -2354,6 +2355,7 @@ class CAdminList
 
 	function ActionRedirect($url)
 	{
+		$url = htmlspecialcharsback($url);
 		if(strpos($url, "lang=")===false)
 		{
 			if(strpos($url, "?")===false)
@@ -2395,7 +2397,7 @@ class CAdminList
 			if(strpos($url, "mode=")===false)
 				$url .= '&mode=frame';
 
-			 $res = 'document.getElementById(\'form_'.$this->table_id.'\').action=\''.CUtil::AddSlashes($url).'\';';
+			$res = 'document.getElementById(\'form_'.$this->table_id.'\').action=\''.CUtil::AddSlashes($url).'\';';
 		}
 
 		return $res.'
@@ -2477,9 +2479,9 @@ class CAdminList
 			(isset($_REQUEST['ajax_debugx']) && $_REQUEST['ajax_debugx']=='Y')
 			|| (isset($_SESSION['AJAX_DEBUGX']) && $_SESSION['AJAX_DEBUGX'])
 		)
-			echo '<form method="POST" '.($this->bMultipart?'  ENCTYPE="multipart/form-data" ':'').' onsubmit="CheckWin();ShowWaitWindow();'.$this->table_id.'.SetActiveResult();" target="frame_debug" id="form_'.$this->table_id.'" name="form_'.$this->table_id.'" action="'.htmlspecialchars($APPLICATION->GetCurPageParam("mode=frame", Array("mode"))).'">';
+			echo '<form method="POST" '.($this->bMultipart?'  ENCTYPE="multipart/form-data" ':'').' onsubmit="CheckWin();ShowWaitWindow();'.$this->table_id.'.SetActiveResult();" target="frame_debug" id="form_'.$this->table_id.'" name="form_'.$this->table_id.'" action="'.htmlspecialcharsbx($APPLICATION->GetCurPageParam("mode=frame", Array("mode"))).'">';
 		else
-			echo '<form method="POST" '.($this->bMultipart?'  ENCTYPE="multipart/form-data" ':'').' onsubmit="ShowWaitWindow();'.$this->table_id.'.SetActiveResult();" target="frame_'.$this->table_id.'" id="form_'.$this->table_id.'" name="form_'.$this->table_id.'" action="'.htmlspecialchars($APPLICATION->GetCurPageParam("mode=frame", Array("mode"))).'">';
+			echo '<form method="POST" '.($this->bMultipart?'  ENCTYPE="multipart/form-data" ':'').' onsubmit="ShowWaitWindow();'.$this->table_id.'.SetActiveResult();" target="frame_'.$this->table_id.'" id="form_'.$this->table_id.'" name="form_'.$this->table_id.'" action="'.htmlspecialcharsbx($APPLICATION->GetCurPageParam("mode=frame", Array("mode"))).'">';
 
 		if($this->bEditMode && !$this->bCanBeEdited)
 			$this->bEditMode = false;
@@ -2737,7 +2739,7 @@ class CAdminList
 					echo '<td><div class="separator"></div></td>';
 				$bNeedSep = true;
 				echo '
-		<td><a href="javascript:void(0);" hidefocus="true" onClick="this.blur();if('.$this->table_id.'.IsActionEnabled(\'edit\')){document.forms[\'form_'.$this->table_id.'\'].elements[\'action_button\'].value=\'edit\'; '.htmlspecialchars($this->ActionPost()).'}" title="'.GetMessage("admin_lib_list_edit").'" class="context-button icon action-edit-button-dis" id="action_edit_button"></a></td>
+		<td><a href="javascript:void(0);" hidefocus="true" onClick="this.blur();if('.$this->table_id.'.IsActionEnabled(\'edit\')){document.forms[\'form_'.$this->table_id.'\'].elements[\'action_button\'].value=\'edit\'; '.htmlspecialcharsbx($this->ActionPost()).'}" title="'.GetMessage("admin_lib_list_edit").'" class="context-button icon action-edit-button-dis" id="action_edit_button"></a></td>
 ';
 			}
 
@@ -2754,7 +2756,7 @@ class CAdminList
 ';
 					$bNeedSep = true;
 					echo '
-		<td><a href="javascript:void(0);" hidefocus="true" onClick="this.blur();if('.$this->table_id.'.IsActionEnabled() && confirm((document.getElementById(\'action_target\') && document.getElementById(\'action_target\').checked? \''.GetMessage("admin_lib_list_del").'\':\''.GetMessage("admin_lib_list_del_sel").'\'))) {document.forms[\'form_'.$this->table_id.'\'].elements[\'action_button\'].value=\'delete\'; '.htmlspecialchars($this->ActionPost()).'}" title="'.GetMessage("admin_lib_list_del_title").'" class="context-button icon action-delete-button-dis" id="action_delete_button"></a></td>
+		<td><a href="javascript:void(0);" hidefocus="true" onClick="this.blur();if('.$this->table_id.'.IsActionEnabled() && confirm((document.getElementById(\'action_target\') && document.getElementById(\'action_target\').checked? \''.GetMessage("admin_lib_list_del").'\':\''.GetMessage("admin_lib_list_del_sel").'\'))) {document.forms[\'form_'.$this->table_id.'\'].elements[\'action_button\'].value=\'delete\'; '.htmlspecialcharsbx($this->ActionPost()).'}" title="'.GetMessage("admin_lib_list_del_title").'" class="context-button icon action-delete-button-dis" id="action_delete_button"></a></td>
 ';
 				}
 				else
@@ -2762,14 +2764,14 @@ class CAdminList
 					if(is_array($v))
 					{
 						if($v["type"] == "button")
-							$buttons .= '<td><input type="button" name="" value="'.htmlspecialchars($v['name']).'" onclick="'.(!empty($v["action"])? str_replace("\"", "&quot;", $v['action']) : 'document.forms[\'form_'.$this->table_id.'\'].elements[\'action_button\'].value=\''.htmlspecialchars($v["value"]).'\'; '.htmlspecialchars($this->ActionPost()).'').'" title="'.htmlspecialchars($v["title"]).'"></td>';
+							$buttons .= '<td><input type="button" name="" value="'.htmlspecialcharsbx($v['name']).'" onclick="'.(!empty($v["action"])? str_replace("\"", "&quot;", $v['action']) : 'document.forms[\'form_'.$this->table_id.'\'].elements[\'action_button\'].value=\''.htmlspecialcharsbx($v["value"]).'\'; '.htmlspecialcharsbx($this->ActionPost()).'').'" title="'.htmlspecialcharsbx($v["title"]).'"></td>';
 						elseif($v["type"] == "html")
 							$html .= '<td>'.$v["value"].'</td>';
 						else
-							$list .= '<option value="'.htmlspecialchars($v['value']).'"'.($v['action']?' custom_action="'.str_replace("\"", "&quot;", $v['action']).'"':'').'>'.htmlspecialcharsex($v['name']).'</option>';
+							$list .= '<option value="'.htmlspecialcharsbx($v['value']).'"'.($v['action']?' custom_action="'.str_replace("\"", "&quot;", $v['action']).'"':'').'>'.htmlspecialcharsex($v['name']).'</option>';
 					}
 					else
-						$list .= '<option value="'.htmlspecialchars($k).'">'.htmlspecialcharsex($v).'</option>';
+						$list .= '<option value="'.htmlspecialcharsbx($k).'">'.htmlspecialcharsex($v).'</option>';
 				}
 			}
 
@@ -2787,7 +2789,7 @@ class CAdminList
 					echo '<td><div class="separator"></div></td>';
 				echo '
 		<td>
-			<select name="action"'.($this->arActionsParams["select_onchange"] <> ""? ' onchange="'.htmlspecialchars($this->arActionsParams["select_onchange"]).'"':'').'>
+			<select name="action"'.($this->arActionsParams["select_onchange"] <> ""? ' onchange="'.htmlspecialcharsbx($this->arActionsParams["select_onchange"]).'"':'').'>
 				<option value="">'.GetMessage("admin_lib_list_actions").'</option>
 				'.$list.'
 			</select>
@@ -2915,7 +2917,6 @@ jsUtils.addEvent(window, "unload", function(){'.$this->table_id.'.Destroy(true);
 
 	function CheckListMode()
 	{
-		//if($this->table_id!=$_REQUEST["table_id"]) return;
 		if($_REQUEST["mode"]=='list' || $_REQUEST["mode"]=='frame')
 		{
 			ob_start();
@@ -2926,7 +2927,6 @@ jsUtils.addEvent(window, "unload", function(){'.$this->table_id.'.Destroy(true);
 			if($_REQUEST["mode"]=='frame')
 			{
 				echo '<html><head>';
-//				echo $GLOBALS["adminPage"]->ShowScript();
 				echo '</head><body>
 <div id="'.$this->table_id.'_result_frame_div">'.$string.'</div>
 <script>
@@ -2955,8 +2955,12 @@ w.jsAdminChain.AddItems("'.$this->table_id.'_navchain_div");
 		}
 		elseif($_REQUEST["mode"]=='excel')
 		{
+			$fname = basename($GLOBALS["APPLICATION"]->GetCurPage(), ".php");
+			// http response splitting defence
+			$fname = str_replace(array("\r", "\n"), "", $fname);
+
 			header("Content-Type: application/vnd.ms-excel");
-			header("Content-Disposition: filename=".basename($GLOBALS["APPLICATION"]->GetCurPage(), ".php").".xls");
+			header("Content-Disposition: filename=".$fname.".xls");
 			$this->DisplayExcel();
 			require($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/include/epilog_admin_after.php");
 			die();
@@ -3061,7 +3065,7 @@ class CAdminListRow
 	{
 		$res = '';
 		foreach($attr as $name=>$val)
-			$res .= ' '.htmlspecialchars($name).'="'.htmlspecialchars($val).'"';
+			$res .= ' '.htmlspecialcharsbx($name).'="'.htmlspecialcharsbx($val).'"';
 
 		return $res;
 	}
@@ -3086,7 +3090,7 @@ class CAdminListRow
 				foreach($this->aActions as $action)
 					if($action["DEFAULT"] == true)
 					{
-						$sDefAction = htmlspecialchars($action["ACTION"]);
+						$sDefAction = htmlspecialcharsbx($action["ACTION"]);
 						$sDefTitle = (!empty($action["TITLE"])? $action["TITLE"]:$action["TEXT"]);
 						break;
 					}
@@ -3095,7 +3099,7 @@ class CAdminListRow
 
 		$sMenuItems = "";
 		if(!empty($this->aActions))
-			$sMenuItems = htmlspecialchars(CAdminPopup::PhpToJavaScript($this->aActions));
+			$sMenuItems = htmlspecialcharsbx(CAdminPopup::PhpToJavaScript($this->aActions));
 
 		$aUserOpt = CUserOptions::GetOption("global", "settings");
 		echo '<tr'.(isset($this->aFeatures["footer"]) && $this->aFeatures["footer"] == true? ' class="footer"':'').($sMenuItems <> "" && $aUserOpt["context_menu"]<>"N"? ' oncontextmenu="return '.$sMenuItems.';"':'').($sDefAction <> ""? ' ondblclick="'.$sDefAction.'"'.(!empty($sDefTitle)? ' title="'.GetMessage("admin_lib_list_double_click").' '.$sDefTitle.'"':''):'').'>';
@@ -3141,34 +3145,34 @@ class CAdminListRow
 				if(is_array($val_old))
 				{
 					foreach($val_old as $k=>$v)
-						echo '<input type="hidden" name="FIELDS_OLD['.htmlspecialchars($this->id).']['.htmlspecialchars($id).']['.htmlspecialchars($k).']" value="'.htmlspecialchars($v).'">';
+						echo '<input type="hidden" name="FIELDS_OLD['.htmlspecialcharsbx($this->id).']['.htmlspecialcharsbx($id).']['.htmlspecialcharsbx($k).']" value="'.htmlspecialcharsbx($v).'">';
 				}
 				else
 				{
-					echo '<input type="hidden" name="FIELDS_OLD['.htmlspecialchars($this->id).']['.htmlspecialchars($id).']" value="'.htmlspecialchars($val_old).'">';
+					echo '<input type="hidden" name="FIELDS_OLD['.htmlspecialcharsbx($this->id).']['.htmlspecialcharsbx($id).']" value="'.htmlspecialcharsbx($val_old).'">';
 				}
 				switch($field["edit"]["type"])
 				{
 					case "checkbox":
-						echo '<input type="hidden" name="FIELDS['.htmlspecialchars($this->id).']['.htmlspecialchars($id).']" value="N">';
-						echo '<input type="checkbox" name="FIELDS['.htmlspecialchars($this->id).']['.htmlspecialchars($id).']" value="Y"'.($val=='Y'?' checked':'').'>';
+						echo '<input type="hidden" name="FIELDS['.htmlspecialcharsbx($this->id).']['.htmlspecialcharsbx($id).']" value="N">';
+						echo '<input type="checkbox" name="FIELDS['.htmlspecialcharsbx($this->id).']['.htmlspecialcharsbx($id).']" value="Y"'.($val=='Y'?' checked':'').'>';
 						break;
 					case "select":
-						echo '<select name="FIELDS['.htmlspecialchars($this->id).']['.htmlspecialchars($id).']"'.$this->__AttrGen($field["edit"]["attributes"]).'>';
+						echo '<select name="FIELDS['.htmlspecialcharsbx($this->id).']['.htmlspecialcharsbx($id).']"'.$this->__AttrGen($field["edit"]["attributes"]).'>';
 						foreach($field["edit"]["values"] as $k=>$v)
-							echo '<option value="'.htmlspecialchars($k).'" '.($k==$val?' selected':'').'>'.htmlspecialcharsex($v).'</option>';
+							echo '<option value="'.htmlspecialcharsbx($k).'" '.($k==$val?' selected':'').'>'.htmlspecialcharsex($v).'</option>';
 						echo '</select>';
 						break;
 					case "input":
 						if(!$field["edit"]["attributes"]["size"])
 							$field["edit"]["attributes"]["size"] = "10";
-						echo '<input type="text" '.$this->__AttrGen($field["edit"]["attributes"]).' name="FIELDS['.htmlspecialchars($this->id).']['.htmlspecialchars($id).']" value="'.htmlspecialchars($val).'">';
+						echo '<input type="text" '.$this->__AttrGen($field["edit"]["attributes"]).' name="FIELDS['.htmlspecialcharsbx($this->id).']['.htmlspecialcharsbx($id).']" value="'.htmlspecialcharsbx($val).'">';
 						break;
 					case "calendar":
 						if(!$field["edit"]["attributes"]["size"])
 							$field["edit"]["attributes"]["size"] = "10";
-						echo '<span style="white-space:nowrap;"><input type="text" '.$this->__AttrGen($field["edit"]["attributes"]).' name="FIELDS['.htmlspecialchars($this->id).']['.htmlspecialchars($id).']" value="'.htmlspecialchars($val).'">';
-						echo CAdminCalendar::Calendar('FIELDS['.htmlspecialchars($this->id).']['.htmlspecialchars($id).']').'</span>';
+						echo '<span style="white-space:nowrap;"><input type="text" '.$this->__AttrGen($field["edit"]["attributes"]).' name="FIELDS['.htmlspecialcharsbx($this->id).']['.htmlspecialcharsbx($id).']" value="'.htmlspecialcharsbx($val).'">';
+						echo CAdminCalendar::Calendar('FIELDS['.htmlspecialcharsbx($this->id).']['.htmlspecialcharsbx($id).']').'</span>';
 						break;
 					default:
 						echo $field["edit"]['value'];
@@ -3386,7 +3390,7 @@ class CAdminCalendar
 	function CalendarDate($sFieldName, $sValue="", $size="10", $bTime=false)
 	{
 		// component can't set 'size' param
-		return '<span style="white-space:nowrap;"><input type="text" name="'.$sFieldName.'" size="'.$size.'" value="'.htmlspecialchars($sValue).'">'.CAdminCalendar::Calendar($sFieldName, "", "", $bTime).'</span>';
+		return '<span style="white-space:nowrap;"><input type="text" name="'.$sFieldName.'" size="'.$size.'" value="'.htmlspecialcharsbx($sValue).'">'.CAdminCalendar::Calendar($sFieldName, "", "", $bTime).'</span>';
 	}
 
 	function CalendarPeriod($sFromName, $sToName, $sFromVal="", $sToVal="", $bDaysList=false, $size="10", $bTime=false)
@@ -3403,10 +3407,10 @@ class CAdminCalendar
 		$sDisabled = ($GLOBALS[$sSelectName] <> ""? " disabled":"");
 		return
 			$s.
-			'<span style="white-space:nowrap;"><input'.$sDisabled.' type="text" name="'.$sFromName.'" size="'.$size.'" value="'.htmlspecialchars($sFromVal).'">'.
+			'<span style="white-space:nowrap;"><input'.$sDisabled.' type="text" name="'.$sFromName.'" size="'.$size.'" value="'.htmlspecialcharsbx($sFromVal).'">'.
 			CAdminCalendar::Calendar($sFromName, $sFromName, $sToName, $bTime).
 			'...&nbsp;'.
-			'<input type="text" name="'.$sToName.'" size="'.$size.'" value="'.htmlspecialchars($sToVal).'">'.
+			'<input type="text" name="'.$sToName.'" size="'.$size.'" value="'.htmlspecialcharsbx($sToVal).'">'.
 			CAdminCalendar::Calendar($sToName, $sFromName, $sToName, $bTime).'</span>';
 	}
 }
@@ -3634,19 +3638,6 @@ class CJSPopup
 ?>
 <script type="text/javascript"><?=$this->jsPopup?>.SetTitle('<?echo CUtil::JSEscape($title)?>');</script>
 <?
-		/*
-		if ($title == '') $title = $this->title;
-
-		$close_message = htmlspecialchars(GetMessage('JSPOPUP_CLOSE_TITLE'));
-		?>
-		<div class="bx-popup-title" id="bx_popup_title<?=$this->suffix?>"><table cellspacing="0" class="bx-width100">
-		<tr>
-			<td class="bx-width100 bx-title-text" onmousedown="jsFloatDiv.StartDrag(arguments[0], document.getElementById('bx_popup_form_div<?=$this->suffix?>'));"><?=$title?></td>
-			<td class="bx-width0"><a class="bx-popup-close" href="javascript:void(0)" onclick="return <?=$this->jsPopup?>.CloseDialog();" title="<?=$close_message?>"></a></td>
-		</tr>
-		</table></div>
-		<?
-		*/
 	}
 
 	function StartDescription($icon = false, $additional = '')
@@ -3663,9 +3654,6 @@ class CJSPopup
 <?endif;?>
 <?
 			ob_start();
-/*			echo '<div class="bx-popup-description-container" id="bx_popup_description_container'.$this->suffix.'"><div class="bx-popup-description" '.$additional.'>'."\r\n";
-		if ($icon !== false)
-			echo '<div class="bx-popup-icon '.$icon.'"></div>'."\r\n";*/
 	}
 
 	function EndDescription()
@@ -3700,7 +3688,7 @@ class CJSPopup
 		echo bitrix_sessid_post()."\r\n";
 
 		if (is_set($_REQUEST, 'back_url'))
-			echo '<input type="hidden" name="back_url" value="'.htmlspecialchars($_REQUEST['back_url']).'" />'."\r\n";
+			echo '<input type="hidden" name="back_url" value="'.htmlspecialcharsbx($_REQUEST['back_url']).'" />'."\r\n";
 	}
 
 	function EndContent()
@@ -3710,16 +3698,13 @@ class CJSPopup
 			echo '</form>'."\r\n";
 
 			$hkInstance = CHotKeys::getInstance();
-			$Execs=$hkInstance->GetCodeByClassName("CDialog");
-			echo $hkInstance->PrintJSExecs($Execs,"",true,true);
+			$Execs = $hkInstance->GetCodeByClassName("CDialog");
+			echo $hkInstance->PrintJSExecs($Execs, "", true, true);
 
 			if ($this->bContentBuffered)
 			{
-				//$cont = ob_get_contents();
-				//ob_end_clean();
 ?></div><script type="text/javascript">BX.ready(function() {<?=$this->jsPopup?>.SwapContent(BX('<?echo $this->cont_id?>'))});</script><?
 			}
-			//echo '</form></div></div>'."\r\n";
 			$this->bContentStarted = false;
 		}
 	}
@@ -3732,7 +3717,6 @@ class CJSPopup
 		$this->bButtonsStarted = true;
 
 		ob_start();
-//			echo '<div class="bx-popup-buttons" '.$additional.' id="bx_popup_buttons'.$this->suffix.'">'."\r\n";
 	}
 
 	function EndButtons()
@@ -3744,7 +3728,6 @@ class CJSPopup
 ?>
 		<script type="text/javascript"><?=$this->jsPopup?>.SetButtons('<?echo CUtil::JSEscape($buttons)?>');</script>
 <?
-//				echo '</div>'."\r\n";
 			$this->bButtonsStarted = false;
 		}
 	}
@@ -3766,30 +3749,6 @@ class CJSPopup
 
 ?>
 <script type="text/javascript"><?=$this->jsPopup?>.SetButtons([<?foreach ($arButtons as $key => $btn) {echo ($key ? ',' : '').$arSB[$btn];}?>]);</script><?
-		/*
-		if (!$start_flag)
-			$this->StartButtons();
-
-		for ($i = 0, $cnt = count($arButtons); $i<$cnt; $i++)
-		{
-			switch ($arButtons[$i])
-			{
-				case 'save':
-					echo '<input id="btn_popup_save'.$this->suffix.'" name="btn_popup_save" type="button" value="'.GetMessage("JSPOPUP_SAVE_CAPTION").'" onclick="'.$this->jsPopup.'.Submit();" title="'.GetMessage("JSPOPUP_SAVE_CAPTION").'" />'."\r\n";
-				break;
-				case 'cancel':
-					echo '<input id="btn_popup_cancel'.$this->suffix.'" name="btn_popup_cancel" type="button" value="'.GetMessage("JSPOPUP_CANCEL_CAPTION").'" onclick="'.$this->jsPopup.'.Close()" title="'.GetMessage("JSPOPUP_CANCEL_TITLE").'" />'."\r\n";
-				break;
-				case 'close':
-					echo '<input id="btn_popup_close'.$this->suffix.'" name="btn_popup_close" type="button" value="'.GetMessage("JSPOPUP_CLOSE_CAPTION").'" onclick="'.$this->jsPopup.'.Close()" title="'.GetMessage("JSPOPUP_CLOSE_TITLE").'" />'."\r\n";
-				break;
-				default:
-			}
-		}
-
-		if (!$start_flag)
-			$this->EndButtons();
-		*/
 	}
 
 	function ShowValidationError($errortext)
@@ -3915,8 +3874,8 @@ class CAdminForm extends CAdminTabControl
 				{
 					foreach($arTab["FIELDS"] as $arField)
 					{
-						$id = htmlspecialchars($arField["id"]);
-						$label = htmlspecialchars(rtrim(trim($arField["content"]), " :"));
+						$id = htmlspecialcharsbx($arField["id"]);
+						$label = htmlspecialcharsbx(rtrim(trim($arField["content"]), " :"));
 						if($arField["delimiter"])
 							$arSystemFields[$id] = "--".$label;
 						else
@@ -3942,8 +3901,8 @@ class CAdminForm extends CAdminTabControl
 				{
 					foreach($arTab["FIELDS"] as $arField)
 					{
-						$id = htmlspecialchars($arField["id"]);
-						$label = htmlspecialchars(rtrim(trim($arField["content"]), " :"));
+						$id = htmlspecialcharsbx($arField["id"]);
+						$label = htmlspecialcharsbx(rtrim(trim($arField["content"]), " :"));
 						if($arField["delimiter"])
 							$ar["FIELDS"][$id] = "--".$label;
 						else
@@ -3955,543 +3914,22 @@ class CAdminForm extends CAdminTabControl
 				unset($arAvailableTabs[$arTab["DIV"]]);
 			}
 		}
+
+		$arFormEditMess = array(
+			"admin_lib_sett_tab_prompt" => GetMessage("admin_lib_sett_tab_prompt"),
+			"admin_lib_sett_tab_default_name" => GetMessage("admin_lib_sett_tab_default_name"),
+			"admin_lib_sett_sec_prompt" => GetMessage("admin_lib_sett_sec_prompt"),
+			"admin_lib_sett_sec_default_name" => GetMessage("admin_lib_sett_sec_default_name"),
+			"admin_lib_sett_sec_rename" => GetMessage("admin_lib_sett_sec_rename"),
+			"admin_lib_sett_tab_rename" => GetMessage("admin_lib_sett_tab_rename"),
+		);
+		
 ?>
 <script>
-
 var arSystemTabsFields = <?echo CUtil::PhpToJSObject($arSystemTabsFields)?>;
 var arSystemTabs = <?echo CUtil::PhpToJSObject($arSystemTabs)?>;
 var arSystemFields = <?echo CUtil::PhpToJSObject($arSystemFields)?>;
-
-function OnAdd(id)
-{
-	var frm=document.form_settings;
-	if(id == 'tabs_add')
-	{
-		var oSelect = document.getElementById('selected_tabs');
-		if(oSelect)
-		{
-			var name = prompt('<?echo GetMessage("admin_lib_sett_tab_prompt")?>', '<?echo GetMessage("admin_lib_sett_tab_default_name")?>');
-			if(name && name.length > 0)
-			{
-				var n = oSelect.length;
-				var c = 0;
-				var found = true;
-				while(found)
-				{
-					c++;
-					found = false;
-					for(var i=0; i<n; i++)
-						if(oSelect[i].value == 'cedit'+c)
-							found = true;
-				}
-				jsSelectUtils.addNewOption('selected_tabs', 'cedit'+c, name, false);
-				var td = document.getElementById('selected_fields');
-				var newSelect = document.createElement('SPAN');
-				td.appendChild(newSelect);
-				newSelect.innerHTML = '<select style="display:none" class="select" name="selected_fields[cedit' + c + ']" id="selected_fields[cedit' + c + ']" size="12" multiple onchange="Sync();"></select>';
-				jsSelectUtils.selectOption('selected_tabs', 'cedit'+c);
-			}
-		}
-	}
-	if(id == 'tabs_copy')
-	{
-		var oSelectFrom = document.getElementById('available_tabs');
-		var oSelectTo = document.getElementById('selected_tabs');
-		if(oSelectFrom && oSelectTo)
-		{
-			var n = oSelectFrom.length;
-			var k = oSelectTo.length;
-			var c = 0;
-			for(var i=0; i<n; i++)
-				if(oSelectFrom[i].selected)
-				{
-					var found = false;
-					for(var j=0; j<k; j++)
-						if(oSelectTo[j].value == oSelectFrom[i].value)
-							found = true;
-					if(!found)
-					{
-						var td = document.getElementById('selected_fields');
-						var newSelect = document.createElement('SPAN');
-						var newID = 'selected_fields[' + oSelectFrom[i].value + ']';
-						td.appendChild(newSelect);
-						newSelect.innerHTML = '<select style="display:none" class="select" name="' + newID + '" id="' + newID + '" size="12" multiple onchange="Sync();"></select>';
-
-						jsSelectUtils.addNewOption('selected_tabs', oSelectFrom[i].value, oSelectFrom[i].text, false);
-						jsSelectUtils.selectAllOptions('available_fields');
-						jsSelectUtils.addSelectedOptions(document.getElementById('available_fields'), newID);
-
-						jsSelectUtils.selectOption('selected_tabs', oSelectFrom[i].value);
-
-					}
-				}
-		}
-	}
-	if(id == 'fields_add')
-	{
-		var oSelect = document.getElementById('selected_tabs');
-		var prefix = '';
-		if(oSelect)
-		{
-			for(var i = 0; i < oSelect.length; i++)
-				if(oSelect[i].selected)
-					prefix = oSelect[i].value;
-		}
-
-		oSelect = GetFieldsActiveSelect();
-		if(oSelect)
-		{
-			var name = prompt('<?echo GetMessage("admin_lib_sett_sec_prompt")?>', '<?echo GetMessage("admin_lib_sett_sec_default_name")?>');
-			if(name && name.length > 0)
-			{
-				var n = oSelect.length;
-				var c = 0;
-				var found = true;
-				while(found)
-				{
-					c++;
-					found = false;
-					for(var i=0; i<n; i++)
-						if(oSelect[i].value == prefix+'_csection'+c)
-							found = true;
-				}
-				jsSelectUtils.addNewOption(oSelect.id, prefix+'_csection'+c, '--'+name, false);
-				jsSelectUtils.selectOption(oSelect.id, prefix+'_csection'+c);
-			}
-		}
-	}
-	if(id == 'fields_copy')
-	{
-		var oSelectFrom = document.getElementById('available_fields');
-		var oSelectTo = GetFieldsActiveSelect();
-		if(oSelectFrom && oSelectTo && !oSelectTo.disabled)
-		{
-			//find last selected item in selected_fields
-			var i, last = oSelectTo.length - 1;
-			for(i = 0; i < oSelectTo.length; i++)
-			{
-				if(oSelectTo[i].selected)
-					last = i;
-			}
-			//Delete all after last selected
-			var tail = new Array;
-			for(i = oSelectTo.length - 1; i > last; i--)
-			{
-				var newoption = new Option(oSelectTo[i].text, oSelectTo[i].value, false, false);
-				newoption.innerHTML = oSelectTo[i].innerHTML;
-				tail[tail.length] = newoption;
-				oSelectTo.remove(i);
-			}
-			//Deselect all selected_fields
-			for(i = 0; i < oSelectTo.length; i++)
-				if(oSelectTo[i].selected)
-					oSelectTo[i].selected = false;
-			//Add new options
-			var sel_count = 0, sel_value = '';
-			for(i = 0; i < oSelectFrom.length; i++)
-			{
-				if(oSelectFrom[i].selected)
-				{
-					jsSelectUtils.addNewOption(oSelectTo.id, oSelectFrom[i].value, oSelectFrom[i].text, false);
-					oSelectTo[oSelectTo.length - 1].selected = true;
-					sel_count++;
-					if(i < (oSelectFrom.length - 1))
-						sel_value = oSelectFrom[i+1].value;
-					else
-						sel_value = '';
-//					else if(i > 0)
-//							sel_value = oSelectFrom[i-1].value;
-				}
-			}
-			//Append selected_fields tail
-			var n = oSelectTo.length;
-			for(i = tail.length - 1; i >= 0; i--)
-			{
-				oSelectTo[n] = tail[i];
-				n++;
-			}
-			if((sel_count == 1) && sel_value)
-				jsSelectUtils.selectOption(oSelectFrom.id, sel_value);
-		}
-	}
-	Sync();
-}
-function OnDelete(id)
-{
-	if(id == 'tabs_delete')
-	{
-		var selected_tabs = document.getElementById('selected_tabs');
-		for(var i = 0; i < selected_tabs.length; i++)
-		{
-			if(selected_tabs[i].selected)
-			{
-				var selected_fields = document.getElementById('selected_fields[' + selected_tabs[i].value + ']');
-				var p = selected_fields.parentNode;
-				p.removeChild(selected_fields);
-			}
-		}
-
-		jsSelectUtils.deleteSelectedOptions(selected_tabs.id);
-		//For Opera deselect options
-		jsSelectUtils.selectOption(selected_tabs.id, '');
-	}
-	if(id == 'fields_delete')
-	{
-		var selected_fields = GetFieldsActiveSelect();
-		if(selected_fields)
-		{
-			jsSelectUtils.deleteSelectedOptions(selected_fields.id);
-			//For Opera deselect options
-			jsSelectUtils.selectOption(selected_fields.id, '');
-		}
-	}
-	Sync();
-}
-
-
-function Sync()
-{
-	var i,j,n,found;
-	var available_tabs = document.getElementById('available_tabs');
-	var available_fields = document.getElementById('available_fields');
-	var selected_tabs = document.getElementById('selected_tabs');
-
-	//1 available_tabs
-	//1.1 Save selection
-	var available_tabs_selection = '';
-	for(i = 0; i < available_tabs.length; i++)
-		if(available_tabs[i].selected)
-			available_tabs_selection = available_tabs[i].value;
-/*
-	//1.2 Clear list
-	jsSelectUtils.selectAllOptions(available_tabs.id);
-	jsSelectUtils.deleteSelectedOptions(available_tabs.id);
-	//1.3 Fill list with missed tabs
-	n = 0;
-	for(available_tab in arSystemTabs)
-	{
-		found = false;
-		for(i = 0; i < selected_tabs.length; i++)
-			if(selected_tabs[i].value == available_tab)
-				found = true;
-		if(!found)
-		{
-			var newoption = new Option(arSystemTabs[available_tab], available_tab, false, false);
-			available_tabs.options[n] = newoption;
-			available_tabs.options[n].innerHTML = arSystemTabs[available_tab];
-			n++;
-		}
-	}
-	//1.4 Set selection
-	if(available_tabs_selection)
-		for(i = 0; i < available_tabs.length; i++)
-			if(available_tabs[i].value == available_tabs_selection)
-				available_tabs[i].selected = true;
-*/
-	//2 available_fields
-	//2.1 Save selection
-	var available_fields_selection = new Object;
-	for(i = 0; i < available_fields.length; i++)
-	{
-		if(available_fields[i].selected)
-			available_fields_selection[available_fields[i].value] = available_fields[i].value;
-	}
-	//2.2 Clear list
-	jsSelectUtils.selectAllOptions(available_fields.id);
-	jsSelectUtils.deleteSelectedOptions(available_fields.id);
-	//2.3 Fill list with fields missed
-	if(available_tabs_selection)
-	{
-		var all_selected_fields = new Object;
-		for(i = 0; i < selected_tabs.length; i++)
-		{
-			var selected_fields = document.getElementById('selected_fields[' + selected_tabs[i].value + ']');
-			for(j = 0; j < selected_fields.length; j++)
-				all_selected_fields[selected_fields[j].value] = selected_fields[j].value;
-		}
-		n = 0;
-		for(available_field in arSystemTabsFields[available_tabs_selection])
-		{
-			if(!all_selected_fields[available_field])
-			{
-				var newoption = new Option(arSystemFields[available_field], available_field, false, false);
-				available_fields.options[n] = newoption;
-				available_fields.options[n].innerHTML = arSystemFields[available_field];
-				n++;
-			}
-		}
-		//2.4 Set selection
-		for(i = 0; i < available_fields.length; i++)
-			if(available_fields_selection[available_fields[i].value])
-				available_fields[i].selected = true;
-	}
-
-	//3 selected_tabs
-
-	//4 selected_fields
-	found = false;
-	for(i = 0; i < selected_tabs.length; i++)
-	{
-		var selected_fields = document.getElementById('selected_fields[' + selected_tabs[i].value + ']');
-		if(selected_tabs[i].selected)
-		{
-			selected_fields.style.display = 'block';
-			found = true;
-		}
-		else
-		{
-			selected_fields.style.display = 'none';
-		}
-	}
-	if(found)
-		document.getElementById('selected_fields[undef]').style.display = 'none';
-	else
-		document.getElementById('selected_fields[undef]').style.display = 'block';
-
-	//5 disable and enable buttons
-	//5.0 calculate selections counters
-	var selected_tabs_count = 0;
-	for(i = 0; i < selected_tabs.length; i++)
-		if(selected_tabs[i].selected)
-			selected_tabs_count++;
-	var available_tabs_count = 0;
-	for(i = 0; i < available_tabs.length; i++)
-		if(available_tabs[i].selected)
-			available_tabs_count++;
-	//tabs_delete enabled if selected_tabs have selection
-	document.getElementById('tabs_delete').disabled = selected_tabs_count <= 0;
-	//tabs_copy enabled if available_tabs have selection and this selection does not exists in
-	//		selected fields
-	if(available_tabs_count <= 0)
-	{
-		document.getElementById('tabs_copy').disabled = true;
-	}
-	else
-	{
-		found = false;
-		for(i = 0; i < selected_tabs.length; i++)
-			if(selected_tabs[i].value == available_tabs_selection)
-				found = true;
-		document.getElementById('tabs_copy').disabled = found;
-	}
-	//tabs_up enabled if selected_tabs have selection
-	document.getElementById('tabs_up').disabled = selected_tabs_count <= 0;
-	//tabs_down enabled if selected_tabs have selection
-	document.getElementById('tabs_down').disabled = selected_tabs_count <= 0;
-	//tabs_rename enabled if selected_tabs have one item selected
-	document.getElementById('tabs_rename').disabled = selected_tabs_count != 1;
-	//tabs_add always selected
-	document.getElementById('tabs_add').disabled = false;
-
-	var selected_fields_count = 0;
-	for(i = 0; i < selected_tabs.length; i++)
-	{
-		if(selected_tabs[i].selected)
-		{
-			var selected_fields = document.getElementById('selected_fields[' + selected_tabs[i].value + ']');
-			for(j = 0; j < selected_fields.length; j++)
-				if(selected_fields[j].selected)
-					selected_fields_count++;
-		}
-	}
-	var available_fields_count = 0;
-	for(i = 0; i < available_fields.length; i++)
-		if(available_fields[i].selected)
-			available_fields_count++;
-	//fields_delete enabled if selected_fields have selection
-	document.getElementById('fields_delete').disabled = selected_fields_count <= 0;
-	//fields_copy enabled if available_fields have selection and at least one tab selected
-	document.getElementById('fields_copy').disabled = available_fields_count <= 0 || selected_tabs_count <= 0;
-	//fields_up enabled if selected_fields have selection
-	document.getElementById('fields_up').disabled = selected_fields_count <= 0;
-	//fields_down enabled if selected_fields have selection
-	document.getElementById('fields_down').disabled = selected_fields_count <= 0;
-	//fields_rename enabled if selected_fields have one item selected
-	document.getElementById('fields_rename').disabled = selected_fields_count != 1;
-	//fields_add enabled if selected_tabs have one item selected
-	document.getElementById('fields_add').disabled = selected_tabs_count != 1;
-
-	var arFields = new Object;
-	for(var name in arSystemFields)
-		arFields[name] = arSystemFields[name];
-	for(i = 0; i < selected_tabs.length; i++)
-	{
-		selected_fields = document.getElementById('selected_fields[' + selected_tabs[i].value + ']');
-		for(j = 0; j < selected_fields.length; j++)
-			delete arFields[selected_fields[j].value];
-	}
-	var save_button = document.getElementById('save_settings');
-	save_button.disabled = false;
-	for(var name in arFields)
-	{
-		if(arFields[name].substring(0,1) == "*")
-			save_button.disabled = true;
-	}
-}
-
-function SyncAvailableFields()
-{
-	var oSelect = document.getElementById('available_tabs');
-	if(oSelect)
-	{
-		var k = oSelect.length;
-		for(var i=0; i<k; i++)
-		{
-			oFieldsSelect = document.getElementById('available_fields');
-			if(oFieldsSelect)
-			{
-				jsSelectUtils.selectAllOptions(oFieldsSelect.id);
-				jsSelectUtils.deleteSelectedOptions(oFieldsSelect.id);
-				if(oSelect[i].selected)
-				{
-					var n = 0;
-					for(var field_id in arSystemTabsFields[oSelect[i].value])
-					{
-						var newoption = new Option(arSystemFields[field_id], field_id, false, false);
-						oFieldsSelect.options[n]=newoption;
-						oFieldsSelect.options[n].innerHTML = arSystemFields[field_id];
-						n++;
-					}
-				}
-			}
-		}
-	}
-}
-
-function GetFieldsActiveSelect()
-{
-	var oFieldsSelect;
-	var oSelect = document.getElementById('selected_tabs');
-	if(oSelect)
-	{
-		var k = oSelect.length;
-		for(var i=0; i<k; i++)
-		{
-			oFieldsSelect = document.getElementById('selected_fields[' + oSelect[i].value + ']');
-			if(oFieldsSelect && oFieldsSelect.style.display == 'block')
-				return oFieldsSelect;
-		}
-	}
-	return false;
-}
-
-function OnRename(id)
-{
-	var frm=document.form_settings;
-	if(id == 'tabs_rename')
-	{
-		var oSelect = document.getElementById('selected_tabs');
-		if(oSelect)
-		{
-			var n = oSelect.length;
-			var c = 0;
-			var choice = '';
-			for(var i=0; i<n; i++)
-			{
-				if(oSelect[i].selected)
-				{
-					c++;
-					if(!choice)
-						choice = oSelect[i].text;
-				}
-			}
-			if(c == 1)
-			{
-				var name = prompt('<?echo GetMessage("admin_lib_sett_tab_rename")?>', choice);
-				if(name && name.length > 0)
-				{
-					for(var i=0; i<n; i++)
-						if(oSelect[i].selected)
-						{
-							oSelect[i].text = name;
-							break;
-						}
-				}
-			}
-		}
-	}
-	if(id == 'fields_rename')
-	{
-		var oSelect = GetFieldsActiveSelect();
-		if(oSelect)
-		{
-			var n = oSelect.length;
-			var c = 0;
-			var choice = '';
-			for(var i=0; i<n; i++)
-			{
-				if(oSelect[i].selected)
-				{
-					c++;
-					if(!choice)
-						choice = oSelect[i].innerHTML;
-				}
-			}
-			if(c == 1)
-			{
-				var prefix = '';
-				if(choice.substring(0, 2) == '--')
-				{
-					choice = choice.substring(2);
-					prefix = '--';
-				}
-				else
-				{
-					if(choice.substring(0, 1) == '*')
-					{
-						choice = choice.substring(1);
-						prefix = '*';
-					}
-					else
-					{
-						if(choice.substring(0, 12) == '&nbsp;&nbsp;')
-						{
-							choice = choice.substring(12);
-							prefix = '&nbsp;&nbsp;';
-						}
-						else
-						{
-							while(choice.substring(0, 2) == '\xA0\xA0' || choice.substring(0, 2) == '\xC2\xA0')
-							{
-								choice = choice.substring(2);
-								prefix = '&nbsp;&nbsp;';
-							}
-						}
-					}
-				}
-				var name = prompt('<?echo GetMessage("admin_lib_sett_sec_rename")?>', choice);
-				if(name && name.length > 0)
-				{
-					for(var i=0; i<n; i++)
-						if(oSelect[i].selected)
-						{
-							if(prefix == '&nbsp;&nbsp;')
-							{
-								oSelect[i].text = name;
-								oSelect[i].innerHTML = '&nbsp;&nbsp;' + oSelect[i].innerHTML;
-							}
-							else
-							{
-								oSelect[i].text = prefix + name;
-							}
-							break;
-						}
-				}
-			}
-		}
-	}
-}
-function FieldsUpAndDown(direction)
-{
-	var oSelect = GetFieldsActiveSelect();
-	if(oSelect)
-	{
-		if(direction == 'up')
-			jsSelectUtils.moveOptionsUp(oSelect);
-		else
-			jsSelectUtils.moveOptionsDown(oSelect);
-	}
-}
+var arFormEditMess = <?echo CUtil::PhpToJSObject($arFormEditMess)?>;
 Sync();
 </script>
 
@@ -4518,7 +3956,7 @@ Sync();
 			<select class="select" name="available_tabs" id="available_tabs" size="8" onchange="Sync();">
 		<?
 		foreach($arSystemTabs as $id => $label)
-			echo '<option value="'.htmlspecialchars($id).'">'.htmlspecialchars($label).'</option>';
+			echo '<option value="'.htmlspecialcharsbx($id).'">'.htmlspecialcharsbx($label).'</option>';
 		?>
 			</select>
 		</td>
@@ -4529,7 +3967,7 @@ Sync();
 			<select class="select" name="selected_tabs" id="selected_tabs" size="8" onchange="Sync();">
 		<?
 		foreach($arCustomFields as $tab_id => $arTab)
-			echo '<option value="'.htmlspecialchars($tab_id).'">'.htmlspecialchars($arTab["TAB"]).'</option>';
+			echo '<option value="'.htmlspecialcharsbx($tab_id).'">'.htmlspecialcharsbx($arTab["TAB"]).'</option>';
 		?>
 			</select>
 		</td>
@@ -4637,7 +4075,7 @@ Sync();
 
 	function GetHTMLFieldValue($field_name)
 	{
-		return htmlspecialchars($this->arFieldValues[$field_name]);
+		return htmlspecialcharsbx($this->arFieldValues[$field_name]);
 	}
 
 	function GetHTMLFieldValueEx($field_name)
@@ -4825,11 +4263,13 @@ Sync();
 		$arHiddens = $this->arFields;
 		echo $this->sPrologContent;
 		if(array_key_exists("FORM_ACTION", $this->arParams))
-			$action = htmlspecialchars($this->arParams["FORM_ACTION"]);
+			$action = htmlspecialcharsbx($this->arParams["FORM_ACTION"]);
 		else
-			$action = htmlspecialchars($APPLICATION->GetCurPage());
+			$action = htmlspecialcharsbx($APPLICATION->GetCurPage());
 		echo '<form method="POST" Action="'.$action.'"  ENCTYPE="multipart/form-data" name="'.$this->name.'_form"'.($this->arParams["FORM_ATTRIBUTES"] <> ''? ' '.$this->arParams["FORM_ATTRIBUTES"]:'').'>';
+
 		parent::Begin();
+
 		while($this->tabIndex < count($this->tabs))
 		{
 			$this->BeginNextTab();
@@ -4977,7 +4417,7 @@ Sync();
 		$html .= '>';
 
 		foreach($arSelect as $key => $val)
-			$html .= '<option value="'.htmlspecialchars($key).'"'.($value == $key? ' selected': '').'>'.htmlspecialcharsex($val).'</option>';
+			$html .= '<option value="'.htmlspecialcharsbx($key).'"'.($value == $key? ' selected': '').'>'.htmlspecialcharsex($val).'</option>';
 		$html .= '</select>';
 
 		$this->tabs[$this->tabIndex]["FIELDS"][$id] = array(
@@ -4985,14 +4425,14 @@ Sync();
 			"required" => $required,
 			"content" => $content,
 			"html" => '<td width="40%">'.($required? '<span class="required">*</span>': '').$this->GetCustomLabelHTML($id, $content).'</td><td>'.$html.'</td>',
-			"hidden" => '<input type="hidden" name="'.$id.'" value="'.htmlspecialchars($value).'">',
+			"hidden" => '<input type="hidden" name="'.$id.'" value="'.htmlspecialcharsbx($value).'">',
 		);
 	}
 
 	function AddEditField($id, $content, $required, $arParams = array(), $value = false)
 	{
 		if($value === false)
-			$value = htmlspecialchars($this->arFieldValues[$id]);
+			$value = htmlspecialcharsbx($this->arFieldValues[$id]);
 		$html = '<input type="text" name="'.$id.'" value="'.$value.'"';
 		if(intval($arParams["size"]) > 0)
 			$html .= ' size="'.intval($arParams["size"]).'"';
@@ -5043,7 +4483,7 @@ Sync();
 
 	function AddCheckBoxField($id, $content, $required, $value, $checked, $arParams=array())
 	{
-		$html = '<input type="checkbox" name="'.$id.'" value="'.htmlspecialchars($value).'"'.($checked? ' checked': '');
+		$html = '<input type="checkbox" name="'.$id.'" value="'.htmlspecialcharsbx($value).'"'.($checked? ' checked': '');
 		foreach($arParams as $param)
 			$html .= ' '.$param;
 		$html .= '>';
@@ -5053,7 +4493,7 @@ Sync();
 			"required" => $required,
 			"content" => $content,
 			"html" => '<td width="40%">'.($required? '<span class="required">*</span>': '').$this->GetCustomLabelHTML($id, $content).'</td><td>'.$html.'</td>',
-			"hidden" => '<input type="hidden" name="'.$id.'" value="'.htmlspecialchars($value).'">',
+			"hidden" => '<input type="hidden" name="'.$id.'" value="'.htmlspecialcharsbx($value).'">',
 		);
 	}
 
@@ -5143,11 +4583,11 @@ Sync();
 			if(is_array($form_value))
 			{
 				foreach($form_value as $value)
-					$hidden .= '<input type="hidden" name="'.$FIELD_NAME.'[]" value="'.htmlspecialchars($value).'">';
+					$hidden .= '<input type="hidden" name="'.$FIELD_NAME.'[]" value="'.htmlspecialcharsbx($value).'">';
 			}
 			else
 			{
-				$hidden .= '<input type="hidden" name="'.$FIELD_NAME.'" value="'.htmlspecialchars($form_value).'">';
+				$hidden .= '<input type="hidden" name="'.$FIELD_NAME.'" value="'.htmlspecialcharsbx($form_value).'">';
 			}
 			$this->EndCustomField($FIELD_NAME, $hidden);
 		}
@@ -5164,17 +4604,12 @@ Sync();
 
 	function ButtonsPublic($arJSButtons = false)
 	{
-		for($i = count($this->tabs); $i >= 0; $i--)
-			$this->BeginNextFormTab();
-
-		$this->bButtons = true;
-		$this->EndTab();
-
 		if ($this->bPublicMode)
 		{
 			if (strlen($_REQUEST['from_module']))
-				echo '<input type="hidden" name="from_module" value="'.htmlspecialchars($_REQUEST['from_module']).'" />';
+				$this->sButtonsContent .= '<input type="hidden" name="from_module" value="'.htmlspecialcharsbx($_REQUEST['from_module']).'" />';
 
+			ob_start();
 			if ($arJSButtons === false)
 			{
 ?>
@@ -5199,6 +4634,7 @@ Sync();
 ]);</script>
 <?
 			}
+			$this->sButtonsContent .= ob_get_clean();
 		}
 	}
 }
@@ -5210,7 +4646,7 @@ function ShowJSHint($text, $arParams=false)
 
 	CUtil::InitJSCore(array('window'));
 
-	$res = '<img src="/bitrix/images/1.gif" onload="BX.hint_replace(this, \''.htmlspecialchars(CUtil::JSEscape($text)).'\')" />';
+	$res = '<img src="/bitrix/images/1.gif" onload="BX.hint_replace(this, \''.htmlspecialcharsbx(CUtil::JSEscape($text)).'\')" />';
 
 	if (isset($arParams['return']) && $arParams['return'])
 		return $res;

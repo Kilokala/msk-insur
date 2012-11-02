@@ -32,7 +32,7 @@ class CAllUser extends CDBResult
 
 	function GetParam($name)
 	{
-		if(is_array($_SESSION["SESS_AUTH"]) && array_key_exists($name, $_SESSION["SESS_AUTH"]))
+		if(isset($_SESSION["SESS_AUTH"][$name]))
 			return $_SESSION["SESS_AUTH"][$name];
 		else
 			return null;
@@ -52,10 +52,7 @@ class CAllUser extends CDBResult
 
 	function GetID()
 	{
-		if(
-			isset($_SESSION["SESS_AUTH"])
-			&& array_key_exists("USER_ID", $_SESSION["SESS_AUTH"])
-		)
+		if(isset($_SESSION["SESS_AUTH"]["USER_ID"]))
 			return $_SESSION["SESS_AUTH"]["USER_ID"];
 		else
 			return null;
@@ -84,6 +81,21 @@ class CAllUser extends CDBResult
 	function GetLastName()
 	{
 		return $_SESSION["SESS_AUTH"]["LAST_NAME"];
+	}
+
+	function GetSecondName()
+	{
+		return $_SESSION["SESS_AUTH"]["SECOND_NAME"];
+	}
+
+	function GetFormattedName($bUseBreaks = true)
+	{
+		return CUser::FormatName(CSite::GetNameFormat($bUseBreaks),
+			array("NAME"		=> $this->GetFirstName(),
+				"SECOND_NAME"	=> $this->GetSecondName(),
+				"LAST_NAME"		=> $this->GetLastName()
+			)
+		);
 	}
 
 	function GetUserGroupArray()
@@ -135,10 +147,10 @@ class CAllUser extends CDBResult
 		global $DB, $APPLICATION;
 		$result_message = true;
 		$user_id = 0;
-		$arParams = Array(
-			"LOGIN"		=>	&$login,
-			"HASH"	=>	&$hash,
-			);
+		$arParams = array(
+			"LOGIN" => &$login,
+			"HASH" => &$hash,
+		);
 
 		$APPLICATION->ResetException();
 		$bOk = true;
@@ -160,46 +172,52 @@ class CAllUser extends CDBResult
 			}
 		}
 
-		if($bOk)
+		if($bOk && $arParams['HASH'] <> '')
 		{
-			$strSql =
-				"SELECT U.ID, U.ACTIVE, U.STORED_HASH ".
+			$strSql = 
+				"SELECT U.ID, U.ACTIVE, U.STORED_HASH, U.EXTERNAL_AUTH_ID ".
 				"FROM b_user U ".
-				"WHERE U.LOGIN='".$DB->ForSQL($arParams['LOGIN'], 50)."' ".
-				"	AND (U.EXTERNAL_AUTH_ID IS NULL OR U.EXTERNAL_AUTH_ID='') ";
+				"WHERE U.LOGIN='".$DB->ForSQL($arParams['LOGIN'], 50)."' ";
 			$result = $DB->Query($strSql, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
-			if(strlen($arParams['HASH'])>0 && $arUser = $result->Fetch())
+
+			$bFound = false;
+			$bHashFound = false;
+			while(($arUser = $result->Fetch()))
 			{
-				$stored_id = 0;
+				$bFound = true;
+				//there is no stored auth for external authorization, but domain spread auth should work
+				$bExternal = ($arUser["EXTERNAL_AUTH_ID"] <> '');
 				if(
 					// если старый вариант (strlen(STORED_HASH)>0) и полное совпадение
 					(strlen($arUser["STORED_HASH"])>0 && $arUser["STORED_HASH"] == $arParams['HASH'])
 					|| // или авторизаци€ по новому варианту
-					(CUser::CheckStoredHash($arUser["ID"], $arParams['HASH']))
+					(CUser::CheckStoredHash($arUser["ID"], $arParams['HASH'], $bExternal))
 				)
 				{
+					$bHashFound = true;
 					if($arUser["ACTIVE"] == "Y")
 					{
 						$_SESSION["SESS_AUTH"]["SESSION_HASH"] = $arParams['HASH'];
 						$this->bLoginByHash = true;
-						$this->Authorize($arUser["ID"], true);
+						$this->Authorize($arUser["ID"], !$bExternal);
 					}
 					else
 					{
 						$APPLICATION->ThrowException(GetMessage("LOGIN_BLOCK"));
 						$result_message = Array("MESSAGE"=>GetMessage("LOGIN_BLOCK")."<br>", "TYPE"=>"ERROR");
 					}
-				}
-				else
-				{
-					$APPLICATION->ThrowException(GetMessage("USER_WRONG_HASH"));
-					$result_message = Array("MESSAGE"=>GetMessage("USER_WRONG_HASH")."<br>", "TYPE"=>"ERROR");
+					break;
 				}
 			}
-			else
+			if(!$bFound)
 			{
 				$APPLICATION->ThrowException(GetMessage("WRONG_LOGIN"));
-			 	$result_message = Array("MESSAGE"=>GetMessage("WRONG_LOGIN")."<br>", "TYPE"=>"ERROR");
+				$result_message = Array("MESSAGE"=>GetMessage("WRONG_LOGIN")."<br>", "TYPE"=>"ERROR");
+			}
+			elseif(!$bHashFound)
+			{
+				$APPLICATION->ThrowException(GetMessage("USER_WRONG_HASH"));
+				$result_message = Array("MESSAGE"=>GetMessage("USER_WRONG_HASH")."<br>", "TYPE"=>"ERROR");
 			}
 		}
 
@@ -351,7 +369,7 @@ class CAllUser extends CDBResult
 				'SITE_ID' => $DB->ForSQL(trim($site_id), 2),
 				'~TIMESTAMP_X'=>$DB->CurrentTimeFunction()
 			);
-			$stored_id = CDatabase::Add("b_user_hit_auth", $arFields);
+			CDatabase::Add("b_user_hit_auth", $arFields);
 		}
 
 		return $hash;
@@ -406,7 +424,7 @@ class CAllUser extends CDBResult
 		- «апоминание пользовател€ на сервере
 		- –азмножение авторизационных параметров между сайтами
 	Ћогин
-	 	- проверка имени/парол€
+		- проверка имени/парол€
 		- "јвторизаци€"
 	Ћогин по хешу
 		- проверка имени/хеша
@@ -482,7 +500,8 @@ class CAllUser extends CDBResult
 					STORED_HASH = NULL,
 					LAST_LOGIN = ".$DB->GetNowFunction().",
 					TIMESTAMP_X = TIMESTAMP_X,
-					LOGIN_ATTEMPTS = 0
+					LOGIN_ATTEMPTS = 0,
+					TIME_ZONE_OFFSET = ".CTimeZone::GetOffset()."
 				WHERE
 					ID=".$_SESSION["SESS_AUTH"]["USER_ID"]."
 			");
@@ -813,16 +832,16 @@ class CAllUser extends CDBResult
 			CTimeZone::Enable();
 
 			if(!($res = $db_check->Fetch()))
-				return Array("MESSAGE"=>preg_replace("/#LOGIN#/i", htmlspecialchars($arParams["LOGIN"]), GetMessage('LOGIN_NOT_FOUND')), "TYPE"=>"ERROR");
+				return Array("MESSAGE"=>preg_replace("/#LOGIN#/i", htmlspecialcharsbx($arParams["LOGIN"]), GetMessage('LOGIN_NOT_FOUND')), "TYPE"=>"ERROR");
 
 			$salt = substr($res["CHECKWORD"], 0, 8);
 			if(strlen($res["CHECKWORD"])<=0 || $res["CHECKWORD"] != $salt.md5($salt.$arParams["CHECKWORD"]))
-				return Array("MESSAGE"=>preg_replace("/#LOGIN#/i", htmlspecialchars($arParams["LOGIN"]), GetMessage("CHECKWORD_INCORRECT"))."<br>", "TYPE"=>"ERROR");
+				return Array("MESSAGE"=>preg_replace("/#LOGIN#/i", htmlspecialcharsbx($arParams["LOGIN"]), GetMessage("CHECKWORD_INCORRECT"))."<br>", "TYPE"=>"ERROR");
 
 			$arPolicy = CUser::GetGroupPolicy($res["ID"]);
 			$site_format = CSite::GetDateFormat();
 			if(mktime()-$arPolicy["CHECKWORD_TIMEOUT"]*60 > MakeTimeStamp($res["CHECKWORD_TIME"], $site_format))
-				return Array("MESSAGE"=>preg_replace("/#LOGIN#/i", htmlspecialchars($arParams["LOGIN"]), GetMessage("CHECKWORD_EXPIRE"))."<br>", "TYPE"=>"ERROR");
+				return Array("MESSAGE"=>preg_replace("/#LOGIN#/i", htmlspecialcharsbx($arParams["LOGIN"]), GetMessage("CHECKWORD_EXPIRE"))."<br>", "TYPE"=>"ERROR");
 
 			if($arParams["SITE_ID"] === false)
 			{
@@ -852,7 +871,7 @@ class CAllUser extends CDBResult
 		// мен€ем пароль
 		$ID = IntVal($ID);
 		$salt = randString(8);
-		$checkword = randString(8);
+		$checkword = md5(CMain::GetServerUniqID().uniqid());
 		$strSql = "UPDATE b_user SET ".
 			"	CHECKWORD = '".$salt.md5($salt.$checkword)."', ".
 			"	CHECKWORD_TIME = ".$DB->CurrentTimeFunction().", ".
@@ -1008,7 +1027,7 @@ class CAllUser extends CDBResult
 			$USER_LOGIN = $USER_EMAIL;
 
 		global $REMOTE_ADDR;
-		$checkword = randString(8);
+		$checkword = md5(CMain::GetServerUniqID().uniqid());
 		$bConfirmReq = COption::GetOptionString("main", "new_user_registration_email_confirmation", "N") == "Y";
 		$arFields = Array(
 				"LOGIN" => $USER_LOGIN,
@@ -1123,7 +1142,7 @@ class CAllUser extends CDBResult
 
 		global $REMOTE_ADDR;
 
-		$checkword = randString(8);
+		$checkword = md5(CMain::GetServerUniqID().uniqid());
 		$arFields = Array(
 			"CHECKWORD" => $checkword,
 			"~CHECKWORD_TIME" => $DB->CurrentTimeFunction(),
@@ -1220,7 +1239,7 @@ class CAllUser extends CDBResult
 			{
 				if(COption::GetOptionString("main", "event_log_register", "N") === "Y")
 				{
-				 	$res_log["user"] = $arFields["LOGIN"];
+					$res_log["user"] = $arFields["LOGIN"];
 					CEventLog::Log("SECURITY", "USER_REGISTER", "main", $ID, serialize($res_log));
 				}
 			}
@@ -1494,7 +1513,7 @@ class CAllUser extends CDBResult
 				{
 					$res = CUser::GetList($b, $o, array("=EMAIL" => $arFields["EMAIL"]));
 					if($res->Fetch())
-						$this->LAST_ERROR .= GetMessage("USER_WITH_EMAIL_EXIST", array("#EMAIL#" => htmlspecialchars($arFields["EMAIL"])))."<br>";
+						$this->LAST_ERROR .= GetMessage("USER_WITH_EMAIL_EXIST", array("#EMAIL#" => htmlspecialcharsbx($arFields["EMAIL"])))."<br>";
 				}
 			}
 
@@ -1557,7 +1576,7 @@ class CAllUser extends CDBResult
 				);
 
 			if($res->Fetch())
-				$this->LAST_ERROR .= str_replace("#LOGIN#", htmlspecialchars($arFields["LOGIN"]), GetMessage("USER_EXIST"))."<br>";
+				$this->LAST_ERROR .= str_replace("#LOGIN#", htmlspecialcharsbx($arFields["LOGIN"]), GetMessage("USER_EXIST"))."<br>";
 		}
 
 		if(is_object($APPLICATION))
@@ -1695,7 +1714,7 @@ class CAllUser extends CDBResult
 				if(is_set($arFields, "PASSWORD") || is_set($arFields, "EMAIL") || is_set($arFields, "LOGIN")  || is_set($arFields, "ACTIVE"))
 				{
 					$salt =  randString(8);
-					$checkword = randString(8);
+					$checkword = md5(CMain::GetServerUniqID().uniqid());
 					$arFields["CHECKWORD"] = $salt.md5($salt.$checkword);
 				}
 			}
@@ -1777,7 +1796,7 @@ class CAllUser extends CDBResult
 				$name = $USER->GetParam("FIRST_NAME");
 				$last_name = $USER->GetParam("LAST_NAME");
 				$USER->SetParam("NAME", $name.($name == '' || $last_name == ''? "":" ").$last_name);
-				
+
 				//cache for GetByID()
 				self::$CURRENT_USER = false;
 			}
@@ -1816,17 +1835,17 @@ class CAllUser extends CDBResult
 
 		$DB->Query("DELETE FROM b_user_group WHERE USER_ID=".$USER_ID, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
 
-		if (is_array($arGroups) && count($arGroups) > 0)
+		if(is_array($arGroups) && count($arGroups) > 0)
 		{
-			if (is_array($arGroups[0]) && count($arGroups[0]) > 0)
+			if(is_array($arGroups[0]) && count($arGroups[0]) > 0)
 			{
 				$arTmp = array();
-				for ($i = 0; $i < count($arGroups); $i++)
+				foreach($arGroups as $group)
 				{
-					if (IntVal($arGroups[$i]["GROUP_ID"]) > 0
-						&& !in_array(IntVal($arGroups[$i]["GROUP_ID"]), $arTmp))
+					$group_id = intval($group["GROUP_ID"]);
+					if($group_id > 0 && !in_array($group_id, $arTmp))
 					{
-						$arInsert = $DB->PrepareInsert("b_user_group", $arGroups[$i]);
+						$arInsert = $DB->PrepareInsert("b_user_group", $group);
 						$strSql = "
 							INSERT INTO b_user_group (
 								USER_ID, ".$arInsert[0]."
@@ -1834,31 +1853,28 @@ class CAllUser extends CDBResult
 								".$USER_ID.",
 								".$arInsert[1]."
 							)
-							";
-						//echo "<pre>".$strSql."</pre>";
+						";
 						$DB->Query($strSql, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
 
-						$arTmp[] = IntVal($arGroups[$i]["GROUP_ID"]);
+						$arTmp[] = $group_id;
 					}
 				}
 				$arGroups = $arTmp;
 			}
 			else
 			{
-				$strGroups = "0";
-
 				array_walk($arGroups, create_function("&\$item", "\$item=intval(\$item);"));
 				$arGroups = array_unique($arGroups);
-				if (count($arGroups)>0)
-					$strGroups = implode(",", $arGroups);
-
-				$strSql =
-					"INSERT INTO b_user_group(USER_ID, GROUP_ID) ".
-					"SELECT ".$USER_ID.", ID ".
-					"FROM b_group ".
-					"WHERE ID in (".$strGroups.")";
-
-				$DB->Query($strSql, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
+				if(count($arGroups)>0)
+				{
+					$strSql =
+						"INSERT INTO b_user_group(USER_ID, GROUP_ID) ".
+						"SELECT ".$USER_ID.", ID ".
+						"FROM b_group ".
+						"WHERE ID in (".implode(",", $arGroups).")";
+	
+					$DB->Query($strSql, false, "FILE: ".__FILE__."<br> LINE: ".__LINE__);
+				}
 			}
 		}
 		else
@@ -2109,7 +2125,7 @@ class CAllUser extends CDBResult
 		return $arPolicy;
 	}
 
-	function CheckStoredHash($iUserId, $sHash)
+	function CheckStoredHash($iUserId, $sHash, $bTempHashOnly=false)
 	{
 		global $DB;
 		$arPolicy = CUser::GetGroupPolicy($iUserId);
@@ -2142,10 +2158,14 @@ class CAllUser extends CDBResult
 			}
 			elseif(!$auth_id)
 			{
-				$remote_net = ip2long($arPolicy["STORE_IP_MASK"]) & ip2long($_SERVER["REMOTE_ADDR"]);
-				$stored_net = ip2long($arPolicy["STORE_IP_MASK"]) & (float)$ar["IP_ADDR"];
-				if($sHash == $ar["STORED_HASH"] && $remote_net == $stored_net)
-					$auth_id = $ar["ID"];
+				//for domain spreaded external auth we should check only temporary hashes
+				if($bTempHashOnly == false || $ar["TEMP_HASH"] == "Y")
+				{
+					$remote_net = ip2long($arPolicy["STORE_IP_MASK"]) & ip2long($_SERVER["REMOTE_ADDR"]);
+					$stored_net = ip2long($arPolicy["STORE_IP_MASK"]) & (float)$ar["IP_ADDR"];
+					if($sHash == $ar["STORED_HASH"] && $remote_net == $stored_net)
+						$auth_id = $ar["ID"];
+				}
 			}
 		}
 		return $auth_id;
@@ -2628,6 +2648,9 @@ class CAllUser extends CDBResult
 			$NAME_TEMPLATE
 		);
 
+		if (strlen($SECOND_NAME) <= 0)
+			$res = trim(str_replace("  ", " ", $res));
+
 		$res_check = "";
 		if (strpos($NAME_TEMPLATE, '#NAME#') !== false || strpos($NAME_TEMPLATE, '#NAME_SHORT#') !== false)
 			$res_check .= $arUser['NAME'];
@@ -2648,7 +2671,7 @@ class CAllUser extends CDBResult
 		}
 
 		if ($bHTMLSpec)
-			$res = htmlspecialchars($res);
+			$res = htmlspecialcharsbx($res);
 
 		$res = str_replace(array('#NOBR#', '#/NOBR#'), array('<nobr>', '</nobr>'), $res);
 
@@ -2837,7 +2860,7 @@ class CAllGroup
 				foreach($aPrevUsers as $user_id)
 					if(!in_array($user_id, $aNewUsers))
 					{
-					  	$rsUser = CUser::GetByID($user_id);
+						$rsUser = CUser::GetByID($user_id);
 						if($arUser = $rsUser->GetNext())
 							$UserName = ($arUser["NAME"] != "" || $arUser["LAST_NAME"] != "") ? trim($arUser["NAME"]." ".$arUser["LAST_NAME"]) : $arUser["LOGIN"];
 						$res_log = array(

@@ -44,7 +44,7 @@ $arFilter = array(
 
 if($lAdmin->EditAction())
 {
-	$obUserField  = new CUserTypeEntity;
+	$obUserField = new CUserTypeEntity;
 	foreach($FIELDS as $ID=>$arFields)
 	{
 		if(!$lAdmin->IsUpdated($ID))
@@ -74,12 +74,12 @@ if($arID = $lAdmin->GroupAction())
 			$arID[] = $arRes['ID'];
 	}
 
-	$obUserField  = new CUserTypeEntity;
+	$obUserField = new CUserTypeEntity;
 	foreach($arID as $ID)
 	{
 		if(strlen($ID)<=0)
 			continue;
-	   	$ID = IntVal($ID);
+		$ID = IntVal($ID);
 		//Rights check
 		if($USER_FIELD_MANAGER->GetRights(false, $ID) < "W")
 			continue;
@@ -185,7 +185,7 @@ while($arRes = $rsData->NavNext(true, "f_")):
 	$row =& $lAdmin->AddRow($f_ID, $arRes);
 
 	$arUserType = $USER_FIELD_MANAGER->GetUserType($f_USER_TYPE_ID);
-	$row->AddViewField("USER_TYPE_ID", htmlspecialchars($arUserType["DESCRIPTION"]));
+	$row->AddViewField("USER_TYPE_ID", htmlspecialcharsbx($arUserType["DESCRIPTION"]));
 	$row->AddInputField("SORT", array("size"=>5));
 	$row->AddViewField("MULTIPLE", $f_MULTIPLE=="Y"?GetMessage("MAIN_YES"):GetMessage("MAIN_NO"));
 	$row->AddCheckField("MANDATORY");
@@ -267,7 +267,7 @@ $arrYN = array(
 <tr>
 	<td><b><?=GetMessage("USERTYPE_F_FIND")?>:</b></td>
 	<td>
-		<input type="text" size="25" name="find" value="<?echo htmlspecialchars($find)?>">
+		<input type="text" size="25" name="find" value="<?echo htmlspecialcharsbx($find)?>">
 		<?
 		$arr = array(
 			"reference" => array(
@@ -286,16 +286,16 @@ $arrYN = array(
 <tr>
 	<td><?="ID"?>:</td>
 	<td>
-		<input type="text" name="find_id" size="47" value="<?echo htmlspecialchars($find_id)?>">
+		<input type="text" name="find_id" size="47" value="<?echo htmlspecialcharsbx($find_id)?>">
 	</td>
 </tr>
 <tr>
 	<td><?=GetMessage("USERTYPE_ENTITY_ID").":"?></td>
-	<td><input type="text" name="find_entity_id" size="47" value="<?echo htmlspecialchars($find_entity_id)?>"></td>
+	<td><input type="text" name="find_entity_id" size="47" value="<?echo htmlspecialcharsbx($find_entity_id)?>"></td>
 </tr>
 <tr>
 	<td><?=GetMessage("USERTYPE_FIELD_NAME").":"?></td>
-	<td><input type="text" name="find_field_name" size="47" value="<?echo htmlspecialchars($find_field_name)?>"></td>
+	<td><input type="text" name="find_field_name" size="47" value="<?echo htmlspecialcharsbx($find_field_name)?>"></td>
 </tr>
 <tr>
 	<td><?=GetMessage("USERTYPE_USER_TYPE_ID")?>:</td>
@@ -314,7 +314,7 @@ $arrYN = array(
 </tr>
 <tr>
 	<td><?=GetMessage("USERTYPE_XML_ID").":"?></td>
-	<td><input type="text" name="find_xml_id" size="47" value="<?echo htmlspecialchars($find_xml_id)?>"></td>
+	<td><input type="text" name="find_xml_id" size="47" value="<?echo htmlspecialcharsbx($find_xml_id)?>"></td>
 </tr>
 <tr>
 	<td><?=GetMessage("USERTYPE_MULTIPLE")?>:</td>

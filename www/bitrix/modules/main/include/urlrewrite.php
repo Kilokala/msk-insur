@@ -29,10 +29,11 @@ if (!defined("AUTH_404"))
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/bx_root.php");
 require_once($_SERVER["DOCUMENT_ROOT"].BX_PERSONAL_ROOT."/php_interface/dbconn.php");
 
+$requestUri = urldecode($_SERVER["REQUEST_URI"]);
+
 $bUTF = (!defined("BX_UTF") && CUtil::DetectUTF8($_SERVER["REQUEST_URI"]));
-$_SERVER["REQUEST_URI"] = urldecode($_SERVER["REQUEST_URI"]);
 if($bUTF)
-	$_SERVER["REQUEST_URI"] = CharsetConverter::ConvertCharset($_SERVER["REQUEST_URI"], "utf-8", "windows-1251");
+	$requestUri = CharsetConverter::ConvertCharset($requestUri, "utf-8", (defined("BX_DEFAULT_CHARSET")? BX_DEFAULT_CHARSET : "windows-1251"));
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/classes/general/virtual_io.php");
 $io = CBXVirtualIo::GetInstance();
@@ -44,9 +45,9 @@ if(file_exists($_SERVER['DOCUMENT_ROOT']."/urlrewrite.php"))
 if(isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == '404' || isset($_REQUEST["SEF_APPLICATION_CUR_PAGE_URL"]))
 {
 	if(isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == '404')
-		$url = $_SERVER["REQUEST_URI"];
+		$url = $requestUri;
 	else
-		$url = $_SERVER["REQUEST_URI"] = $REQUEST_URI = (is_array($_REQUEST["SEF_APPLICATION_CUR_PAGE_URL"])? '':$_REQUEST["SEF_APPLICATION_CUR_PAGE_URL"]);
+		$url = $requestUri = $_SERVER["REQUEST_URI"] = $REQUEST_URI = (is_array($_REQUEST["SEF_APPLICATION_CUR_PAGE_URL"])? '':$_REQUEST["SEF_APPLICATION_CUR_PAGE_URL"]);
 
 	if(($pos=strpos($url, "?"))!==false)
 	{
@@ -59,20 +60,20 @@ if(isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == '404' ||
 		$_SERVER["QUERY_STRING"] = $QUERY_STRING = $params;
 	}
 
-	$HTTP_GET_VARS=$_GET;
+	$HTTP_GET_VARS = $_GET;
 	$sUrlPath = GetPagePath();
 	$strNavQueryString = DeleteParam(array("SEF_APPLICATION_CUR_PAGE_URL"));
 	if($strNavQueryString != "")
 		$sUrlPath = $sUrlPath."?".$strNavQueryString;
-	define("POST_FORM_ACTION_URI",htmlspecialchars("/bitrix/urlrewrite.php?SEF_APPLICATION_CUR_PAGE_URL=".urlencode($sUrlPath)));
+	define("POST_FORM_ACTION_URI", htmlspecialcharsbx("/bitrix/urlrewrite.php?SEF_APPLICATION_CUR_PAGE_URL=".urlencode($sUrlPath)));
 }
 
 foreach($arUrlRewrite as $val)
 {
-	if(preg_match($val["CONDITION"], $_SERVER["REQUEST_URI"]))
+	if(preg_match($val["CONDITION"], $requestUri))
 	{
 		if (strlen($val["RULE"]) > 0)
-			$url = preg_replace($val["CONDITION"], (strlen($val["PATH"]) > 0 ? $val["PATH"]."?" : "").$val["RULE"], $_SERVER["REQUEST_URI"]);
+			$url = preg_replace($val["CONDITION"], (strlen($val["PATH"]) > 0 ? $val["PATH"]."?" : "").$val["RULE"], $requestUri);
 		else
 			$url = $val["PATH"];
 
@@ -93,9 +94,17 @@ foreach($arUrlRewrite as $val)
 		if(!$io->FileExists($_SERVER['DOCUMENT_ROOT'].$url))
 			continue;
 
+		if (!$io->ValidatePathString($io->GetPhysicalName($url)))
+			continue;
+
 		$urlTmp = strtolower(ltrim($url, "/\\"));
+		$urlTmp = str_replace(".", "", $urlTmp);
 		$urlTmp = substr($urlTmp, 0, 7);
 		if (($urlTmp == "bitrix/") || ($urlTmp == "upload/"))
+			continue;
+
+		$ext = strtolower(GetFileExtension($url));
+		if ($ext != "php")
 			continue;
 
 		CHTTP::SetStatus("200 OK");
@@ -106,6 +115,13 @@ foreach($arUrlRewrite as $val)
 
 		die();
 	}
+}
+
+//admin section 404
+if(strpos($requestUri, "/bitrix/admin/") === 0)
+{
+	include($_SERVER["DOCUMENT_ROOT"]."/bitrix/admin/404.php");
+	die();
 }
 
 define("BX_CHECK_SHORT_URI", true);

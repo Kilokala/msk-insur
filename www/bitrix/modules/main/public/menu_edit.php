@@ -47,7 +47,7 @@ if($_REQUEST["action"] == "delete" && check_bitrix_sessid())
 				'perm' => CFileMan::FetchFileAccessPerm($arPath_m, true),
 			)
 		);
-		
+
 		if (COption::GetOptionInt("main", "disk_space") > 0)
 		{
 			$quota = new CDiskQuota();
@@ -58,7 +58,7 @@ if($_REQUEST["action"] == "delete" && check_bitrix_sessid())
 		$success = $io->Delete($abs_path);
 
 		if(COption::GetOptionString($module_id, "log_menu", "Y")=="Y")
-        { 
+		{
 			$mt = COption::GetOptionString("fileman", "menutypes", $default_value, $site);
 			$mt = unserialize(str_replace("\\", "", $mt));
 			$res_log['menu_name'] = $mt[$name];
@@ -87,7 +87,7 @@ if($_REQUEST["action"] == "delete" && check_bitrix_sessid())
 	alert('<?=CUtil::JSEscape(GetMessage("pub_menu_edit_err_del").' '.$menufilename);?>');
 <?endif;?>
 </script>
-<?			
+<?
 	die();
 }
 
@@ -200,11 +200,11 @@ else
 			CFileMan::SaveMenu(Array($site, $menufilename), $aMenuLinksTmp, $sMenuTemplateTmp);
 
 			if(COption::GetOptionString($module_id, "log_menu", "Y")=="Y")
-	        {  
+			{
 				$mt = COption::GetOptionString("fileman", "menutypes", false, $site);
-	 			$mt = unserialize(str_replace("\\", "", $mt));
-	  			$res_log['menu_name'] = $mt[$name];
-	  			$res_log['path'] = substr($path, 1);     
+				$mt = unserialize(str_replace("\\", "", $mt));
+				$res_log['menu_name'] = $mt[$name];
+				$res_log['path'] = substr($path, 1);
 				if ($bEdit)
 					CEventLog::Log(
 						"content",
@@ -329,13 +329,13 @@ if(!is_array($aMenuLinksTmp))
 		<span class="rowcontrol drag" title="<?=GetMessage('MENU_EDIT_TOOLTIP_DRAG')?>"></span>
 		</td>
 		</td><td>
-			<div onmouseout="rowMouseOut(this)" onmouseover="rowMouseOver(this)" class="edit-field view-area" id="view_area_text_<?=$i?>" style="width: 220px; padding: 2px; display: block; border: 1px solid white; cursor: text; -moz-box-sizing: border-box; background-position: right center; background-repeat: no-repeat;" onclick="editArea('text_<?=$i?>')" title="<?=GetMessage('MENU_EDIT_TOOLTIP_TEXT_EDIT')?>"><?=strlen($aMenuLinksItem[0]) > 0 ? htmlspecialchars($aMenuLinksItem[0]) : GetMessage('MENU_EDIT_JS_NONAME')?></div>
-			<div class="edit-area" id="edit_area_text_<?=$i?>" style="display: none;"><input type="text" style="width: 220px;" name="text_<?echo $i?>" value="<?=htmlspecialchars($aMenuLinksItem[0])?>" onblur="viewArea('text_<?=$i?>')" />
+			<div onmouseout="rowMouseOut(this)" onmouseover="rowMouseOver(this)" class="edit-field view-area" id="view_area_text_<?=$i?>" style="width: 220px; padding: 2px; display: block; border: 1px solid white; cursor: text; -moz-box-sizing: border-box; background-position: right center; background-repeat: no-repeat;" onclick="editArea('text_<?=$i?>')" title="<?=GetMessage('MENU_EDIT_TOOLTIP_TEXT_EDIT')?>"><?=strlen($aMenuLinksItem[0]) > 0 ? htmlspecialcharsbx($aMenuLinksItem[0]) : GetMessage('MENU_EDIT_JS_NONAME')?></div>
+			<div class="edit-area" id="edit_area_text_<?=$i?>" style="display: none;"><input type="text" style="width: 220px;" name="text_<?echo $i?>" value="<?=htmlspecialcharsbx($aMenuLinksItem[0])?>" onblur="viewArea('text_<?=$i?>')" />
 </div>
 		</td>
 		<td>
-			<div onmouseout="rowMouseOut(this)" onmouseover="rowMouseOver(this)" class="edit-field view-area" id="view_area_link_<?=$i?>" style="width: 220px; padding: 2px; display: block; border: 1px solid white; cursor: text; -moz-box-sizing: border-box; background-position: right center; background-repeat: no-repeat;" onclick="editArea('link_<?=$i?>')" title="<?=GetMessage('MENU_EDIT_TOOLTIP_LINK_EDIT')?>"><?=strlen($aMenuLinksItem[1]) > 0 ? htmlspecialchars($aMenuLinksItem[1]) : GetMessage('MENU_EDIT_JS_NONAME')?></div>
-			<div class="edit-area" id="edit_area_link_<?=$i?>" style="display: none;"><input type="text" style="width: 220px;" name="link_<?echo $i?>" value="<?=htmlspecialchars($aMenuLinksItem[1])?>" onblur="viewArea('link_<?=$i?>')" /></div>
+			<div onmouseout="rowMouseOut(this)" onmouseover="rowMouseOver(this)" class="edit-field view-area" id="view_area_link_<?=$i?>" style="width: 220px; padding: 2px; display: block; border: 1px solid white; cursor: text; -moz-box-sizing: border-box; background-position: right center; background-repeat: no-repeat;" onclick="editArea('link_<?=$i?>')" title="<?=GetMessage('MENU_EDIT_TOOLTIP_LINK_EDIT')?>"><?=strlen($aMenuLinksItem[1]) > 0 ? htmlspecialcharsbx($aMenuLinksItem[1]) : GetMessage('MENU_EDIT_JS_NONAME')?></div>
+			<div class="edit-area" id="edit_area_link_<?=$i?>" style="display: none;"><input type="text" style="width: 220px;" name="link_<?echo $i?>" value="<?=htmlspecialcharsbx($aMenuLinksItem[1])?>" onblur="viewArea('link_<?=$i?>')" /></div>
 		</td>
 		<td>
 <?
@@ -378,7 +378,7 @@ var jsMenuMess = {
 
 function setLink(filename, path, site)
 {
-	<?echo $obJSPopup->jsPopup?>.GetForm()['link_' + currentLink].value = (path == '' ? '/' : path + '/') + filename;
+	<?echo $obJSPopup->jsPopup?>.GetForm()['link_' + currentLink].value = ((path == '' || path == '/') ? '/' : path + '/') + filename;
 	editArea('link_' + currentLink, true);
 	viewArea('link_' + currentLink, true);
 }

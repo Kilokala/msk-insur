@@ -35,9 +35,9 @@ class CUserTypeStringFormatted extends CUserTypeString
 	{
 		$result = '';
 		if($bVarsFromForm)
-			$value = htmlspecialchars($GLOBALS[$arHtmlControl["NAME"]]["PATTERN"]);
+			$value = htmlspecialcharsbx($GLOBALS[$arHtmlControl["NAME"]]["PATTERN"]);
 		elseif(is_array($arUserField))
-			$value = htmlspecialchars($arUserField["SETTINGS"]["PATTERN"]);
+			$value = htmlspecialcharsbx($arUserField["SETTINGS"]["PATTERN"]);
 		else
 			$value = "#VALUE#";
 
@@ -50,9 +50,9 @@ class CUserTypeStringFormatted extends CUserTypeString
 		</tr>
 		';
 		if($bVarsFromForm)
-			$value = htmlspecialchars($GLOBALS[$arHtmlControl["NAME"]]["DEFAULT_VALUE"]);
+			$value = htmlspecialcharsbx($GLOBALS[$arHtmlControl["NAME"]]["DEFAULT_VALUE"]);
 		elseif(is_array($arUserField))
-			$value = htmlspecialchars($arUserField["SETTINGS"]["DEFAULT_VALUE"]);
+			$value = htmlspecialcharsbx($arUserField["SETTINGS"]["DEFAULT_VALUE"]);
 		else
 			$value = "";
 
@@ -122,9 +122,9 @@ class CUserTypeStringFormatted extends CUserTypeString
 		</tr>
 		';
 		if($bVarsFromForm)
-			$value = htmlspecialchars($GLOBALS[$arHtmlControl["NAME"]]["REGEXP"]);
+			$value = htmlspecialcharsbx($GLOBALS[$arHtmlControl["NAME"]]["REGEXP"]);
 		elseif(is_array($arUserField))
-			$value = htmlspecialchars($arUserField["SETTINGS"]["REGEXP"]);
+			$value = htmlspecialcharsbx($arUserField["SETTINGS"]["REGEXP"]);
 		else
 			$value = "";
 		$result .= '

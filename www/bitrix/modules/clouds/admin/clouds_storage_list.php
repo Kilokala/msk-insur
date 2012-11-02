@@ -233,25 +233,13 @@ if(is_array($arID))
 					|| is_array($arFile = $rsNextFile->Fetch())
 				)
 				{
-
-					//Fix for IE8 image/jpg and X-Content-Type-Options: nosniff issue
-					if($arFile["CONTENT_TYPE"] === "image/jpg")
-					{
-						$arFile["CONTENT_TYPE"] = "image/jpeg";
-						$bFixContentType = true;
-					}
-					else
-					{
-						$bFixContentType = false;
-					}
-
+					CCloudStorage::FixFileContentType($arFile);
 					$moveResult = CCloudStorage::MoveFile($arFile, $ob);
 					if($moveResult == CCloudStorage::FILE_MOVED)
 					{
 						$DB->Query("
 							UPDATE b_file
 							SET HANDLER_ID = '".$DB->ForSQL($ob->ID)."'
-							".($bFixContentType? ", CONTENT_TYPE='image/jpeg'": "")."
 							WHERE ID = ".intval($arFile["ID"])."
 						");
 						CFile::CleanCache($arFile["ID"]);

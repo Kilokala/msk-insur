@@ -298,7 +298,7 @@ if(strlen($Preview) > 0)
 $APPLICATION->SetTitle(GetMessage("MAIN_ADM_CAPTCHA_PAGE_TITLE"));
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_after.php");
 
-$CAPTCHA_CODE = htmlspecialchars($APPLICATION->CaptchaGetCode());
+$CAPTCHA_CODE = htmlspecialcharsbx($APPLICATION->CaptchaGetCode());
 
 $tabControl->Begin();
 ?>
@@ -548,17 +548,17 @@ function set_presets()
 	</td>
 	<td>
 		<?if($value[0] === "checkbox"):?>
-			<input type="checkbox" id="<?echo $key?>" name="<?echo $key?>" value="<?echo htmlspecialchars($value[1])?>" <?if(COption::GetOptionString("main", "CAPTCHA_".$key, $value[2]) === "Y") echo "checked"?>>
+			<input type="checkbox" id="<?echo $key?>" name="<?echo $key?>" value="<?echo htmlspecialcharsbx($value[1])?>" <?if(COption::GetOptionString("main", "CAPTCHA_".$key, $value[2]) === "Y") echo "checked"?>>
 		<?elseif($value[0] === "list"):
 			$vv = explode(",", COption::GetOptionString("main", "CAPTCHA_".$key, implode(",", $value[2])));
 			?>
 			<select multiple id="<?echo $key?>" name="<?echo $key?>[]" size="<?echo count($value[1])?>">
 			<?foreach($value[1] as $k => $v):?>
-				<option value="<?echo htmlspecialchars($k)?>" <?if(in_array($k, $vv)) echo "selected"?>><?echo htmlspecialchars($v)?></option>
+				<option value="<?echo htmlspecialcharsbx($k)?>" <?if(in_array($k, $vv)) echo "selected"?>><?echo htmlspecialcharsbx($v)?></option>
 			<?endforeach?>
 			</select>
 		<?else:?>
-			<input type="text" size="<?echo $value[1]?>" id="<?echo $key?>" name="<?echo $key?>" value="<?echo htmlspecialchars(COption::GetOptionString("main", "CAPTCHA_".$key, $value[2]))?>">
+			<input type="text" size="<?echo $value[1]?>" id="<?echo $key?>" name="<?echo $key?>" value="<?echo htmlspecialcharsbx(COption::GetOptionString("main", "CAPTCHA_".$key, $value[2]))?>">
 		<?endif?>
 	</td>
 </tr>

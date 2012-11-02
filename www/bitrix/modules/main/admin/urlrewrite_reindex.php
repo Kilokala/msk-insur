@@ -39,7 +39,7 @@ if(strlen($Reindex)>0 && check_bitrix_sessid())
 			"TYPE"=>"OK",
 		));
 	?>
-		<input type="hidden" id="NS" name="NS" value="<?=htmlspecialchars(serialize($res))?>">
+		<input type="hidden" id="NS" name="NS" value="<?=htmlspecialcharsbx(serialize($res))?>">
 	<?else:
 		CAdminMessage::ShowMessage(array(
 			"MESSAGE"=>GetMessage("MURL_REINDEX_COMPLETE"),
@@ -90,7 +90,7 @@ function DoNext()
 	}
 	if(newNS!=savedNS)
 	{
-		queryString='lang=<?echo htmlspecialchars(LANG)?>';
+		queryString='lang=<?echo htmlspecialcharsbx(LANG)?>';
 		if(savedNS!='start!')
 		{
 			queryString+='&Next=Y';
@@ -145,7 +145,7 @@ function EndReindex()
 
 <div id="reindex_result_div" style="margin:0px"></div>
 
-<form method="POST" action="<?echo $APPLICATION->GetCurPage()?>?lang=<?echo htmlspecialchars(LANG)?>" name="fs1">
+<form method="POST" action="<?echo $APPLICATION->GetCurPage()?>?lang=<?echo htmlspecialcharsbx(LANG)?>" name="fs1">
 <?
 $tabControl->Begin();
 $tabControl->BeginNextTab();
@@ -164,7 +164,7 @@ $tabControl->BeginNextTab();
 	</tr>
 	<tr id="trs" <?if($stepped!="Y") echo " disabled"?>>
 		<td><?echo GetMessage("MURL_REINDEX_STEP")?></td>
-		<td><input type="text" name="max_execution_time" id="max_execution_time" size="3" value="<?echo htmlspecialchars($max_execution_time);?>"  <?if($stepped!="Y") echo " disabled"?>> <?echo GetMessage("MURL_REINDEX_STEP_sec")?></td>
+		<td><input type="text" name="max_execution_time" id="max_execution_time" size="3" value="<?echo htmlspecialcharsbx($max_execution_time);?>"  <?if($stepped!="Y") echo " disabled"?>> <?echo GetMessage("MURL_REINDEX_STEP_sec")?></td>
 	</tr>
 
 <?

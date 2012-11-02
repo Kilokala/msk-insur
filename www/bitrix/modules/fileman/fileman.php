@@ -480,7 +480,14 @@ class CFileMan
 
 		$io = CBXVirtualIo::GetInstance();
 
-		if($io->DirectoryExists($DOC_ROOT.$path))//if delete folder
+		if(is_link($linkPath = CBXVirtualIoFileSystem::ConvertCharset($DOC_ROOT.$path))) //if delete symb. link 	todo: windows, can't delete links on dirs
+		{
+			if(@unlink($linkPath))
+				return;
+			else
+				return GetMessage("FILEMAN_FILEMAN_SYMLINK_DEL_ERROR")." \"".$path."\".\n";
+		}
+		elseif($io->DirectoryExists($DOC_ROOT.$path))//if delete folder
 		{
 			//check rights
 			if(!$USER->CanDoFileOperation('fm_delete_folder', Array($site,$path)))
@@ -637,22 +644,22 @@ class CFileMan
 		{
 			$fn = $child->GetName();
 
-			if($child->IsDirectory()) //если это "подпапка"
+			if($child->IsDirectory()) //if this is subfolder
 			{
-				//уходим в рекурсию
+				//go to recursion
 				$strWarning .= CFileMan::CopyEx(Array($site_from, $path_from."/".$fn), Array($site_to, $path_to."/".$fn), $bDeleteAfterCopy, $bOverride);
-				//вернулись из рекурсии - внутри нашей подпапки все в порядке
-				//if($bDeleteAfterCopy) //нужно удалить эту подпапку
+				//back from recursion, in this subfolder all right
+				//if($bDeleteAfterCopy) //necessary delete this subfolder
 				//	$strWarning .= CFileMan::DeleteDir($path_from."/".$file);
 			}
-			else //это "подфайл" :-)
+			else //this is "subfile" :-)
 			{
 				if($fn == ".access.php")
 					continue;
-				//проверим можно ли писать "туда"
+				//let's check, if we can to write there
 				if(!$USER->CanDoFileOperation('fm_create_new_file', Array($site_to, $path_to."/".$fn)))
 					$strWarning .= GetMessage("FILEMAN_FILEMAN_FILE_WRITE_DENY")." \"".$path_to."/".$fn."\".\n";
-				//проверим можно ли читать "отсюда"
+				//let's check, if we can read from there
 				elseif(!$USER->CanDoFileOperation('fm_view_file', Array($site_from, $path_from."/".$fn)))
 					$strWarning .= GetMessage("FILEMAN_FILEMAN_FILE_READ_DENY")." \"".$path_from."/".$fn."\".\n";
 				elseif (!($USER->CanDoOperation('edit_php') || $USER->CanDoFileOperation('fm_lpa', Array($site_from, $path_from."/".$fn)) || !(HasScriptExtension($fn) || substr($fn, 0, 1) == ".")))
@@ -675,7 +682,7 @@ class CFileMan
 
 					if ($strWarning == "")
 					{
-						//если здесь - значит можно копировать
+						//it means we can copy, if we found here
 						$APPLICATION->CopyFileAccessPermission(Array($site_from, $path_from."/".$fn), Array($site_to, $path_to."/".$fn));
 
 						if(DEBUG_FILE_MAN)
@@ -708,7 +715,7 @@ class CFileMan
 			}
 		}
 
-		//первоначальную нашу папочку тоже может быть нужно удалить
+		//we may be need, to delete our initial folder
 		if($bDeleteAfterCopy)
 			$strWarning .= CFileMan::DeleteDir(Array($site_from, $path_from));
 
@@ -777,15 +784,7 @@ class CFileMan
 
 	function GetStrFileSize($size)
 	{
-		if ($size < 1024)
-			return $size.' '.GetMessage('BYTE');
-
-		$size = round($size/1024);
-		if ($size < 1024)
-			return $size.' K'.GetMessage('BYTE');
-
-		$size = round($size/1024);
-		return $size.' M'.GetMessage('BYTE');
+		return CFile::FormatSize($size);
 	}
 
 	function GetFileTypeEx($fileName)
@@ -949,8 +948,6 @@ class CFileMan
 
 	function UndoNewSection($Params, $type)
 	{
-		global $APPLICATION;
-
 		$io = CBXVirtualIo::GetInstance();
 
 		if (strlen($Params['path']) > 0 && $Params['path'] != "/" && $io->DirectoryExists($Params['absPath']))
@@ -1186,8 +1183,8 @@ class CFileMan
 	function ShowHTMLEditControl($name, $content, $arParams = Array())
 	{
 		CUtil::InitJSCore(array('window', 'ajax'));
-		$relPath = (isset($arParams["path"])) ?	$arParams["path"] : "/";
-		$site = (isset($arParams["site"])) ?	$arParams["site"] : "";
+		$relPath = (isset($arParams["path"])) ? $arParams["path"] : "/";
+		$site = (isset($arParams["site"])) ? $arParams["site"] : "";
 		$__path = Rel2Abs("/", $relPath);
 		$site = CFileMan::__CheckSite($site);
 		$name = preg_replace("/[^a-zA-Z0-9_:\.]/is", "", $name);

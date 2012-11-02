@@ -1,4 +1,4 @@
 <?
 $MESS["WORKGROUP_ENTITY_ID"] = "ID";
-$MESS["WORKGROUP_ENTITY_NAME"] = "Íàçâàíèå";
+$MESS["WORKGROUP_ENTITY_NAME"] = "ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ";
 ?>

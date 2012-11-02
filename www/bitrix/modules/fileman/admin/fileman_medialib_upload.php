@@ -8,7 +8,7 @@ CModule::IncludeModule("fileman");
 if (!CMedialib::CanDoOperation('medialib_view_collection', 0))
 	$APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
 
- // **************************** Add items to medialibrary  ****************************
+// **************************** Add items to medialibrary  ****************************
 if (isset($_GET['action']) && $_GET['action'] == 'upload' && check_bitrix_sessid())
 {
 	$collectionId = intVal($_POST['collection_id']);
@@ -369,7 +369,7 @@ function itemColsSelChange2(pEl, e)
 $strFileMask = '';
 $arExt = CMedialib::GetMediaExtentions(false);
 for ($i = 0, $l = count($arExt); $i < $l; $i++)
-	$strFileMask .= '*.'.strtolower($arExt[$i]).';';
+	$strFileMask .= '*.'.CUtil::JSEscape(strtolower($arExt[$i])).';';	
 $strFileMask = trim($strFileMask, ' ;');
 
 $str = '';

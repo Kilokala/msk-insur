@@ -333,15 +333,15 @@ class CAllRatings
 		$err_mess = (CRatings::err_mess())."<br>Function: Calculate<br>Line: ";
 
 		$strSql = "SELECT
-						RC.*,
-						".$DB->DateToCharFunction("RC.LAST_MODIFIED")."	LAST_MODIFIED,
-						".$DB->DateToCharFunction("RC.LAST_CALCULATED")." LAST_CALCULATED,
-						".$DB->DateToCharFunction("RC.NEXT_CALCULATION")." NEXT_CALCULATION
-				  FROM
-				  		b_rating_component RC
-				  WHERE
-				  		RATING_ID = $ID
-				  	and ACTIVE = 'Y' ".($bForceRecalc ? '' : 'AND NEXT_CALCULATION <= '.$DB->GetNowFunction());
+				RC.*,
+				".$DB->DateToCharFunction("RC.LAST_MODIFIED")."	LAST_MODIFIED,
+				".$DB->DateToCharFunction("RC.LAST_CALCULATED")." LAST_CALCULATED,
+				".$DB->DateToCharFunction("RC.NEXT_CALCULATION")." NEXT_CALCULATION
+			FROM
+				b_rating_component RC
+			WHERE
+				RATING_ID = $ID
+				and ACTIVE = 'Y' ".($bForceRecalc ? '' : 'AND NEXT_CALCULATION <= '.$DB->GetNowFunction());
 		$res = $DB->Query($strSql, false, $err_mess.__LINE__);
 		while($arRes = $res->Fetch())
 		{
@@ -436,12 +436,18 @@ class CAllRatings
 			if (is_null($objectType))
 			{
 				foreach ($arConfig["COMPONENT"] as $OBJ_TYPE => $TYPE_VALUE)
+				{
 					foreach ($TYPE_VALUE as $RAT_TYPE => $RAT_VALUE)
-					   foreach ($RAT_VALUE as $VALUE)
-					   		if ($withRatingType)
-					   			$arConfigs[$OBJ_TYPE][$arConfig['MODULE_ID']][$RAT_TYPE][$arConfig['MODULE_ID']."_".$RAT_TYPE."_".$VALUE['ID']] = $VALUE;
-					   		else
-					   			$arConfigs[$OBJ_TYPE][$arConfig['MODULE_ID']][$arConfig['MODULE_ID']."_".$RAT_TYPE."_".$VALUE['ID']] = $VALUE;
+					{
+						foreach ($RAT_VALUE as $VALUE)
+						{
+							if ($withRatingType)
+								$arConfigs[$OBJ_TYPE][$arConfig['MODULE_ID']][$RAT_TYPE][$arConfig['MODULE_ID']."_".$RAT_TYPE."_".$VALUE['ID']] = $VALUE;
+							else
+								$arConfigs[$OBJ_TYPE][$arConfig['MODULE_ID']][$arConfig['MODULE_ID']."_".$RAT_TYPE."_".$VALUE['ID']] = $VALUE;
+						}
+					}
+				}
 			}
 			else
 			{
@@ -466,7 +472,7 @@ class CAllRatings
 	{
 		global $DB;
 		$err_mess = (CRatings::err_mess())."<br>Function: GetRatingVoteResult<br>Line: ";
-		
+
 		$arResults = array();
 		$sqlEntityId = "";
 		$bReturnEntityArray = true;
@@ -519,7 +525,7 @@ class CAllRatings
 			if ($bReturnEntityArray)
 				$arResults[$r['ENTITY_ID']] = $arResult;
 			else
-			    $arResults = $arResult;
+				$arResults = $arResult;
 		}
 		return $arResults;
 	}
@@ -668,7 +674,7 @@ class CAllRatings
 			if ($result !== false)
 				$arParam['OWNER_ID'] = IntVal($result);
 		}
-		
+
 		$rowAffected = $DB->Update("b_rating_voting", $arFields, "WHERE ENTITY_TYPE_ID='".$DB->ForSql($arParam['ENTITY_TYPE_ID'])."' AND ENTITY_ID='".intval($arParam['ENTITY_ID'])."'" , $err_mess.__LINE__);
 		if ($rowAffected > 0)
 		{
@@ -693,7 +699,7 @@ class CAllRatings
 			$arParam['RATING_VOTING_ID'] = $DB->Insert("b_rating_voting", $arFields, $err_mess.__LINE__);
 		}
 
-	   $arFields = array(
+		$arFields = array(
 			"RATING_VOTING_ID"	=> intval($arParam['RATING_VOTING_ID']),
 			"ENTITY_TYPE_ID"		=> "'".$DB->ForSql($arParam["ENTITY_TYPE_ID"])."'",
 			"ENTITY_ID"				=> intval($arParam['ENTITY_ID']),
@@ -705,7 +711,7 @@ class CAllRatings
 			"OWNER_ID"			=> intval($arParam['OWNER_ID']),
 		);
 		$ID = $DB->Insert("b_rating_vote", $arFields, $err_mess.__LINE__);
-				
+
 		$db_events = GetModuleEvents("main", "OnAddRatingVote");
 		while($arEvent = $db_events->Fetch())
 			ExecuteModuleEventEx($arEvent, array(intval($ID), $arParam));
@@ -745,11 +751,11 @@ class CAllRatings
 			$arFields[($votePlus ? 'TOTAL_POSITIVE_VOTES' : 'TOTAL_NEGATIVE_VOTES')] = ($votePlus ? 'TOTAL_POSITIVE_VOTES-1' : 'TOTAL_NEGATIVE_VOTES-1');
 			$DB->Update("b_rating_voting", $arFields, "WHERE ID=".intval($arVote['ID']), $err_mess.__LINE__);
 			$DB->Query("DELETE FROM b_rating_vote WHERE ID=".intval($arVote['VOTE_ID']), false, $err_mess.__LINE__);
-			
+
 			$db_events = GetModuleEvents("main", "OnCancelRatingVote");
 			while($arEvent = $db_events->Fetch())
 				ExecuteModuleEventEx($arEvent, array(intval($arVote['VOTE_ID']), $arParam));
-			
+
 			return true;
 		}
 		return false;
@@ -759,23 +765,23 @@ class CAllRatings
 	{
 		global $DB;
 		$err_mess = (CRatings::err_mess())."<br>Function: AddRatingBonus<br>Line: ";
-		
+
 		$arParam['RATING_ID'] = intval($arParam['RATING_ID']);
 		$arParam['ENTITY_ID'] = intval($arParam['ENTITY_ID']);
 		$arParam['BONUS'] = floatval($arParam['BONUS']);
-		
+
 		$arFields = array(
 			'RATING_ID'	=> $arParam['RATING_ID'],
 			'ENTITY_ID'	=> $arParam['ENTITY_ID'],
 			'BONUS'		=> $arParam['BONUS'],
 		);
-		
+
 		if (isset($arParam['VOTE_WEIGHT']))
 			$arFields['VOTE_WEIGHT'] = floatval($arParam['VOTE_WEIGHT']);
-		
+
 		if (isset($arParam['VOTE_COUNT']))
-			$arFields['VOTE_COUNT'] = intval($arParam['VOTE_COUNT']);	
-			    
+			$arFields['VOTE_COUNT'] = intval($arParam['VOTE_COUNT']);
+
 		$rows = $DB->Update("b_rating_user", $arFields, "WHERE RATING_ID = ".$arParam['RATING_ID']." AND ENTITY_ID = ".$arParam['ENTITY_ID']);
 		if ($rows == 0)
 		{
@@ -976,15 +982,15 @@ class CAllRatings
 	{
 		global $DB;
 		$err_mess = (CRatings::err_mess())."<br>Function: SetVoteGroup<br>Line: ";
-		
+
 		if (!in_array($type, array('R', 'A')))
 			return false;
-			
+
 		if (!is_array($arGroupId))
 			return false;
 
 		$arFields = array();
-				
+
 		foreach ($arGroupId as $key => $value)
 		{
 			$arField = array();
@@ -1004,7 +1010,7 @@ class CAllRatings
 	{
 		global $DB;
 		$err_mess = (CRatings::err_mess())."<br>Function: GetVoteGroup<br>Line: ";
-		
+
 		$bAllType = false;
 		if (!in_array($type, array('R', 'A')))
 			$bAllType = true;
@@ -1016,36 +1022,36 @@ class CAllRatings
 
 		return $DB->Query($strSql, false, $err_mess.__LINE__);
 	}
-	
+
 	function ClearData()
 	{
 		global $DB;
 		$err_mess = (CRatings::err_mess())."<br>Function: ClearData<br>Line: ";
-		
+
 		$DB->Query("TRUNCATE TABLE b_rating_prepare", false, $err_mess.__LINE__);
 		$DB->Query("TRUNCATE TABLE b_rating_voting_prepare", false, $err_mess.__LINE__);
-		
+
 		$DB->Query("TRUNCATE TABLE b_rating_results", false, $err_mess.__LINE__);
 		$DB->Query("TRUNCATE TABLE b_rating_component_results", false, $err_mess.__LINE__);
-		
+
 		$DB->Query("TRUNCATE TABLE b_rating_vote", false, $err_mess.__LINE__);
 		$DB->Query("TRUNCATE TABLE b_rating_voting", false, $err_mess.__LINE__);
 
 		$DB->Query("UPDATE b_rating_user SET VOTE_WEIGHT = 0, VOTE_COUNT = 0", false, $err_mess.__LINE__);
-		
+
 		return true;
 	}
 
 	function OnAfterUserRegister($arFields)
-    {
+	{
 		global $DB;
 		$userId = isset($arFields["USER_ID"]) ? intval($arFields["USER_ID"]): (isset($arFields["ID"]) ? intval($arFields["ID"]): 0);
-        if($userId>0)
-        {
+		if($userId>0)
+		{
 			$authorityRatingId = CRatings::GetAuthorityRating();
 			$ratingStartValue = COption::GetOptionString("main", "rating_start_authority", 3);
 			$ratingCountVote = COption::GetOptionString("main", "rating_count_vote", 10);
-            
+
 			$arParam = array(
 				'RATING_ID' => $authorityRatingId,
 				'ENTITY_ID' => $userId,
@@ -1054,17 +1060,17 @@ class CAllRatings
 				'VOTE_COUNT' => intval($ratingCountVote)+intval($ratingStartValue),
 			);
 			CRatings::UpdateRatingUserBonus($arParam);
-			
+
 			if (IsModuleInstalled("intranet"))
 			{
 				$strSql = "INSERT INTO b_rating_subordinate (RATING_ID, ENTITY_ID, VOTES) VALUES ('".$authorityRatingId."', '".$userId."', '".(intval($ratingCountVote)+intval($ratingStartValue))."')";
 				$DB->Query($strSql, false, $err_mess.__LINE__);
 			}
-			
+
 			$sRatingAssignType = COption::GetOptionString("main", "rating_assign_type", 'manual');
 			if ($sRatingAssignType == 'auto')
 			{
-				$assignRatingGroup = COption::GetOptionString("main", "rating_assign_rating_group", 0);			
+				$assignRatingGroup = COption::GetOptionString("main", "rating_assign_rating_group", 0);
 				$assignAuthorityGroup = COption::GetOptionString("main", "rating_assign_authority_group", 0);
 				if ($assignRatingGroup == 0 && $assignAuthorityGroup == 0)
 					return false;
@@ -1072,17 +1078,17 @@ class CAllRatings
 				$arGroups = array();
 				$res = CUser::GetUserGroupList($userId);
 				while($res_arr = $res->Fetch())
-					$arGroups[] = $res_arr["GROUP_ID"];
-					
-				if ($assignRatingGroup > 0)	
-					$arGroups[] = intval($assignRatingGroup);
+					$arGroups[] = array("GROUP_ID"=>$res_arr["GROUP_ID"], "DATE_ACTIVE_FROM"=>$res_arr["DATE_ACTIVE_FROM"], "DATE_ACTIVE_TO"=>$res_arr["DATE_ACTIVE_TO"]);
+
+				if ($assignRatingGroup > 0)
+					$arGroups[] = array("GROUP_ID"=>intval($assignRatingGroup));
 				if ($assignAuthorityGroup > 0 && $assignRatingGroup != $assignAuthorityGroup)
-					$arGroups[] = intval($assignAuthorityGroup);	
+					$arGroups[] = array("GROUP_ID"=>intval($assignAuthorityGroup));
 
 				CUser::SetUserGroup($userId, $arGroups);
 			}
-        }
-    }
+		}
+	}
 
 	function __SortWeight($a, $b)
 	{
@@ -1134,8 +1140,8 @@ class CAllRatings
 				foreach ($COMPONENT as $COMPONENT_NAME => $COMPONENT_VALUE)
 				{
 					if (!isset($arRatingConfigs[$MODULE_ID][$MODULE_ID."_".$RAT_TYPE."_".$COMPONENT_NAME]))
-						continue; 
-					
+						continue;
+
 					$arFields_i = Array(
 						"RATING_ID"			=> $ID,
 						"ACTIVE"			=> isset($COMPONENT_VALUE["ACTIVE"]) && $COMPONENT_VALUE["ACTIVE"] == 'Y' ? 'Y' : 'N',
@@ -1149,7 +1155,7 @@ class CAllRatings
 						"EXCEPTION_METHOD"	=> $arRatingConfigs[$MODULE_ID][$MODULE_ID."_".$RAT_TYPE."_".$COMPONENT_NAME]["EXCEPTION_METHOD"],
 						"REFRESH_INTERVAL"	=> $arRatingConfigs[$MODULE_ID][$MODULE_ID."_".$RAT_TYPE."_".$COMPONENT_NAME]["REFRESH_TIME"],
 						"~LAST_MODIFIED"	=> $DB->GetNowFunction(),
-					    "~NEXT_CALCULATION" => $DB->GetNowFunction(),
+						"~NEXT_CALCULATION" => $DB->GetNowFunction(),
 						"IS_CALCULATED"		=> "N",
 						"~CONFIG"			=> "'".serialize($COMPONENT_VALUE)."'",
 					);

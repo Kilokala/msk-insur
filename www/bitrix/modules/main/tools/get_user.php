@@ -16,7 +16,7 @@ if(!($USER->CanDoOperation('view_subordinate_users') || $USER->CanDoOperation('v
 
 $rsUsers = CUser::GetList($by, $order, array("ID" => $ID));
 if($arUser = $rsUsers->Fetch())
-	$res = '[<a title="'.GetMessage("MAIN_EDIT_USER_PROFILE").'" class="tablebodylink" href="/bitrix/admin/user_edit.php?ID='.$arUser["ID"].'&lang='.LANG.'">'.$arUser["ID"].'</a>] ('.htmlspecialchars($arUser["LOGIN"]).') '.htmlspecialchars($arUser["NAME"]).' '.htmlspecialchars($arUser["LAST_NAME"]);
+	$res = '[<a title="'.GetMessage("MAIN_EDIT_USER_PROFILE").'" class="tablebodylink" href="/bitrix/admin/user_edit.php?ID='.$arUser["ID"].'&lang='.LANG.'">'.$arUser["ID"].'</a>] ('.htmlspecialcharsbx($arUser["LOGIN"]).') '.htmlspecialcharsbx($arUser["NAME"]).' '.htmlspecialcharsbx($arUser["LAST_NAME"]);
 else
 	$res = "&nbsp;".GetMessage("MAIN_NOT_FOUND");
 

@@ -126,18 +126,30 @@ if($REQUEST_METHOD == "POST" && strlen($Update)>0 && $USER->CanDoOperation('file
 		{
 			$arMLDelTypes[] = $key;
 		}
-		elseif(trim($type["EXT"]) != "" && trim($type["NAME"]) != "" && trim($type["CODE"]) != "")
+		//elseif(trim($type["EXT"]) != "" && trim($type["NAME"]) != "" && trim($type["CODE"]) != "")
+		elseif(trim($type["EXT"]) != "" && trim($type["CODE"]) != "")
 		{
-			$arMLTypes[] = array(
-				'NEW' => $type["NEW"] == "Y",
-				'ID' => $key,
-				'NAME' => $type["NAME"],
-				'CODE' => $type["CODE"],
-				'EXT' => $type["EXT"],
-				'DESCRIPTION' => $type["DESC"],
-				'SYSTEM' => $type["SYS"] == "Y" ? "Y" : "N"
-			);
-
+			if ($type["SYS"] == "Y")
+			{
+				$arMLTypes[] = array(
+					'EXT' => $type["EXT"],
+					'CODE' => $type["CODE"],
+					'ID' => $key
+				);
+			}
+			else
+			{
+				$arMLTypes[] = array(
+					'NEW' => $type["NEW"] == "Y",
+					'ID' => $key,
+					'NAME' => $type["NAME"],
+					'CODE' => $type["CODE"],
+					'EXT' => $type["EXT"],
+					'DESCRIPTION' => $type["DESC"],
+					'SYSTEM' => $type["SYS"] == "Y" ? "Y" : "N"
+				);
+			}
+			
 			$strAvExt .= ','.$type["EXT"];
 		}
 	}
@@ -533,7 +545,7 @@ $aTabs = array(
 	</tr>
 	</tr>
 		<tr>
-		<td valign="top" width="40%"><label for="use_translit_google"><?= GetMessage('FILEMAN_USE_TRANSLITE_GOOGLE')?>:</label></td>
+		<td valign="top" width="40%"><label for="use_translit_google"><?= GetMessage('FILEMAN_USE_TRANSLITE_EXTERNAL')?>:</label></td>
 		<td valign="top" width="60%">
 		<input type="checkbox" name="use_translit_google" id="use_translit_google" <? if(COption::GetOptionString($module_id, "use_translit_google", true) == true) echo " checked";?>>
 		</td>
@@ -1376,7 +1388,7 @@ new BXButtonConfig();
 	?>
 	<tr>
 		<td valign="top"><label for="use_pspell"><?echo GetMessage("FILEMAN_OPTION_USE_PSPELL");?></label><br>
-						 <a title="<?echo GetMessage("FILEMAN_OPTION_ADDISH_DICS_TITLE");?>" href="http://aspell.sourceforge.net/" target="blank"><?echo GetMessage("FILEMAN_OPTION_ADDISH_DICS");?></a><br>
+						<a title="<?echo GetMessage("FILEMAN_OPTION_ADDISH_DICS_TITLE");?>" href="http://aspell.sourceforge.net/" target="blank"><?echo GetMessage("FILEMAN_OPTION_ADDISH_DICS");?></a><br>
 		</td>
 		<td>
 			<input type="checkbox" name="use_pspell" id="use_pspell" value="Y" <?echo $use_pspell_checked;?>>
@@ -1399,8 +1411,8 @@ new BXButtonConfig();
 	?>
 	<tr>
 		<td valign="top"><?echo GetMessage("FILEMAN_OPTION_USE_PSPELL");?><br>
-			 <a title="<?echo GetMessage("FILEMAN_OPTION_INSTALL_PSPELL_TITLE");?>" href="http://php.net/manual/en/ref.pspell.php" target="blank"><?echo GetMessage("FILEMAN_OPTION_INSTALL_PSPELL");?></a><br>
-			 <a title="<?echo GetMessage("FILEMAN_OPTION_ADDISH_DICS_TITLE");?>" href="http://aspell.sourceforge.net/" target="blank"><?echo GetMessage("FILEMAN_OPTION_ADDISH_DICS");?></a><br>
+			<a title="<?echo GetMessage("FILEMAN_OPTION_INSTALL_PSPELL_TITLE");?>" href="http://php.net/manual/en/ref.pspell.php" target="blank"><?echo GetMessage("FILEMAN_OPTION_INSTALL_PSPELL");?></a><br>
+			<a title="<?echo GetMessage("FILEMAN_OPTION_ADDISH_DICS_TITLE");?>" href="http://aspell.sourceforge.net/" target="blank"><?echo GetMessage("FILEMAN_OPTION_ADDISH_DICS");?></a><br>
 		</td>
 		<td valign="top">
 			<?echo GetMessage("FILEMAN_OPTION_NOT_INSTALLED");?>
@@ -1455,6 +1467,7 @@ function _MLGetTypeHTML($type = array())
 			<? if($type["system"]):?>
 				<span class="bx-sys-value"><?= htmlspecialcharsex($type["name"])?></span>
 				<input type="hidden" id="type_name_inp_<?= $type["id"]?>" value="<?= $type["name"]?>" />
+				
 			<? else:?>
 				<input type="text"  name="<?= $name."[NAME]"?>" id="type_name_inp_<?= $type["id"]?>" value="<?= $type["name"]?>" size="40" />
 			<?endif;?>
@@ -1466,8 +1479,9 @@ function _MLGetTypeHTML($type = array())
 		</td><td>
 			<? if($type["system"]):?>
 				<span class="bx-sys-value"><?= htmlspecialcharsex($type["code"])?></span>
+				<input type="hidden" name="<?= $name."[CODE]"?>" value="<?= $type["code"]?>" />
 			<? else:?>
-				<input type="text"  name="<?= $name."[CODE]"?>" id="type_code_inp_<?= $type["id"]?>" value="<?= $type["code"]?>" size="40" />
+				<input type="text" name="<?= $name."[CODE]"?>" id="type_code_inp_<?= $type["id"]?>" value="<?= $type["code"]?>" size="40" />
 			<?endif;?>
 		</td></tr>
 

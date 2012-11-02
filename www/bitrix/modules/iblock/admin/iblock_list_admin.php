@@ -554,26 +554,29 @@ if($lAdmin->EditAction())
 				//	output an error if not found or found less or equal then zero
 				$bError = false;
 				$arBaseGroup = CCatalogGroup::GetBaseGroup();
-				if (isset($arPrice[$arBaseGroup['ID']]))
+				if (COption::GetOptionString('catalog','save_product_without_price','N') != 'Y')
 				{
-					if ($arPrice[$arBaseGroup['ID']] <= 0)
+					if (isset($arPrice[$arBaseGroup['ID']]))
 					{
-						$bError = true;
-						$lAdmin->AddUpdateError(GetMessage('IBLIST_A_NO_BASE_PRICE', array("#ID#" => $elID)), $elID);
+						if ($arPrice[$arBaseGroup['ID']] <= 0)
+						{
+							$bError = true;
+							$lAdmin->AddUpdateError(GetMessage('IBLIST_A_NO_BASE_PRICE', array("#ID#" => $elID)), $elID);
+						}
 					}
-				}
-				else
-				{
-					$arBasePrice = CPrice::GetBasePrice(
-						$elID,
-						$CATALOG_QUANTITY_FROM[$elID][$arBaseGroup['ID']],
-						$CATALOG_QUANTITY_FROM[$elID][$arBaseGroup['ID']]
-					);
-
-					if (!is_array($arBasePrice) || $arBasePrice['PRICE'] <= 0)
+					else
 					{
-						$bError = true;
-						$lAdmin->AddUpdateError(GetMessage('IBLIST_A_NO_BASE_PRICE', array("#ID#" => $elID)), $elID);
+						$arBasePrice = CPrice::GetBasePrice(
+							$elID,
+							$CATALOG_QUANTITY_FROM[$elID][$arBaseGroup['ID']],
+							$CATALOG_QUANTITY_FROM[$elID][$arBaseGroup['ID']]
+						);
+
+						if (!is_array($arBasePrice) || $arBasePrice['PRICE'] <= 0)
+						{
+							$bError = true;
+							$lAdmin->AddUpdateError(GetMessage('IBLIST_A_NO_BASE_PRICE', array("#ID#" => $elID)), $elID);
+						}
 					}
 				}
 
@@ -615,8 +618,8 @@ if($lAdmin->EditAction())
 							}
 
 							$arPrFilter = array(
-					                "PRODUCT_ID" => $elID,
-								);
+								"PRODUCT_ID" => $elID,
+							);
 							if(DoubleVal($arPrice[$arCatalogGroup["ID"]])>0)
 							{
 								$arPrFilter["!CATALOG_GROUP_ID"] = $arCatalogGroup["ID"];
@@ -685,7 +688,7 @@ if(($arID = $lAdmin->GroupAction()))
 		if(strlen($ID)<=1)
 			continue;
 		$TYPE = substr($ID, 0, 1);
-	   	$ID = IntVal(substr($ID,1));
+		$ID = IntVal(substr($ID,1));
 
 		if($TYPE == "E")
 		{

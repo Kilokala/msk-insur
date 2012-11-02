@@ -86,7 +86,7 @@ class CIBlockProperty extends CAllIBlockProperty
 					ALTER TABLE b_iblock_element_prop_s".$arProperty["IBLOCK_ID"]."
 					CHANGE PROPERTY_".$arProperty["ID"]." PROPERTY_".$arProperty["ID"]." ".$strType."
 				";
-			 	if(!$DB->Query($strSql))
+				if(!$DB->Query($strSql))
 				{
 					$this->LAST_ERROR =  $this->FormatUpdateError($ID, "MY04");
 					return false;

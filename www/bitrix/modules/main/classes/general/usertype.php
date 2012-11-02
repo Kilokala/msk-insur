@@ -49,14 +49,14 @@ create table b_user_field (
 	UNIQUE ux_user_type_entity(ENTITY_ID, FIELD_NAME)
 )
 ------------------
-!ID
-+ENTITY_ID (example: IBLOCK_SECTION, USER ....)
-+FIELD_NAME (example: UF_EMAIL, UF_SOME_COUNTER ....)
- SORT -- used to do check in the specified order
-?BASE_TYPE - String, Number, Integer, Enumeration, File, DateTime
- USER_TYPE_ID
- SETTINGS (blob) -- to store some settings which may be useful for an field instance
- [some base settings comon to all types: mandatory or no, etc.]
+ID
+ENTITY_ID (example: IBLOCK_SECTION, USER ....)
+FIELD_NAME (example: UF_EMAIL, UF_SOME_COUNTER ....)
+SORT -- used to do check in the specified order
+BASE_TYPE - String, Number, Integer, Enumeration, File, DateTime
+USER_TYPE_ID
+SETTINGS (blob) -- to store some settings which may be useful for an field instance
+[some base settings comon to all types: mandatory or no, etc.]
  * <p>b_user_field</p>
  * <ul>
  * <li><b>ID</b> int(11) not null auto_increment
@@ -396,8 +396,8 @@ class CAllUserTypeEntity extends CDBResult
 			$aMsg[] = array(
 				"id"=>"FIELD_NAME",
 				"text"=>GetMessage("USER_TYPE_ADD_ALREADY_ERROR", array(
-						"#FIELD_NAME#"=>htmlspecialchars($arFields["FIELD_NAME"]),
-						"#ENTITY_ID#"=>htmlspecialchars($arFields["ENTITY_ID"]),
+						"#FIELD_NAME#"=>htmlspecialcharsbx($arFields["FIELD_NAME"]),
+						"#ENTITY_ID#"=>htmlspecialcharsbx($arFields["ENTITY_ID"]),
 				)),
 			);
 			$e = new CAdminException($aMsg);
@@ -461,7 +461,7 @@ class CAllUserTypeEntity extends CDBResult
 			else
 				$strType = "text";
 
- 			$rs = $DB->DDL("
+			$rs = $DB->DDL("
 				ALTER TABLE b_uts_".strtolower($arFields["ENTITY_ID"])."
 				ADD ".$arFields["FIELD_NAME"]." ".$strType."
 			", false, "FILE: ".__FILE__."<br>LINE: ".__LINE__);
@@ -471,8 +471,8 @@ class CAllUserTypeEntity extends CDBResult
 				$aMsg[] = array(
 					"id"=>"FIELD_NAME",
 					"text"=>GetMessage("USER_TYPE_ADD_ERROR", array(
-							"#FIELD_NAME#"=>htmlspecialchars($arFields["FIELD_NAME"]),
-							"#ENTITY_ID#"=>htmlspecialchars($arFields["ENTITY_ID"]),
+							"#FIELD_NAME#"=>htmlspecialcharsbx($arFields["FIELD_NAME"]),
+							"#ENTITY_ID#"=>htmlspecialcharsbx($arFields["ENTITY_ID"]),
 					)),
 				);
 				$e = new CAdminException($aMsg);
@@ -893,6 +893,49 @@ class CAllUserTypeManager
 		return $result;
 	}
 
+	function GetUserFieldValue($entity_id, $field_id, $value_id, $LANG=false)
+	{
+		global $DB;
+		$entity_id = preg_replace("/[^0-9A-Z_]+/", "", $entity_id);
+		$field_id = preg_replace("/[^0-9A-Z_]+/", "", $field_id);
+		$value_id = intval($value_id);
+		$strTableName = "b_uts_".strtolower($entity_id);
+		$result = false;
+
+		$arFilter = array(
+			"ENTITY_ID" => $entity_id,
+			"FIELD_NAME" => $field_id,
+		);
+		if($LANG)
+			$arFilter["LANG"]=$LANG;
+		$rs = CUserTypeEntity::GetList(array(), $arFilter);
+		if($arUserField = $rs->Fetch())
+		{
+			if($DB->TableExists($strTableName))
+			{
+				$arTableFields = $DB->GetTableFields($strTableName);
+				if(array_key_exists($field_id, $arTableFields))
+				{
+					if($arUserField["USER_TYPE"]["BASE_TYPE"] == "datetime" && $arUserField["MULTIPLE"] == "N")
+						$select = $this->DateTimeToChar($field_id);
+					else
+						$select = $field_id;
+
+					$rs = $DB->Query("SELECT ".$select." VALUE FROM ".$strTableName." WHERE VALUE_ID = ".$value_id, false, "FILE: ".__FILE__."<br>LINE: ".__LINE__);
+					if($ar = $rs->Fetch())
+					{
+						if($arUserField["MULTIPLE"]=="Y")
+							$result = unserialize($ar["VALUE"]);
+						else
+							$result = $value;
+					}
+				}
+			}
+		}
+
+		return $result;
+	}
+
 	function EditFormTab($entity_id)
 	{
 		return array(
@@ -1169,9 +1212,9 @@ class CAllUserTypeManager
 		if($arUserField["USER_TYPE"])
 		{
 			if($this->GetRights($arUserField["ENTITY_ID"]) >= "W")
-				$strLabelHTML = '<a href="/bitrix/admin/userfield_edit.php?lang='.LANG.'&ID='.urlencode($arUserField["ID"]).'&back_url='.urlencode($APPLICATION->GetCurPageParam().'&tabControl_active_tab=user_fields_tab').'">'.htmlspecialchars($arUserField["EDIT_FORM_LABEL"]? $arUserField["EDIT_FORM_LABEL"]: $arUserField["FIELD_NAME"]).'</a>'.($arUserField["MANDATORY"]=="Y"? '<span class="required">*</span>': '').':';
+				$strLabelHTML = '<a href="/bitrix/admin/userfield_edit.php?lang='.LANG.'&ID='.urlencode($arUserField["ID"]).'&back_url='.urlencode($APPLICATION->GetCurPageParam().'&tabControl_active_tab=user_fields_tab').'">'.htmlspecialcharsbx($arUserField["EDIT_FORM_LABEL"]? $arUserField["EDIT_FORM_LABEL"]: $arUserField["FIELD_NAME"]).'</a>'.($arUserField["MANDATORY"]=="Y"? '<span class="required">*</span>': '').':';
 			else
-				$strLabelHTML = htmlspecialchars($arUserField["EDIT_FORM_LABEL"]? $arUserField["EDIT_FORM_LABEL"]: $arUserField["FIELD_NAME"]).($arUserField["MANDATORY"]=="Y"? '<span class="required">*</span>': '').':';
+				$strLabelHTML = htmlspecialcharsbx($arUserField["EDIT_FORM_LABEL"]? $arUserField["EDIT_FORM_LABEL"]: $arUserField["FIELD_NAME"]).($arUserField["MANDATORY"]=="Y"? '<span class="required">*</span>': '').':';
 
 			if(is_callable(array($arUserField["USER_TYPE"]["CLASS_NAME"], "geteditformhtml")))
 			{
@@ -1192,7 +1235,7 @@ class CAllUserTypeManager
 							$arUserField,
 							array(
 								"NAME" => $arUserField["FIELD_NAME"],
-								"VALUE" => is_array($form_value)? $form_value: htmlspecialchars($form_value),
+								"VALUE" => is_array($form_value)? $form_value: htmlspecialcharsbx($form_value),
 							),
 						)
 					);
@@ -1204,7 +1247,7 @@ class CAllUserTypeManager
 						$form_value = array();
 					foreach($form_value as $key=>$value)
 					{
-						$form_value[$key] = htmlspecialchars($value);
+						$form_value[$key] = htmlspecialcharsbx($value);
 					}
 					$html = call_user_func_array(
 						array($arUserField["USER_TYPE"]["CLASS_NAME"], "geteditformhtmlmulty"),
@@ -1238,7 +1281,7 @@ class CAllUserTypeManager
 									$arUserField,
 									array(
 										"NAME" => $arUserField["FIELD_NAME"]."[".$i."]",
-										"VALUE" => htmlspecialchars($value),
+										"VALUE" => htmlspecialcharsbx($value),
 									),
 								)
 							).'</td></tr>';
@@ -1284,7 +1327,7 @@ class CAllUserTypeManager
 						),
 					)
 				).CAdminCalendar::ShowScript();
-				return '<tr><td>'.htmlspecialchars($arUserField["LIST_FILTER_LABEL"]? $arUserField["LIST_FILTER_LABEL"]: $arUserField["FIELD_NAME"]).':</td><td>'.$html.'</td></tr>';
+				return '<tr><td>'.htmlspecialcharsbx($arUserField["LIST_FILTER_LABEL"]? $arUserField["LIST_FILTER_LABEL"]: $arUserField["FIELD_NAME"]).':</td><td>'.$html.'</td></tr>';
 			}
 		}
 	}
@@ -1304,7 +1347,7 @@ class CAllUserTypeManager
 							$arUserField,
 							array(
 								"NAME" => "FIELDS[".$row->id."][".$arUserField["FIELD_NAME"]."]",
-								"VALUE" => htmlspecialchars($value),
+								"VALUE" => htmlspecialcharsbx($value),
 							),
 						)
 					);
@@ -1323,7 +1366,7 @@ class CAllUserTypeManager
 						$form_value = array();
 
 					foreach($form_value as $key=>$val)
-						$form_value[$key] = htmlspecialchars($val);
+						$form_value[$key] = htmlspecialcharsbx($val);
 
 					$html = call_user_func_array(
 						array($arUserField["USER_TYPE"]["CLASS_NAME"], "getadminlistviewhtmlmulty"),
@@ -1362,7 +1405,7 @@ class CAllUserTypeManager
 								$arUserField,
 								array(
 									"NAME" => "FIELDS[".$row->id."][".$arUserField["FIELD_NAME"]."]"."[".$i."]",
-									"VALUE" => htmlspecialchars($val),
+									"VALUE" => htmlspecialcharsbx($val),
 								),
 							)
 						);
@@ -1382,7 +1425,7 @@ class CAllUserTypeManager
 							$arUserField,
 							array(
 								"NAME" => "FIELDS[".$row->id."][".$arUserField["FIELD_NAME"]."]",
-								"VALUE" => htmlspecialchars($value),
+								"VALUE" => htmlspecialcharsbx($value),
 							),
 						)
 					);
@@ -1401,7 +1444,7 @@ class CAllUserTypeManager
 						$form_value = array();
 
 					foreach($form_value as $key=>$val)
-						$form_value[$key] = htmlspecialchars($val);
+						$form_value[$key] = htmlspecialcharsbx($val);
 
 					$html = call_user_func_array(
 						array($arUserField["USER_TYPE"]["CLASS_NAME"], "getadminlistedithtmlmulty"),
@@ -1437,7 +1480,7 @@ class CAllUserTypeManager
 								$arUserField,
 								array(
 									"NAME" => "FIELDS[".$row->id."][".$arUserField["FIELD_NAME"]."]"."[".$i."]",
-									"VALUE" => htmlspecialchars($val),
+									"VALUE" => htmlspecialcharsbx($val),
 								),
 							)
 						).'</td></tr>';
@@ -2154,7 +2197,7 @@ class CAllSQLWhere
 
 				if(isset($this->fields[$key]))
 				{
-                    $FIELD_NAME = $this->fields[$key]["FIELD_NAME"];
+					$FIELD_NAME = $this->fields[$key]["FIELD_NAME"];
 					$FIELD_TYPE = $this->fields[$key]["FIELD_TYPE"];
 					if($operation=="G")
 						$FIELD_OPERATION = " > ";
@@ -2391,7 +2434,7 @@ class CAllSQLWhere
 									$FIELD_VALUE = $DB->ForSQL($value);
 							}
 
-                            switch($operation)
+							switch($operation)
 							{
 								case "I":
 									if(is_array($FIELD_VALUE))
@@ -2542,12 +2585,12 @@ class CAllSQLWhere
 									break;
 								case "?":
 									if(is_scalar($FIELD_VALUE) && strlen($FIELD_VALUE))
-                                    {
-                                        $q = GetFilterQuery($FIELD_NAME, $FIELD_VALUE);
-                                        // Check if error ("0" was returned)
-                                        if($q !== '0')
-										    $result[] = $q;
-                                    }
+									{
+										$q = GetFilterQuery($FIELD_NAME, $FIELD_VALUE);
+										// Check if error ("0" was returned)
+										if($q !== '0')
+											$result[] = $q;
+									}
 									break;
 							}
 							break;
@@ -2645,7 +2688,7 @@ class CAllSQLWhere
 			}
 		}
 
-        if(count($result)>0)
+		if(count($result)>0)
 			return "\n".str_repeat("\t", $level).implode("\n".str_repeat("\t", $level).$logic." ", $result);
 		else
 			return "";

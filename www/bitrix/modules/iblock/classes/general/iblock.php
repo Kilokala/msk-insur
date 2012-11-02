@@ -771,7 +771,7 @@ class CAllIBlock
 
 			if($arFields["VERSION"] == 2)
 			{
-			 	if($this->_Add($ID))
+				if($this->_Add($ID))
 				{
 					$Result = $ID;
 					$arFields["ID"] = &$ID;
@@ -1172,9 +1172,9 @@ class CAllIBlock
 
 			foreach($arFields["LID"] as $v)
 			{
-    			$r = CSite::GetByID($v);
-    			if(!$r->Fetch())
-    				$this->LAST_ERROR .= "'".$v."' - ".GetMessage("IBLOCK_BAD_SITE_ID")."<br>";
+				$r = CSite::GetByID($v);
+				if(!$r->Fetch())
+					$this->LAST_ERROR .= "'".$v."' - ".GetMessage("IBLOCK_BAD_SITE_ID")."<br>";
 			}
 		}
 
@@ -2086,7 +2086,7 @@ REQ
 	{
 		global $DB;
 
- 		if(!is_array($vals))
+		if(!is_array($vals))
 			$vals=Array($vals);
 
 		if(count($vals)<1)
@@ -2110,10 +2110,10 @@ REQ
 			$strOperation = "<=";
 		elseif($cOperationType=="L")
 			$strOperation = "<";
- 		elseif($cOperationType=='B')
- 			$strOperation = array('BETWEEN', 'AND');
- 		elseif($cOperationType=='NB')
- 			$strOperation = array('BETWEEN', 'AND');
+		elseif($cOperationType=='B')
+			$strOperation = array('BETWEEN', 'AND');
+		elseif($cOperationType=='NB')
+			$strOperation = array('BETWEEN', 'AND');
 		else
 			$strOperation = "=";
 
@@ -2148,9 +2148,9 @@ REQ
 							$res[] = GetFilterQuery($fname, $val, "N");
 					}
 					elseif($cOperationType=="S" || $cOperationType=="NS")
-  						$res[] = ($cOperationType=="NS"?" ".$fname." IS NULL OR NOT ":"")."(".CIBlock::_Upper($fname)." LIKE ".CIBlock::_Upper("'%".CIBlock::ForLIKE($val)."%'").")";
+						$res[] = ($cOperationType=="NS"?" ".$fname." IS NULL OR NOT ":"")."(".CIBlock::_Upper($fname)." LIKE ".CIBlock::_Upper("'%".CIBlock::ForLIKE($val)."%'").")";
 					elseif(($cOperationType=="B" || $cOperationType=="NB") && is_array($val) && count($val)==2)
-  						$res[] = ($cOperationType=="NB"?" ".$fname." IS NULL OR NOT ":"")."(".CIBlock::_Upper($fname)." ".$strOperation[0]." '".CIBlock::_Upper($DB->ForSql($val[0]))."' ".$strOperation[1]." '".CIBlock::_Upper($DB->ForSql($val[1]))."')";
+						$res[] = ($cOperationType=="NB"?" ".$fname." IS NULL OR NOT ":"")."(".CIBlock::_Upper($fname)." ".$strOperation[0]." '".CIBlock::_Upper($DB->ForSql($val[0]))."' ".$strOperation[1]." '".CIBlock::_Upper($DB->ForSql($val[1]))."')";
 					else
 					{
 						if(strlen($val)<=0)
@@ -2171,10 +2171,10 @@ REQ
 					}
 					elseif(($cOperationType=="B" || $cOperationType=="NB") && is_array($val) && count($val)==2)
 					{
-  						$res[] = ($cOperationType=="NB"?" ".$fname." IS NULL OR NOT ":"")."(".CIBlock::_Upper($fname)." ".$strOperation[0]." '".CIBlock::_Upper($DB->ForSql($val[0]))."' ".$strOperation[1]." '".CIBlock::_Upper($DB->ForSql($val[1]))."')";
+						$res[] = ($cOperationType=="NB"?" ".$fname." IS NULL OR NOT ":"")."(".CIBlock::_Upper($fname)." ".$strOperation[0]." '".CIBlock::_Upper($DB->ForSql($val[0]))."' ".$strOperation[1]." '".CIBlock::_Upper($DB->ForSql($val[1]))."')";
 					}
 					elseif($cOperationType=="S" || $cOperationType=="NS")
-  						$res[] = ($cOperationType=="NS"?" ".$fname." IS NULL OR NOT ":"")."(".CIBlock::_Upper($fname)." LIKE ".CIBlock::_Upper("'%".CIBlock::ForLIKE($val)."%'").")";
+						$res[] = ($cOperationType=="NS"?" ".$fname." IS NULL OR NOT ":"")."(".CIBlock::_Upper($fname)." LIKE ".CIBlock::_Upper("'%".CIBlock::ForLIKE($val)."%'").")";
 					else
 					{
 						if(strlen($val)<=0)
@@ -2190,7 +2190,7 @@ REQ
 					if(!is_array($val) && strlen($val)<=0)
 						$res[] = ($cOperationType=="N"?"NOT":"")."(".$fname." IS NULL)";
 					elseif(($cOperationType=="B" || $cOperationType=="NB") && is_array($val) && count($val)==2)
-  						$res[] = ($cOperationType=='NB'?' '.$fname.' IS NULL OR NOT ':'').'('.$fname.' '.$strOperation[0].' '.$DB->CharToDateFunction($DB->ForSql($val[0]), "FULL").' '.$strOperation[1].' '.$DB->CharToDateFunction($DB->ForSql($val[1]), "FULL").')';
+						$res[] = ($cOperationType=='NB'?' '.$fname.' IS NULL OR NOT ':'').'('.$fname.' '.$strOperation[0].' '.$DB->CharToDateFunction($DB->ForSql($val[0]), "FULL").' '.$strOperation[1].' '.$DB->CharToDateFunction($DB->ForSql($val[1]), "FULL").')';
 					else
 						$res[] = ($bNegative? " ".$fname." IS NULL OR NOT ": "")."(".$fname." ".$strOperation." ".$DB->CharToDateFunction($DB->ForSql($val), "FULL").")";
 					break;
@@ -2906,7 +2906,7 @@ REQ
 				$height = $height_orig;
 
 			$height_new = $height_orig;
-                        if($width_orig > $width)
+			if($width_orig > $width)
 				$height_new = ($width / $width_orig) * $height_orig;
 
 			if($height_new > $height)
@@ -3175,19 +3175,23 @@ REQ
 	{
 		$len = 18;
 		$dec =  4;
-
-		$result = doubleval($value);
-		if(is_nan($result) || is_infinite($result))
-			$result = 0;
-
 		$eps = 1.00/pow(10, $len + 4);
-		$result = round(doubleval($result) + $eps, $len);
 
-		$result = sprintf("%01.".$dec."f", $result);
+		$rounded = round(doubleval($value) + $eps, $len);
+		if(is_nan($rounded) || is_infinite($rounded))
+			$rounded = 0;
+
+		$result = sprintf("%01.".$dec."f", $rounded);
 		if(strlen($result) > ($len - $dec))
 			$result = trim(substr($result, 0, $len - $dec), ".");
 
 		return $result;
+	}
+
+	function _transaction_lock($IBLOCK_ID)
+	{
+		global $DB;
+		$DB->Query("UPDATE b_iblock set TMP_ID = '".md5(mt_rand())."' WHERE ID = ".$IBLOCK_ID);
 	}
 }
 ?>

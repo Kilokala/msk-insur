@@ -1,6 +1,6 @@
 <?
-$MESS["socserv_tw_key"] = "Ключ приложения (Consumer key):";
-$MESS["socserv_tw_secret"] = "Секретный код приложения (Consumer secret):";
-$MESS["socserv_tw_note"] = "Используйте вашу учетную запись на Twitter.com для входа на сайт.";
-$MESS["socserv_tw_sett_note"] = "Для получения кодов необходимо <a href=\"https://dev.twitter.com/apps/new\">зарегистрировать приложение</a> Twitter.";
+$MESS["socserv_tw_key"] = "РљР»СЋС‡ РїСЂРёР»РѕР¶РµРЅРёСЏ (Consumer key):";
+$MESS["socserv_tw_secret"] = "РЎРµРєСЂРµС‚РЅС‹Р№ РєРѕРґ РїСЂРёР»РѕР¶РµРЅРёСЏ (Consumer secret):";
+$MESS["socserv_tw_note"] = "РСЃРїРѕР»СЊР·СѓР№С‚Рµ РІР°С€Сѓ СѓС‡РµС‚РЅСѓСЋ Р·Р°РїРёСЃСЊ РЅР° Twitter.com РґР»СЏ РІС…РѕРґР° РЅР° СЃР°Р№С‚.";
+$MESS["socserv_tw_sett_note"] = "Р”Р»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РєРѕРґРѕРІ РЅРµРѕР±С…РѕРґРёРјРѕ <a href=\"https://dev.twitter.com/apps/new\">Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊ РїСЂРёР»РѕР¶РµРЅРёРµ</a> Twitter.";
 ?>

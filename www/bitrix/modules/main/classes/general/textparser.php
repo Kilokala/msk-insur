@@ -121,18 +121,24 @@ class CTextParser
 
 			if ($this->allow["TABLE"]=="Y")
 			{
-				$text = preg_replace(
-					array(
-						"/\<table((\s[^>]*)|(\s*))\>(.+?)<\/table([^>]*)\>/is".BX_UTF_PCRE_MODIFIER,
-						"/\<tr((\s[^>]*)|(\s*))\>(.*?)<\/tr([^>]*)\>/is".BX_UTF_PCRE_MODIFIER,
-						"/\<td((\s[^>]*)|(\s*))\>(.*?)<\/td([^>]*)\>/is".BX_UTF_PCRE_MODIFIER,
-						),
-					array(
-						"[table]\\4[/table]",
-						"[tr]\\4[/tr]",
-						"[td]\\4[/td]",
-						),
-					$text);
+					$text = preg_replace(
+						array(
+						"/\<table((\s[^>]*)|(\s*))\>/is".BX_UTF_PCRE_MODIFIER,
+						"/\<\/table([^>]*)\>/is".BX_UTF_PCRE_MODIFIER,
+						"/\<tr((\s[^>]*)|(\s*))\>/is".BX_UTF_PCRE_MODIFIER,
+						"/\<\/tr([^>]*)\>/is".BX_UTF_PCRE_MODIFIER,
+						"/\<td((\s[^>]*)|(\s*))\>/is".BX_UTF_PCRE_MODIFIER,
+						"/\<\/td([^>]*)\>/is".BX_UTF_PCRE_MODIFIER,
+					),
+						array(
+						"[table]",
+						"[/table]",
+						"[tr]",
+						"[/tr]",
+						"[td]",
+						"[/td]",
+					),
+						$text);
 			}
 
 			if ($this->allow["QUOTE"]=="Y")
@@ -150,8 +156,8 @@ class CTextParser
 		}
 		if ($this->allow["ANCHOR"]=="Y")
 		{
-			$word_separator = str_replace("\]", "", $this->word_separator);
-			$text = preg_replace("/(?<=^|[".$word_separator."]|\s)(?<!\\[nomodify\\]|<nomodify>)((http|https|news|ftp|aim|mailto):\\/\\/[._:a-z0-9@-].*?)(?=[\\s'\"\\[\\]{}]|&quot;|\$)/is".BX_UTF_PCRE_MODIFIER,
+			$word_separator = str_replace(array("\]", "\["), "", $this->word_separator);
+			$text = preg_replace("/(?<=^|[".$word_separator."]|\s)(?<!\\[nomodify\\]|<nomodify>)((http|https|news|ftp|aim|mailto):\\/\\/[._:a-z0-9@-].*?)(?=[\\s'\"{}]|&quot;|\$)/is".BX_UTF_PCRE_MODIFIER,
 				"[url]\\1[/url]", $text);
 		}
 
@@ -380,7 +386,7 @@ class CTextParser
 				$code = preg_quote(str_replace(array("\x5C"), array("&#092;"), $code));
 
 				$image = preg_quote(str_replace("'", "\\'", $row["IMAGE"]));
-				$description = preg_quote(htmlspecialchars($row["DESCRIPTION"], ENT_QUOTES), "/");
+				$description = preg_quote(htmlspecialcharsbx($row["DESCRIPTION"], ENT_QUOTES), "/");
 
 				$arPattern[] = "/(?<=".$pre.")$patt(?=.\W|\W.|\W$)/ei".BX_UTF_PCRE_MODIFIER;
 				$arReplace[] = "\$this->convert_emoticon('$code', '$image', '$description')";

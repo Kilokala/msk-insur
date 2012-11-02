@@ -28,7 +28,7 @@ if(!CMain::IsHTTPS() && COption::GetOptionString('main', 'use_encrypted_auth', '
 	}
 }
 ?>
-<form name="form_auth" method="POST" action="<?echo htmlspecialchars($sDocPath."?change_password=yes".(($s=DeleteParam(array("change_password"))) == ""? "":"&".$s))?>">
+<form name="form_auth" method="POST" action="<?echo htmlspecialcharsbx($sDocPath."?change_password=yes".(($s=DeleteParam(array("change_password"))) == ""? "":"&".$s))?>">
 <input type="hidden" name="AUTH_FORM" value="Y">
 <input type="hidden" name="TYPE" value="CHANGE_PWD">
 
@@ -44,15 +44,15 @@ if(!CMain::IsHTTPS() && COption::GetOptionString('main', 'use_encrypted_auth', '
 	<table cellpadding="0" cellspacing="0" border="0">
 		<tr>
 			<td class="bx-auth-label"><?=GetMessage("AUTH_LOGIN")?>:</td>
-			<td><input type="text" name="USER_LOGIN" size="30" maxlength="50" value="<?echo (strlen($USER_LOGIN)>0) ? htmlspecialchars($USER_LOGIN) : htmlspecialchars($last_login)?>" class="bx-auth-input-text"></td>
+			<td><input type="text" name="USER_LOGIN" size="30" maxlength="50" value="<?echo (strlen($USER_LOGIN)>0) ? htmlspecialcharsbx($USER_LOGIN) : htmlspecialcharsbx($last_login)?>" class="bx-auth-input-text"></td>
 		</tr>
 		<tr>
 			<td class="bx-auth-label"><?=GetMessage("AUTH_CHECKWORD")?>:</td>
-			<td><input type="text" name="USER_CHECKWORD" size="30" maxlength="50" value="<?echo htmlspecialchars($USER_CHECKWORD)?>" class="bx-auth-input-text"></td>
+			<td><input type="text" name="USER_CHECKWORD" size="30" maxlength="50" value="<?echo htmlspecialcharsbx($USER_CHECKWORD)?>" class="bx-auth-input-text"></td>
 		</tr>
 		<tr>
 			<td class="bx-auth-label"><?=GetMessage("AUTH_NEW_PASSWORD")?>:</td>
-			<td><input type="password" name="USER_PASSWORD" size="30" maxlength="50" value="<?echo htmlspecialchars($USER_PASSWORD)?>" class="bx-auth-input-text">
+			<td><input type="password" name="USER_PASSWORD" size="30" maxlength="50" value="<?echo htmlspecialcharsbx($USER_PASSWORD)?>" class="bx-auth-input-text">
 <?if($bSecure):?>
 				<span class="bx-auth-secure" id="bx_auth_secure" title="<?echo GetMessage("AUTH_SECURE_NOTE")?>" style="display:none">
 					<div class="bx-auth-secure-icon"></div>
@@ -70,7 +70,7 @@ document.getElementById('bx_auth_secure').style.display = 'inline-block';
 		</tr>
 		<tr>
 			<td class="bx-auth-label"><?=GetMessage("AUTH_NEW_PASSWORD_CONFIRM")?>:</td>
-			<td><input type="password" name="USER_CONFIRM_PASSWORD" size="30" maxlength="50" value="<?echo htmlspecialchars($USER_CONFIRM_PASSWORD)?>" class="bx-auth-input-text"></td>
+			<td><input type="password" name="USER_CONFIRM_PASSWORD" size="30" maxlength="50" value="<?echo htmlspecialcharsbx($USER_CONFIRM_PASSWORD)?>" class="bx-auth-input-text"></td>
 		</tr>
 		<tr>
 			<td></td>
@@ -84,7 +84,7 @@ document.getElementById('bx_auth_secure').style.display = 'inline-block';
 
 	<div class="bx-auth-footer">
 		<p><?echo GetMessage("admin_authorize_required")?></p>
-		<p><?echo GetMessage("admin_authorize_back")?> <a href="<?echo htmlspecialchars($sDocPath.($s == ""? "":"?$s"))?>"><?echo GetMessage("admin_authorize_back_form")?></a>.</p>
+		<p><?echo GetMessage("admin_authorize_back")?> <a href="<?echo htmlspecialcharsbx($sDocPath.($s == ""? "":"?$s"))?>"><?echo GetMessage("admin_authorize_back_form")?></a>.</p>
 	</div>
 </div>
 

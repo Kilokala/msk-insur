@@ -1832,7 +1832,7 @@ class CAllIBlockElement
 		}
 	}
 
- 	function MkPropertySelect($PR_ID, $db_prop, &$arIBlockLongProps, &$arIBlockConvProps, &$arJoinProps, &$arIBlockMultProps, &$arIBlockNumProps, $bWasGroup, $sGroupBy, &$sSelect)
+	function MkPropertySelect($PR_ID, $db_prop, &$arIBlockLongProps, &$arIBlockConvProps, &$arJoinProps, &$arIBlockMultProps, &$arIBlockNumProps, $bWasGroup, $sGroupBy, &$sSelect)
 	{
 		global $DB, $DBType;
 
@@ -2270,7 +2270,7 @@ class CAllIBlockElement
 				}
 				else //This is multiple value property for Infoblock+
 				{
-					 //There was no grouping so we can join FPS and constuct an array on CIBlockPropertyResult::Fetch
+					//There was no grouping so we can join FPS and constuct an array on CIBlockPropertyResult::Fetch
 					if(!$bWasGroup && !$bSubQuery)
 					{
 						//Join single value properties table if needed
@@ -2840,7 +2840,7 @@ class CAllIBlockElement
 			}
 			elseif($sGroupBy=="")
 			{
-				 //Try to add missing fields for correct URL translation (only then no grouping)
+				//Try to add missing fields for correct URL translation (only then no grouping)
 				if(array_key_exists("DETAIL_PAGE_URL", $arDisplayedColumns))
 					$arAddFields = array("LANG_DIR", "ID", "CODE", "EXTERNAL_ID", "IBLOCK_SECTION_ID", "IBLOCK_TYPE_ID", "IBLOCK_ID", "IBLOCK_CODE", "IBLOCK_EXTERNAL_ID", "LID");
 				elseif(array_key_exists("SECTION_PAGE_URL", $arDisplayedColumns))
@@ -2850,7 +2850,7 @@ class CAllIBlockElement
 				else
 					$arAddFields = array();
 
-				 //Try to add missing fields for correct PREVIEW and DETAIL text formatting
+				//Try to add missing fields for correct PREVIEW and DETAIL text formatting
 				if(array_key_exists("DETAIL_TEXT", $arDisplayedColumns))
 					$arAddFields[] = "DETAIL_TEXT_TYPE";
 				if(array_key_exists("PREVIEW_TEXT", $arDisplayedColumns))
@@ -3247,11 +3247,12 @@ class CAllIBlockElement
 				&& $arIBlock["FIELDS"]["LOG_ELEMENT_ADD"]["IS_REQUIRED"] == "Y"
 			)
 			{
+				$USER_ID = is_object($USER)? intval($USER->GetID()) : 0;
 				$db_events = GetModuleEvents("main", "OnBeforeEventLog");
 				$arEvent = $db_events->Fetch();
 				if(
 					!$arEvent
-					|| ExecuteModuleEventEx($arEvent, array(is_object($USER)? intval($USER->GetID()) : 0 ))===false
+					|| ExecuteModuleEventEx($arEvent, array($USER_ID))===false
 				)
 				{
 					$rsElement = CIBlockElement::GetList(array(), array("=ID"=>$ID), false, false, array("LIST_PAGE_URL", "NAME", "CODE"));
@@ -3261,6 +3262,7 @@ class CAllIBlockElement
 						"CODE" => $arElement["CODE"],
 						"NAME" => $arElement["NAME"],
 						"ELEMENT_NAME" => $arIBlock["ELEMENT_NAME"],
+						"USER_ID" => $USER_ID,
 						"IBLOCK_PAGE_URL" => $arElement["LIST_PAGE_URL"],
 					);
 					CEventLog::Log(
@@ -3542,12 +3544,14 @@ class CAllIBlockElement
 	///////////////////////////////////////////////////////////////////
 	function Delete($ID)
 	{
-		global $DB, $APPLICATION;
+		global $DB, $APPLICATION, $USER;
+		$USER_ID = is_object($USER)? intval($USER->GetID()) : 0;
 		$ID = IntVal($ID);
 
 		$APPLICATION->ResetException();
 		$db_events = GetModuleEvents("iblock", "OnBeforeIBlockElementDelete");
 		while($arEvent = $db_events->Fetch())
+		{
 			if(ExecuteModuleEventEx($arEvent, array($ID))===false)
 			{
 				$err = GetMessage("MAIN_BEFORE_DEL_ERR").' '.$arEvent['TO_NAME'];
@@ -3560,6 +3564,7 @@ class CAllIBlockElement
 				$APPLICATION->throwException($err, $err_id);
 				return false;
 			}
+		}
 
 		$arSql = Array("ID='".$ID."'", "WF_PARENT_ELEMENT_ID='".$ID."'");
 		for($i=0; $i<count($arSql); $i++)
@@ -3594,18 +3599,19 @@ class CAllIBlockElement
 					$db_events = GetModuleEvents("main", "OnBeforeEventLog");
 					$arEvent = $db_events->Fetch();
 					global $USER;
-					if(!$arEvent || ExecuteModuleEventEx($arEvent, array(is_object($USER)? intval($USER->GetID()) : 0 ))===false)
+					if(!$arEvent || ExecuteModuleEventEx($arEvent, array($USER_ID))===false)
 					{
 						$rsElement = CIBlockElement::GetList(array(), array("=ID"=>$ID), false, false, array("LIST_PAGE_URL", "NAME", "CODE"));
 						$arElement = $rsElement->GetNext();
 						$arIblock = CIBlock::GetArrayByID($zr['IBLOCK_ID']);
 						$res_log = array(
-									"ID" => $ID,
-									"CODE" => $arElement["CODE"],
-									"NAME" => $arElement["NAME"],
-									"ELEMENT_NAME" => $arIblock["ELEMENT_NAME"],
-									"IBLOCK_PAGE_URL" => $arElement["LIST_PAGE_URL"],
-									);
+							"ID" => $ID,
+							"CODE" => $arElement["CODE"],
+							"NAME" => $arElement["NAME"],
+							"ELEMENT_NAME" => $arIblock["ELEMENT_NAME"],
+							"USER_ID" => $USER_ID,
+							"IBLOCK_PAGE_URL" => $arElement["LIST_PAGE_URL"],
+						);
 						CEventLog::Log(
 							"IBLOCK",
 							"IBLOCK_ELEMENT_DELETE",

@@ -265,10 +265,10 @@ while($arRes = $rsData->NavNext(true, "f_"))
 }
 
 $lAdmin->AddFooter(
-        array(
-                array("title"=>GetMessage("MAIN_ADMIN_LIST_SELECTED"), "value"=>$rsData->SelectedRowsCount()),
-                array("counter"=>true, "title"=>GetMessage("MAIN_ADMIN_LIST_CHECKED"), "value"=>"0"),
-        )
+	array(
+		array("title"=>GetMessage("MAIN_ADMIN_LIST_SELECTED"), "value"=>$rsData->SelectedRowsCount()),
+		array("counter"=>true, "title"=>GetMessage("MAIN_ADMIN_LIST_CHECKED"), "value"=>"0"),
+	)
 );
 
 if($m)

@@ -1,11 +1,11 @@
 <?
-$MESS["JS_CORE_LOADING"] = "Çàãðóçêà...";
-$MESS["JS_CORE_WINDOW_CLOSE"] = "Çàêðûòü";
-$MESS["JS_CORE_WINDOW_EXPAND"] = "Ðàçâåðíóòü";
-$MESS["JS_CORE_WINDOW_NARROW"] = "Ñâåðíóòü â îêíî";
-$MESS["JS_CORE_WINDOW_SAVE"] = "Ñîõðàíèòü";
-$MESS["JS_CORE_WINDOW_CANCEL"] = "Îòìåíèòü";
-$MESS["JS_CORE_H"] = "÷";
-$MESS["JS_CORE_M"] = "ì";
-$MESS["JS_CORE_S"] = "ñ";
+$MESS["JS_CORE_LOADING"] = "Ð—Ð°Ð³Ñ€ÑƒÐ·ÐºÐ°...";
+$MESS["JS_CORE_WINDOW_CLOSE"] = "Ð—Ð°ÐºÑ€Ñ‹Ñ‚ÑŒ";
+$MESS["JS_CORE_WINDOW_EXPAND"] = "Ð Ð°Ð·Ð²ÐµÑ€Ð½ÑƒÑ‚ÑŒ";
+$MESS["JS_CORE_WINDOW_NARROW"] = "Ð¡Ð²ÐµÑ€Ð½ÑƒÑ‚ÑŒ Ð² Ð¾ÐºÐ½Ð¾";
+$MESS["JS_CORE_WINDOW_SAVE"] = "Ð¡Ð¾Ñ…Ñ€Ð°Ð½Ð¸Ñ‚ÑŒ";
+$MESS["JS_CORE_WINDOW_CANCEL"] = "ÐžÑ‚Ð¼ÐµÐ½Ð¸Ñ‚ÑŒ";
+$MESS["JS_CORE_H"] = "Ñ‡";
+$MESS["JS_CORE_M"] = "Ð¼";
+$MESS["JS_CORE_S"] = "Ñ";
 ?>

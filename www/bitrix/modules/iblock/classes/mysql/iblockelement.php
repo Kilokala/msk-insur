@@ -709,7 +709,7 @@ class CIBlockElement extends CAllIBlockElement
 	///////////////////////////////////////////////////////////////////
 	function Update($ID, $arFields, $bWorkFlow=false, $bUpdateSearch=true, $bResizePictures=false, $bCheckDiskQuota=true)
 	{
-		global $DB;
+		global $DB, $USER;
 		$ID = intval($ID);
 
 		$db_element = CIBlockElement::GetList(array(), array("ID"=>$ID, "SHOW_HISTORY"=>"Y"), false, false,
@@ -1417,10 +1417,10 @@ class CIBlockElement extends CAllIBlockElement
 
 			if($arIBlock["FIELDS"]["LOG_ELEMENT_EDIT"]["IS_REQUIRED"] == "Y")
 			{
+				$USER_ID = is_object($USER)? intval($USER->GetID()) : 0;
 				$db_events = GetModuleEvents("main", "OnBeforeEventLog");
 				$arEvent = $db_events->Fetch();
-				global $USER;
-				if(!$arEvent || ExecuteModuleEventEx($arEvent, array(is_object($USER)? intval($USER->GetID()) : 0 ))===false)
+				if(!$arEvent || ExecuteModuleEventEx($arEvent, array($USER_ID))===false)
 				{
 					$rsElement = CIBlockElement::GetList(
 						array(),
@@ -1430,12 +1430,13 @@ class CIBlockElement extends CAllIBlockElement
 					);
 					$arElement = $rsElement->GetNext();
 					$res = array(
-							"ID" => $ID,
-							"CODE" => $arElement["CODE"],
-							"NAME" => $arElement["NAME"],
-							"ELEMENT_NAME" => $arIBlock["ELEMENT_NAME"],
-							"IBLOCK_PAGE_URL" => $arElement["LIST_PAGE_URL"],
-							);
+						"ID" => $ID,
+						"CODE" => $arElement["CODE"],
+						"NAME" => $arElement["NAME"],
+						"ELEMENT_NAME" => $arIBlock["ELEMENT_NAME"],
+						"USER_ID" => $USER_ID,
+						"IBLOCK_PAGE_URL" => $arElement["LIST_PAGE_URL"],
+					);
 					CEventLog::Log(
 						"IBLOCK",
 						"IBLOCK_ELEMENT_EDIT",

@@ -58,10 +58,18 @@ function ArrayMultiply(&$arResult, $arTuple, $arTemp = array())
 		$arTemp[] = false;
 		if(is_array($head))
 		{
-			foreach($head as $key=>$value)
+			if(empty($head))
 			{
-				$arTemp[count($arTemp)-1] = $value;
+				$arTemp[count($arTemp)-1] = "";
 				ArrayMultiply($arResult, $arTuple, $arTemp);
+			}
+			else
+			{
+				foreach($head as $key=>$value)
+				{
+					$arTemp[count($arTemp)-1] = $value;
+					ArrayMultiply($arResult, $arTuple, $arTemp);
+				}
 			}
 		}
 		else
@@ -174,7 +182,7 @@ if ($REQUEST_METHOD == "POST" && $STEP > 1 && check_bitrix_sessid())
 				"IBLOCK_ID",
 				"IBLOCK_SECTION_ID",
 			);
- 			$bNeedGroups = false;
+			$bNeedGroups = false;
 			$bNeedProps  = false;
 			$arNeedFields = array();
 			foreach($field_code as  $i => $value)
@@ -318,7 +326,7 @@ if ($REQUEST_METHOD == "POST" && $STEP > 1 && check_bitrix_sessid())
 				$arResSections = array();
 				if($bNeedGroups)
 				{
-					$rsSections = CIBlockElement::GetElementGroups($arElement["ID"]);
+					$rsSections = CIBlockElement::GetElementGroups($arElement["ID"], true);
 					while($arSection = $rsSections->Fetch())
 					{
 						$arPath = array();

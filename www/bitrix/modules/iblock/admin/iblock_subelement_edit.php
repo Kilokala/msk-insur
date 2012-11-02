@@ -675,7 +675,7 @@ do{ //one iteration loop
 				if ($bBizproc)
 				{
 					$BP_HISTORY_NAME = $arFields["NAME"];
-					 if ($ID <= 0)
+					if ($ID <= 0)
 						$arFields["BP_PUBLISHED"] = "N";
 				}
 

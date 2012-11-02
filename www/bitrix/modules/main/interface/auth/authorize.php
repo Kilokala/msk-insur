@@ -35,7 +35,7 @@ if(!CMain::IsHTTPS() && COption::GetOptionString('main', 'use_encrypted_auth', '
 	}
 }
 ?>
-<form name="form_auth" method="post" target="_top" class="bx-admin-auth-form" action="<?echo htmlspecialchars($sDocPath."?login=yes".(($s=DeleteParam(array("logout", "login"))) == ""? "":"&".$s));?>">
+<form name="form_auth" method="post" target="_top" class="bx-admin-auth-form" action="<?echo htmlspecialcharsbx($sDocPath."?login=yes".(($s=DeleteParam(array("logout", "login"))) == ""? "":"&".$s));?>">
 <?
 foreach($GLOBALS["HTTP_POST_VARS"] as $vname=>$vvalue):
 	if($vname=="USER_LOGIN" || $vname=="USER_PASSWORD")
@@ -63,7 +63,7 @@ function dump_post_var($vname, $vvalue, $var_stack=array())
 		}
 		else
 			$var_name=$vname;
-		?><input type="hidden" name="<?echo htmlspecialchars($var_name)?>" value="<?echo htmlspecialchars($vvalue)?>"><?
+		?><input type="hidden" name="<?echo htmlspecialcharsbx($var_name)?>" value="<?echo htmlspecialcharsbx($vvalue)?>"><?
 	}
 }
 ?>
@@ -87,7 +87,7 @@ function dump_post_var($vname, $vvalue, $var_stack=array())
 	<table cellpadding="0" cellspacing="0" border="0">
 		<tr>
 			<td class="bx-auth-label"><?=GetMessage("AUTH_LOGIN")?>:</td>
-			<td><input type="text" name="USER_LOGIN" maxlength="50" size="20" value="<?echo htmlspecialchars($last_login)?>" class="bx-auth-input-text"></td>
+			<td><input type="text" name="USER_LOGIN" maxlength="50" size="20" value="<?echo htmlspecialcharsbx($last_login)?>" class="bx-auth-input-text"></td>
 		</tr>
 		<tr>
 			<td class="bx-auth-label"><?=GetMessage("AUTH_PASSWORD")?>:</td>
@@ -142,8 +142,8 @@ document.getElementById('bx_auth_secure').style.display = 'inline-block';
 <?if($not_show_links!="Y"):?>
 	<div class="bx-auth-footer">
 		<p><b><?=GetMessage("AUTH_FORGOT_PASSWORD_2")?></b></p>
-		<p><?=GetMessage("AUTH_GO")?> <a id="bx_forgot_password" href="<?echo htmlspecialchars($sDocPath."?forgot_password=yes".($s<>""? "&".$s:""));?>"><?=GetMessage("AUTH_GO_AUTH_FORM")?></a>.</p>
-		<p><?=GetMessage("AUTH_MESS_1")?> <a id="bx_change_password" href="<?echo htmlspecialchars($sDocPath."?change_password=yes".($s<>""? "&".$s:""));?>"><?=GetMessage("AUTH_CHANGE_FORM")?></a>.</p>
+		<p><?=GetMessage("AUTH_GO")?> <a id="bx_forgot_password" href="<?echo htmlspecialcharsbx($sDocPath."?forgot_password=yes".($s<>""? "&".$s:""));?>"><?=GetMessage("AUTH_GO_AUTH_FORM")?></a>.</p>
+		<p><?=GetMessage("AUTH_MESS_1")?> <a id="bx_change_password" href="<?echo htmlspecialcharsbx($sDocPath."?change_password=yes".($s<>""? "&".$s:""));?>"><?=GetMessage("AUTH_CHANGE_FORM")?></a>.</p>
 	</div>
 <?endif;?>
 </div>

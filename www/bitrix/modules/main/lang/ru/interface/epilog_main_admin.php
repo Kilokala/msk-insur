@@ -1,7 +1,7 @@
 <?
-$MESS ['epilog_support_link'] = "Òåõïîääåðæêà";
-$MESS ['EPILOG_ADMIN_SM_1c_bitrix'] = "1Ñ-Áèòðèêñ: Óïðàâëåíèå ñàéòîì";
-$MESS ['EPILOG_ADMIN_COPY_1c_bitrix'] = "&copy; 2002 Áèòðèêñ, 2007 1Ñ-Áèòðèêñ";
+$MESS ['epilog_support_link'] = "Ð¢ÐµÑ…Ð¿Ð¾Ð´Ð´ÐµÑ€Ð¶ÐºÐ°";
+$MESS ['EPILOG_ADMIN_SM_1c_bitrix'] = "1Ð¡-Ð‘Ð¸Ñ‚Ñ€Ð¸ÐºÑ: Ð£Ð¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ ÑÐ°Ð¹Ñ‚Ð¾Ð¼";
+$MESS ['EPILOG_ADMIN_COPY_1c_bitrix'] = "&copy; 2002 Ð‘Ð¸Ñ‚Ñ€Ð¸ÐºÑ, 2007 1Ð¡-Ð‘Ð¸Ñ‚Ñ€Ð¸ÐºÑ";
 $MESS ['EPILOG_ADMIN_URL_PRODUCT_1c_bitrix'] = "http://www.1c-bitrix.ru/";
 $MESS ['EPILOG_ADMIN_URL_MAIN_1c_bitrix'] = "http://www.1c-bitrix.ru/";
 $MESS ['EPILOG_ADMIN_URL_MAIN_TEXT_1c_bitrix'] = "www.1c-bitrix.ru";
@@ -13,8 +13,8 @@ $MESS ['EPILOG_ADMIN_URL_PRODUCT_bitrix'] = " ";
 $MESS ['EPILOG_ADMIN_URL_MAIN_bitrix'] = " ";
 $MESS ['EPILOG_ADMIN_URL_MAIN_TEXT_bitrix'] = " ";
 $MESS ['EPILOG_ADMIN_URL_SUPPORT_bitrix'] = " ";
-$MESS ['EPILOG_ADMIN_SM_1c_bitrix_portal'] = "1Ñ-Áèòðèêñ: Êîðïîðàòèâíûé ïîðòàë";
-$MESS ['EPILOG_ADMIN_COPY_1c_bitrix_portal'] = "&copy; 2002 Áèòðèêñ, 2008 1Ñ-Áèòðèêñ";
+$MESS ['EPILOG_ADMIN_SM_1c_bitrix_portal'] = "1Ð¡-Ð‘Ð¸Ñ‚Ñ€Ð¸ÐºÑ: ÐšÐ¾Ñ€Ð¿Ð¾Ñ€Ð°Ñ‚Ð¸Ð²Ð½Ñ‹Ð¹ Ð¿Ð¾Ñ€Ñ‚Ð°Ð»";
+$MESS ['EPILOG_ADMIN_COPY_1c_bitrix_portal'] = "&copy; 2002 Ð‘Ð¸Ñ‚Ñ€Ð¸ÐºÑ, 2008 1Ð¡-Ð‘Ð¸Ñ‚Ñ€Ð¸ÐºÑ";
 $MESS ['EPILOG_ADMIN_URL_PRODUCT_1c_bitrix_portal'] = "http://www.1c-bitrix.ru/";
 $MESS ['EPILOG_ADMIN_URL_MAIN_1c_bitrix_portal'] = "http://www.1c-bitrix.ru/";
 $MESS ['EPILOG_ADMIN_URL_MAIN_TEXT_1c_bitrix_portal'] = "www.1c-bitrix.ru";
@@ -26,22 +26,22 @@ $MESS ['EPILOG_ADMIN_URL_MAIN_bitrix_portal'] = " ";
 $MESS ['EPILOG_ADMIN_URL_MAIN_TEXT_bitrix_portal'] = " ";
 $MESS ['EPILOG_ADMIN_URL_SUPPORT_bitrix_portal'] = " ";
 
-$MESS ['EPILOG_ADMIN_SM_1c_bitrix_eduportal'] = "1Ñ-Áèòðèêñ: Âíóòðåííèé ïîðòàë ó÷åáíîãî çàâåäåíèÿ";
-$MESS ['EPILOG_ADMIN_COPY_1c_bitrix_eduportal'] = "&copy; 2009 1Ñ-Áèòðèêñ";
+$MESS ['EPILOG_ADMIN_SM_1c_bitrix_eduportal'] = "1Ð¡-Ð‘Ð¸Ñ‚Ñ€Ð¸ÐºÑ: Ð’Ð½ÑƒÑ‚Ñ€ÐµÐ½Ð½Ð¸Ð¹ Ð¿Ð¾Ñ€Ñ‚Ð°Ð» ÑƒÑ‡ÐµÐ±Ð½Ð¾Ð³Ð¾ Ð·Ð°Ð²ÐµÐ´ÐµÐ½Ð¸Ñ";
+$MESS ['EPILOG_ADMIN_COPY_1c_bitrix_eduportal'] = "&copy; 2009 1Ð¡-Ð‘Ð¸Ñ‚Ñ€Ð¸ÐºÑ";
 $MESS ['EPILOG_ADMIN_URL_PRODUCT_1c_bitrix_eduportal'] = "http://www.1c-bitrix.ru/";
 $MESS ['EPILOG_ADMIN_URL_MAIN_1c_bitrix_eduportal'] = "http://www.1c-bitrix.ru/";
 $MESS ['EPILOG_ADMIN_URL_MAIN_TEXT_1c_bitrix_eduportal'] = "www.1c-bitrix.ru";
 $MESS ['EPILOG_ADMIN_URL_SUPPORT_1c_bitrix_eduportal'] = "http://www.1c-bitrix.ru/support/";
 
-$MESS ['EPILOG_ADMIN_SM_1c_bitrix_gosportal'] = "1Ñ-Áèòðèêñ: Âíóòðåííèé ïîðòàë îðãàíà âëàñòè";
-$MESS ['EPILOG_ADMIN_COPY_1c_bitrix_gosportal'] = "&copy; 2009 1Ñ-Áèòðèêñ";
+$MESS ['EPILOG_ADMIN_SM_1c_bitrix_gosportal'] = "1Ð¡-Ð‘Ð¸Ñ‚Ñ€Ð¸ÐºÑ: Ð’Ð½ÑƒÑ‚Ñ€ÐµÐ½Ð½Ð¸Ð¹ Ð¿Ð¾Ñ€Ñ‚Ð°Ð» Ð¾Ñ€Ð³Ð°Ð½Ð° Ð²Ð»Ð°ÑÑ‚Ð¸";
+$MESS ['EPILOG_ADMIN_COPY_1c_bitrix_gosportal'] = "&copy; 2009 1Ð¡-Ð‘Ð¸Ñ‚Ñ€Ð¸ÐºÑ";
 $MESS ['EPILOG_ADMIN_URL_PRODUCT_1c_bitrix_gosportal'] = "http://www.1c-bitrix.ru/";
 $MESS ['EPILOG_ADMIN_URL_MAIN_1c_bitrix_gosportal'] = "http://www.1c-bitrix.ru/";
 $MESS ['EPILOG_ADMIN_URL_MAIN_TEXT_1c_bitrix_gosportal'] = "www.1c-bitrix.ru";
 $MESS ['EPILOG_ADMIN_URL_SUPPORT_1c_bitrix_gosportal'] = "http://www.1c-bitrix.ru/support/";
 
-$MESS ['EPILOG_ADMIN_SM_1c_bitrix_gossite'] = "1Ñ-Áèòðèêñ: Îôèöèàëüíûé ñàéò îðãàíà âëàñòè";
-$MESS ['EPILOG_ADMIN_COPY_1c_bitrix_gossite'] = "&copy; 2009 1Ñ-Áèòðèêñ";
+$MESS ['EPILOG_ADMIN_SM_1c_bitrix_gossite'] = "1Ð¡-Ð‘Ð¸Ñ‚Ñ€Ð¸ÐºÑ: ÐžÑ„Ð¸Ñ†Ð¸Ð°Ð»ÑŒÐ½Ñ‹Ð¹ ÑÐ°Ð¹Ñ‚ Ð¾Ñ€Ð³Ð°Ð½Ð° Ð²Ð»Ð°ÑÑ‚Ð¸";
+$MESS ['EPILOG_ADMIN_COPY_1c_bitrix_gossite'] = "&copy; 2009 1Ð¡-Ð‘Ð¸Ñ‚Ñ€Ð¸ÐºÑ";
 $MESS ['EPILOG_ADMIN_URL_PRODUCT_1c_bitrix_gossite'] = "http://www.1c-bitrix.ru/";
 $MESS ['EPILOG_ADMIN_URL_MAIN_1c_bitrix_gossite'] = "http://www.1c-bitrix.ru/";
 $MESS ['EPILOG_ADMIN_URL_MAIN_TEXT_1c_bitrix_gossite'] = "www.1c-bitrix.ru";

@@ -1,10 +1,10 @@
 <?
-$MESS["soc_serv_opt_allow"] = "Ðàçðåøèòü àâòîðèçàöèþ ÷åðåç âíåøíèå ñåðâèñû:";
-$MESS["soc_serv_opt_up"] = "Âûøå";
-$MESS["soc_serv_opt_down"] = "Íèæå";
-$MESS["soc_serv_opt_settings_of"] = "Íàñòðîéêè #SERVICE#";
-$MESS["socserv_sett_common"] = "Îáùèå";
-$MESS["socserv_sett_common_title"] = "Îáùèå íàñòðîéêè äëÿ âñåõ ñàéòîâ";
-$MESS["socserv_sett_site"] = "Íàñòðîéêè äëÿ ñàéòà";
-$MESS["socserv_sett_site_apply"] = "Ïðèìåíèòü èíäèâèäóàëüíûå íàñòðîéêè äëÿ ýòîãî ñàéòà:";
+$MESS["soc_serv_opt_allow"] = "Ð Ð°Ð·Ñ€ÐµÑˆÐ¸Ñ‚ÑŒ Ð°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸ÑŽ Ñ‡ÐµÑ€ÐµÐ· Ð²Ð½ÐµÑˆÐ½Ð¸Ðµ ÑÐµÑ€Ð²Ð¸ÑÑ‹:";
+$MESS["soc_serv_opt_up"] = "Ð’Ñ‹ÑˆÐµ";
+$MESS["soc_serv_opt_down"] = "ÐÐ¸Ð¶Ðµ";
+$MESS["soc_serv_opt_settings_of"] = "ÐÐ°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ #SERVICE#";
+$MESS["socserv_sett_common"] = "ÐžÐ±Ñ‰Ð¸Ðµ";
+$MESS["socserv_sett_common_title"] = "ÐžÐ±Ñ‰Ð¸Ðµ Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ Ð´Ð»Ñ Ð²ÑÐµÑ… ÑÐ°Ð¹Ñ‚Ð¾Ð²";
+$MESS["socserv_sett_site"] = "ÐÐ°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ Ð´Ð»Ñ ÑÐ°Ð¹Ñ‚Ð°";
+$MESS["socserv_sett_site_apply"] = "ÐŸÑ€Ð¸Ð¼ÐµÐ½Ð¸Ñ‚ÑŒ Ð¸Ð½Ð´Ð¸Ð²Ð¸Ð´ÑƒÐ°Ð»ÑŒÐ½Ñ‹Ðµ Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ Ð´Ð»Ñ ÑÑ‚Ð¾Ð³Ð¾ ÑÐ°Ð¹Ñ‚Ð°:";
 ?>

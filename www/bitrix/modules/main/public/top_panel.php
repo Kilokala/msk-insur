@@ -489,9 +489,8 @@ class CTopPanel
 		{
 			$defaultUrl = 'javascript:'.$APPLICATION->GetPopupLink(array(
 					"URL"=>"/bitrix/admin/public_folder_edit.php?lang=".LANGUAGE_ID."&site=".SITE_ID."&path=".urlencode($APPLICATION->GetCurDir())."&back_url=".$encRequestUri,
-	                "PARAMS" => Array("min_width"=>450, "min_height" => 250)
-	            )
-
+					"PARAMS" => Array("min_width"=>450, "min_height" => 250)
+				)
 			);
 
 			$arMenu[] = Array(
@@ -1007,9 +1006,9 @@ class CTopPanel
 	function AddAttrHint($hint_title, $hint_text = false)
 	{
 		if (!$hint_text)
-			return 'onmouseover="BX.hint(this, \''.htmlspecialchars(CUtil::JSEscape($hint_title)).'\')"';
+			return 'onmouseover="BX.hint(this, \''.htmlspecialcharsbx(CUtil::JSEscape($hint_title)).'\')"';
 		else
-			return 'onmouseover="BX.hint(this, \''.htmlspecialchars(CUtil::JSEscape($hint_title)).'\', \''.htmlspecialchars(CUtil::JSEscape($hint_text)).'\')"';
+			return 'onmouseover="BX.hint(this, \''.htmlspecialcharsbx(CUtil::JSEscape($hint_title)).'\', \''.htmlspecialcharsbx(CUtil::JSEscape($hint_text)).'\')"';
 	}
 
 	function AddConstantHint($element_id, $hint_title, $hint_text, $hint_id = false)
@@ -1075,6 +1074,7 @@ class CTopPanel
 
 		$params = DeleteParam(array("bitrix_include_areas", "bitrix_show_mode", "back_url_admin"));
 		$href = $APPLICATION->GetCurPage();
+		$hrefEnc = htmlspecialcharsbx($href);
 
 		$toggleModeDynamic = $aUserOptGlobal['panel_dynamic_mode'] == 'Y';
 		$toggleMode = $toggleModeDynamic && !$toggleModeSet
@@ -1087,7 +1087,7 @@ class CTopPanel
 		if($old_edit !== $aUserOpt['edit'])
 			CUserOptions::SetOption('admin_panel', 'settings', $aUserOpt);
 
-		$toggleModeLink = $href.'?bitrix_include_areas='.($toggleMode ? 'N' : 'Y').($params<>""? "&amp;".htmlspecialchars($params):"");
+		$toggleModeLink = $hrefEnc.'?bitrix_include_areas='.($toggleMode ? 'N' : 'Y').($params<>""? "&amp;".htmlspecialcharsbx($params):"");
 
 		$maxQuotaMB = COption::GetOptionInt("main", "disk_space", 0);
 		$maxQuota = $maxQuotaMB*1048576;//*1024*1024
@@ -1119,9 +1119,9 @@ class CTopPanel
 			<div id="bx-panel-tabs">
 	';
 		$result .= '
-				<a id="bx-panel-menu" href="" onclick="jsStartMenu.ShowStartMenu(this, \''.CUtil::JSUrlEscape(CUtil::addslashes($href.($params<>""? "?".htmlspecialchars($params):""))).'\'); return false;" '.CTopPanel::AddAttrHint(GetMessage('top_panel_start_menu_tooltip_title'), GetMessage('top_panel_start_menu_tooltip')).'><span>'.GetMessage("top_panel_menu").'</span></a><a id="bx-panel-view-tab"><span>'.GetMessage("top_panel_site").'</span></a><a id="bx-panel-admin-tab" href="'.(
+				<a id="bx-panel-menu" href="" onclick="jsStartMenu.ShowStartMenu(this, \''.CUtil::JSUrlEscape(CUtil::addslashes($hrefEnc.($params<>""? "?".htmlspecialcharsbx($params):""))).'\'); return false;" '.CTopPanel::AddAttrHint(GetMessage('top_panel_start_menu_tooltip_title'), GetMessage('top_panel_start_menu_tooltip')).'><span>'.GetMessage("top_panel_menu").'</span></a><a id="bx-panel-view-tab"><span>'.GetMessage("top_panel_site").'</span></a><a id="bx-panel-admin-tab" href="'.(
 						$_SESSION["BACK_URL_ADMIN"] <> ""
-						? htmlspecialchars($_SESSION["BACK_URL_ADMIN"]).(strpos($_SESSION["BACK_URL_ADMIN"], "?") !== false? "&amp;":"?")
+						? htmlspecialcharsbx($_SESSION["BACK_URL_ADMIN"]).(strpos($_SESSION["BACK_URL_ADMIN"], "?") !== false? "&amp;":"?")
 						: '/bitrix/admin/index.php?lang='.LANGUAGE_ID.'&amp;'
 					).'back_url_pub='.urlencode($href.($params<>""? "?".$params:"")).'"><span class="bx-panel-admin-tab-background"><span class="bx-panel-admin-tab-left"></span><span class="bx-panel-admin-tab-center"><span class="bx-panel-menu-opacity">'.GetMessage("top_panel_admin").'</span></span><span class="bx-panel-admin-tab-right"></span></span></a>';
 
@@ -1167,16 +1167,16 @@ class CTopPanel
 		$bCanProfile = $USER->CanDoOperation('view_own_profile') || $USER->CanDoOperation('edit_own_profile');
 		if ($bCanProfile)
 		{
-			$result .= '<a href="/bitrix/admin/user_edit.php?lang='.LANGUAGE_ID.'&ID='.$USER->GetID().'" id="bx-panel-user" '.CTopPanel::AddAttrHint(GetMessage('top_panel_profile_tooltip')).'>'.htmlspecialchars($USER->GetFullName()).' ('.htmlspecialchars($USER->GetLogin()).')</a>';
+			$result .= '<a href="/bitrix/admin/user_edit.php?lang='.LANGUAGE_ID.'&ID='.$USER->GetID().'" id="bx-panel-user" '.CTopPanel::AddAttrHint(GetMessage('top_panel_profile_tooltip')).'>'.htmlspecialcharsbx($USER->GetFullName()).' ('.htmlspecialcharsbx($USER->GetLogin()).')</a>';
 		}
 		else
 		{
-			$result .= '<a id="bx-panel-user">'.htmlspecialchars($USER->GetFullName()).' ('.htmlspecialchars($USER->GetLogin()).')</a>';
+			$result .= '<a id="bx-panel-user">'.htmlspecialcharsbx($USER->GetFullName()).' ('.htmlspecialcharsbx($USER->GetLogin()).')</a>';
 		}
 
 		$result .= '<span class="bx-panel-userinfo-separator"></span>';
 
-		$result .= '<a href="'.$href.'?logout=yes'.htmlspecialchars(($s=DeleteParam(array("logout"))) == ""? "":"&".$s).'" id="bx-panel-logout" '.CTopPanel::AddAttrHint(GetMessage('top_panel_logout_tooltip').$hkInstance->GetTitle("bx-panel-logout",true)).'>'.GetMessage("top_panel_logout").'</a><span class="bx-panel-userinfo-separator bx-panel-folded-mode-only"></span>';
+		$result .= '<a href="'.$hrefEnc.'?logout=yes'.htmlspecialcharsbx(($s=DeleteParam(array("logout"))) == ""? "":"&".$s).'" id="bx-panel-logout" '.CTopPanel::AddAttrHint(GetMessage('top_panel_logout_tooltip').$hkInstance->GetTitle("bx-panel-logout",true)).'>'.GetMessage("top_panel_logout").'</a><span class="bx-panel-userinfo-separator bx-panel-folded-mode-only"></span>';
 
 		$result .= '<a href="'.$toggleModeLink.'" id="bx-panel-small-toggle" class="bx-panel-toggle'.($toggleMode ? '-on' : '-off').'"'.($toggleModeDynamic ? '' : ' '.CTopPanel::AddAttrHint(GetMessage("top_panel_edit_mode_new_tooltip_title"), GetMessage('top_panel_toggle_tooltip').$hkInstance->GetTitle("bx-panel-small-toggle",true))).'><span id="bx-panel-small-toggle-caption">'.GetMessage("top_panel_edit_mode_new").'</span><span id="bx-panel-small-toggle-icon"><span id="bx-panel-small-toggle-icon-overlay"></span></span></a><span class="bx-panel-userinfo-separator bx-panel-folded-mode-only"></span>';
 
@@ -1302,12 +1302,12 @@ class CTopPanel
 
 					$result .= '<span class="bx-panel-small-button"><span class="bx-panel-small-button-inner">';
 
-					$button_icon = '<span class="bx-panel-small-button-icon'.($arButton['ICON'] ? ' '.$arButton['ICON'] : '').'"'.($arButton['SRC'] ? ' style="background: scroll transparent url('.htmlspecialchars($arButton['SRC']).') no-repeat center center !important;"' : '').'></span>';
-					$button_text = '<span class="bx-panel-small-button-text">'.htmlspecialchars($arButton['TEXT']).'</span>';
+					$button_icon = '<span class="bx-panel-small-button-icon'.($arButton['ICON'] ? ' '.$arButton['ICON'] : '').'"'.($arButton['SRC'] ? ' style="background: scroll transparent url('.htmlspecialcharsbx($arButton['SRC']).') no-repeat center center !important;"' : '').'></span>';
+					$button_text = '<span class="bx-panel-small-button-text">'.htmlspecialcharsbx($arButton['TEXT']).'</span>';
 
 					if ($bHasAction)
 					{
-						$result .= '<a href="'.htmlspecialchars($arButton['HREF']).'" onclick="'.htmlspecialchars($arButton['ONCLICK']).'" id="bx_topmenu_btn_'.$key.'"'.($arButton['ALT'] ? ' title="'.htmlspecialchars($arButton['ALT']).$hkInstance->GetTitle("bx_topmenu_btn_".$key).'"' : '"'.$hkInstance->GetTitle("bx_topmenu_btn_".$key).'"').'>'.$button_icon.$button_text.'</a>';
+						$result .= '<a href="'.htmlspecialcharsbx($arButton['HREF']).'" onclick="'.htmlspecialcharsbx($arButton['ONCLICK']).'" id="bx_topmenu_btn_'.$key.'"'.($arButton['ALT'] ? ' title="'.htmlspecialcharsbx($arButton['ALT']).$hkInstance->GetTitle("bx_topmenu_btn_".$key).'"' : '"'.$hkInstance->GetTitle("bx_topmenu_btn_".$key).'"').'>'.$button_icon.$button_text.'</a>';
 
 						$result .= '<script type="text/javascript">BX.admin.panel.RegisterButton({ID: \'bx_topmenu_btn_'.$key.'\', TYPE: \'SMALL\', HOVER_CSS: \'bx-panel-small-button'.($bHasMenu ? '-text' : '').'-hover\''.($arButton['HINT'] ? ', HINT: '.CUtil::PhpToJsObject($arButton['HINT']) : '').'})</script>';
 						if ($bHasMenu)
@@ -1318,7 +1318,7 @@ class CTopPanel
 					}
 					elseif ($bHasMenu)
 					{
-						$result .= '<a href="javascript:void(0)" id="bx_topmenu_btn_'.$key.'"'.($arButton['ALT'] ? ' title="'.htmlspecialchars($arButton['ALT']).'"' : '').'>'.$button_icon.$button_text.'<span class="bx-panel-small-single-button-arrow"></span></a>';
+						$result .= '<a href="javascript:void(0)" id="bx_topmenu_btn_'.$key.'"'.($arButton['ALT'] ? ' title="'.htmlspecialcharsbx($arButton['ALT']).'"' : '').'>'.$button_icon.$button_text.'<span class="bx-panel-small-single-button-arrow"></span></a>';
 						$result .= '<script type="text/javascript">BX.admin.panel.RegisterButton({ID: \'bx_topmenu_btn_'.$key.'\', TYPE: \'SMALL\', MENU: '.CUtil::PhpToJsObject($arButton['MENU']).', HOVER_CSS: \'bx-panel-small-button-hover\''.($arButton['HINT'] ? ', HINT: '.CUtil::PhpToJsObject($arButton['HINT']) : '').'})</script>';
 					}
 
@@ -1333,13 +1333,13 @@ class CTopPanel
 
 					$result .= '<span class="bx-panel-button"><span class="bx-panel-button-inner">';
 
-					$button_icon = '<span class="bx-panel-button-icon'.($arButton['ICON'] ? ' '.$arButton['ICON'] : '').'"'.($arButton['SRC'] ? ' style="background: scroll transparent url('.htmlspecialchars($arButton['SRC']).') no-repeat center center !important;"' : '').'></span>';
+					$button_icon = '<span class="bx-panel-button-icon'.($arButton['ICON'] ? ' '.$arButton['ICON'] : '').'"'.($arButton['SRC'] ? ' style="background: scroll transparent url('.htmlspecialcharsbx($arButton['SRC']).') no-repeat center center !important;"' : '').'></span>';
 
 
 					if ($bHasAction && $bHasMenu)
 					{
 						$button_text = '<span class="bx-panel-button-text">'.str_replace('#BR#', '<span class="bx-panel-break"></span>', $arButton['TEXT']).'&nbsp;<span class="bx-panel-button-arrow"></span></span>';
-						$result .= '<a href="'.htmlspecialchars($arButton['HREF']).'" onclick="'.htmlspecialchars($arButton['ONCLICK']).'" id="bx_topmenu_btn_'.$key.'"'.($arButton['ALT'] ? ' title="'.htmlspecialchars($arButton['ALT']).'"' : '').'>'.$button_icon.'</a><a id="bx_topmenu_btn_'.$key.'_menu" href="javascript:void(0)">'.$button_text.'</a>';
+						$result .= '<a href="'.htmlspecialcharsbx($arButton['HREF']).'" onclick="'.htmlspecialcharsbx($arButton['ONCLICK']).'" id="bx_topmenu_btn_'.$key.'"'.($arButton['ALT'] ? ' title="'.htmlspecialcharsbx($arButton['ALT']).'"' : '').'>'.$button_icon.'</a><a id="bx_topmenu_btn_'.$key.'_menu" href="javascript:void(0)">'.$button_text.'</a>';
 						$result .= '<script type="text/javascript">
 	BX.admin.panel.RegisterButton({ID: \'bx_topmenu_btn_'.$key.'\', TYPE: \'BIG\', HOVER_CSS: \'bx-panel-button-icon-hover\''.($arButton['HINT'] ? ', HINT: '.CUtil::PhpToJsObject($arButton['HINT']) : '').'}); BX.admin.panel.RegisterButton({ID: \'bx_topmenu_btn_'.$key.'_menu\', TYPE: \'BIG\', MENU: '.CUtil::PhpToJsObject($arButton['MENU']).', HOVER_CSS: \'bx-panel-button-text-hover\''.($arButton['HINT_MENU'] ? ', HINT: '.CUtil::PhpToJsObject($arButton['HINT_MENU']) : '').'})
 	</script>';
@@ -1348,7 +1348,7 @@ class CTopPanel
 					{
 						$button_text = '<span class="bx-panel-button-text">'.str_replace('#BR#', '<span class="bx-panel-break"></span>', $arButton['TEXT']).'</span>';
 
-						$result .= '<a href="'.htmlspecialchars($arButton['HREF']).'" onclick="'.htmlspecialchars($arButton['ONCLICK']).'" id="bx_topmenu_btn_'.$key.'"'.($arButton['ALT'] ? ' title="'.htmlspecialchars($arButton['ALT']).'"' : '').'>'.$button_icon.$button_text.'</a>';
+						$result .= '<a href="'.htmlspecialcharsbx($arButton['HREF']).'" onclick="'.htmlspecialcharsbx($arButton['ONCLICK']).'" id="bx_topmenu_btn_'.$key.'"'.($arButton['ALT'] ? ' title="'.htmlspecialcharsbx($arButton['ALT']).'"' : '').'>'.$button_icon.$button_text.'</a>';
 
 						$result .= '<script type="text/javascript">BX.admin.panel.RegisterButton({ID: \'bx_topmenu_btn_'.$key.'\', TYPE: \'BIG\', HOVER_CSS: \'bx-panel-button-hover\''.($arButton['HINT'] ? ', HINT: '.CUtil::PhpToJsObject($arButton['HINT']) : '').'});</script>';
 

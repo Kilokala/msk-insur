@@ -147,7 +147,7 @@ $dbRes = CLang::GetList(($b="sort"), ($o="asc"));
 while(($arRes = $dbRes->Fetch()))
 {
 	$arDDMenu[] = array(
-		"TEXT" => htmlspecialchars("[".$arRes["LID"]."] ".$arRes["NAME"]),
+		"TEXT" => htmlspecialcharsbx("[".$arRes["LID"]."] ".$arRes["NAME"]),
 		"ACTION" => "window.location = 'urlrewrite_edit.php?lang=".urlencode(LANG)."&site_id=".urlencode($arRes["LID"])."';"
 	);
 }

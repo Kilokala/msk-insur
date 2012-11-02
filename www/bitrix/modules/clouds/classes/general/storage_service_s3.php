@@ -79,6 +79,8 @@ class CCloudStorageService_AmazonS3
 			"ACCESS_KEY" => is_array($arSettings)? trim($arSettings["ACCESS_KEY"]): '',
 			"SECRET_KEY" => is_array($arSettings)? trim($arSettings["SECRET_KEY"]): '',
 		);
+		if(is_array($arSettings) && array_key_exists("SESSION_TOKEN", $arSettings))
+			$result["SESSION_TOKEN"] = trim($arSettings["SESSION_TOKEN"]);
 
 		if($arBucket["READ_ONLY"] !== "Y" && !strlen($result["ACCESS_KEY"]))
 			$aMsg[] = array("id" => $this->GetID()."INP_ACCESS_KEY", "text" => GetMessage("CLO_STORAGE_S3_EMPTY_ACCESS_KEY"));
@@ -117,8 +119,7 @@ class CCloudStorageService_AmazonS3
 			$content = '';
 
 		$response = $this->SendRequest(
-			$arBucket["SETTINGS"]["ACCESS_KEY"],
-			$arBucket["SETTINGS"]["SECRET_KEY"],
+			$arBucket["SETTINGS"],
 			'PUT',
 			$arBucket["BUCKET"],
 			'/',
@@ -152,8 +153,7 @@ class CCloudStorageService_AmazonS3
 		}
 
 		$response = $this->SendRequest(
-			$arBucket["SETTINGS"]["ACCESS_KEY"],
-			$arBucket["SETTINGS"]["SECRET_KEY"],
+			$arBucket["SETTINGS"],
 			'DELETE',
 			$arBucket["BUCKET"]
 		);
@@ -178,8 +178,7 @@ class CCloudStorageService_AmazonS3
 		global $APPLICATION;
 
 		$response = $this->SendRequest(
-			$arBucket["SETTINGS"]["ACCESS_KEY"],
-			$arBucket["SETTINGS"]["SECRET_KEY"],
+			$arBucket["SETTINGS"],
 			'GET',
 			$arBucket["BUCKET"],
 			'/',
@@ -264,8 +263,7 @@ class CCloudStorageService_AmazonS3
 		}
 
 		$response = $this->SendRequest(
-			$arBucket["SETTINGS"]["ACCESS_KEY"],
-			$arBucket["SETTINGS"]["SECRET_KEY"],
+			$arBucket["SETTINGS"],
 			'HEAD',
 			$arBucket["BUCKET"],
 			$filePath
@@ -298,8 +296,7 @@ class CCloudStorageService_AmazonS3
 		}
 
 		$response = $this->SendRequest(
-			$arBucket["SETTINGS"]["ACCESS_KEY"],
-			$arBucket["SETTINGS"]["SECRET_KEY"],
+			$arBucket["SETTINGS"],
 			'PUT',
 			$arBucket["BUCKET"],
 			$filePath,
@@ -341,8 +338,7 @@ class CCloudStorageService_AmazonS3
 		}
 
 		$response = $this->SendRequest(
-			$arBucket["SETTINGS"]["ACCESS_KEY"],
-			$arBucket["SETTINGS"]["SECRET_KEY"],
+			$arBucket["SETTINGS"],
 			'DELETE',
 			$arBucket["BUCKET"],
 			$filePath
@@ -371,8 +367,7 @@ class CCloudStorageService_AmazonS3
 		}
 
 		$response = $this->SendRequest(
-			$arBucket["SETTINGS"]["ACCESS_KEY"],
-			$arBucket["SETTINGS"]["SECRET_KEY"],
+			$arBucket["SETTINGS"],
 			'PUT',
 			$arBucket["BUCKET"],
 			$filePath,
@@ -424,8 +419,7 @@ class CCloudStorageService_AmazonS3
 		while(true)
 		{
 			$response = $this->SendRequest(
-				$arBucket["SETTINGS"]["ACCESS_KEY"],
-				$arBucket["SETTINGS"]["SECRET_KEY"],
+				$arBucket["SETTINGS"],
 				'GET',
 				$arBucket["BUCKET"],
 				'/',
@@ -500,8 +494,7 @@ class CCloudStorageService_AmazonS3
 		}
 
 		$response = $this->SendRequest(
-			$arBucket["SETTINGS"]["ACCESS_KEY"],
-			$arBucket["SETTINGS"]["SECRET_KEY"],
+			$arBucket["SETTINGS"],
 			'POST',
 			$arBucket["BUCKET"],
 			$filePath.'?uploads',
@@ -556,8 +549,7 @@ class CCloudStorageService_AmazonS3
 		}
 
 		$response = $this->SendRequest(
-			$arBucket["SETTINGS"]["ACCESS_KEY"],
-			$arBucket["SETTINGS"]["SECRET_KEY"],
+			$arBucket["SETTINGS"],
 			'PUT',
 			$arBucket["BUCKET"],
 			$filePath.'?partNumber='.(count($NS["Parts"])+1).'&uploadId='.urlencode($NS["UploadId"]),
@@ -590,8 +582,7 @@ class CCloudStorageService_AmazonS3
 			$data .= "<Part><PartNumber>".($PartNumber+1)."</PartNumber><ETag>".$ETag."</ETag></Part>\n";
 
 		$response = $this->SendRequest(
-			$arBucket["SETTINGS"]["ACCESS_KEY"],
-			$arBucket["SETTINGS"]["SECRET_KEY"],
+			$arBucket["SETTINGS"],
 			'POST',
 			$arBucket["BUCKET"],
 			$filePath.'?uploadId='.urlencode($NS["UploadId"]),
@@ -602,7 +593,7 @@ class CCloudStorageService_AmazonS3
 		return $this->status == 200;
 	}
 
-	function SendRequest($access_key, $secret_key, $verb, $bucket, $file_name='/', $params='', $content='', $additional_headers=array())
+	function SendRequest($arSettings, $verb, $bucket, $file_name='/', $params='', $content='', $additional_headers=array())
 	{
 		global $APPLICATION;
 		$this->status = 0;
@@ -618,6 +609,10 @@ class CCloudStorageService_AmazonS3
 			$ContentType = $content? 'text/plain': '';
 		}
 
+		if(array_key_exists("SESSION_TOKEN", $arSettings))
+			$additional_headers["x-amz-security-token"] = $arSettings["SESSION_TOKEN"];
+		ksort($additional_headers);
+
 		$RequestMethod = $verb;
 		$RequestURI = CCloudUtil::URLEncode($file_name, LANG_CHARSET);
 		$RequestDATE = gmdate('D, d M Y H:i:s', time()).' GMT';
@@ -632,8 +627,8 @@ class CCloudStorageService_AmazonS3
 
 		$StringToSign = "$RequestMethod\n\n$ContentType\n$RequestDATE\n$CanonicalizedAmzHeaders$CanonicalizedResource";
 		//$utf = $APPLICATION->ConvertCharset($StringToSign, LANG_CHARSET, "UTF-8");
-		$Signature = base64_encode($this->hmacsha1($StringToSign, $secret_key));
-		$Authorization = "AWS ".$access_key.":".$Signature;
+		$Signature = base64_encode($this->hmacsha1($StringToSign, $arSettings["SECRET_KEY"]));
+		$Authorization = "AWS ".$arSettings["ACCESS_KEY"].":".$Signature;
 
 		$obRequest = new CHTTP;
 		$obRequest->additional_headers["Date"] = $RequestDATE;
@@ -699,8 +694,7 @@ class CCloudStorageService_AmazonS3
 		{
 			$this->new_end_point = $obRequest->headers["Location"];
 			return $this->SendRequest(
-				$access_key,
-				$secret_key,
+				$arSettings,
 				$verb,
 				$bucket,
 				$file_name,

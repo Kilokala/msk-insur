@@ -806,10 +806,10 @@ elseif($DB->type == "ORACLE")
 				end FLAG
 			from (
 				select min(last_analyzed) min_last_analyzed, max(last_analyzed) max_last_analyzed from dba_indexes
-            			where owner = user
-            			union all
-            			select min(last_analyzed) min_last_analyzed, max(last_analyzed) max_last_analyzed from dba_tables
-            			where owner = user
+				where owner = user
+				union all
+				select min(last_analyzed) min_last_analyzed, max(last_analyzed) max_last_analyzed from dba_tables
+				where owner = user
 			)
 		");
 		$stat = $rs->Fetch();

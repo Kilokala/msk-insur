@@ -168,7 +168,7 @@ while($info = $rsData->Fetch())
 {
 	$row =& $lAdmin->AddRow($info["MODULE_ID"], $info);
 	
-	$row->AddViewField("NAME", "<b>".htmlspecialchars($info["MODULE_NAME"])."</b> (".htmlspecialchars($info["MODULE_ID"]).")<br />".htmlspecialchars($info["MODULE_DESCRIPTION"]));
+	$row->AddViewField("NAME", "<b>".htmlspecialcharsbx($info["MODULE_NAME"])."</b> (".htmlspecialcharsbx($info["MODULE_ID"]).")<br />".htmlspecialcharsbx($info["MODULE_DESCRIPTION"]));
 	$row->AddViewField("PARTNER", ((strlen($info["MODULE_PARTNER"]) > 0) ? " ".str_replace(array("#NAME#", "#URI#"), array($info["MODULE_PARTNER"], $info["MODULE_PARTNER_URI"]), GetMessage("MOD_PARTNER_NAME"))."" : "&nbsp;"));
 	$row->AddViewField("VERSION", $info["MODULE_VERSION"]);
 	$row->AddViewField("DATE_UPDATE", CDatabase::FormatDate($info["MODULE_VERSION_DATE"], "YYYY-MM-DD HH:MI:SS", CLang::GetDateFormat("SHORT")));
@@ -199,7 +199,7 @@ while($info = $rsData->Fetch())
 			"ICON" => "delete",
 			"DEFAULT" => true,
 			"TEXT" => GetMessage("MOD_DELETE"),
-			"ACTION" => $lAdmin->ActionRedirect($APPLICATION->GetCurPage()."?id=".htmlspecialchars($info["MODULE_ID"])."&lang=".LANG."&uninstall=Y&".bitrix_sessid_get()),
+			"ACTION" => $lAdmin->ActionRedirect($APPLICATION->GetCurPage()."?id=".$info["MODULE_ID"]."&lang=".LANG."&uninstall=Y&".bitrix_sessid_get()),
 		);
 	}
 	else
@@ -208,13 +208,13 @@ while($info = $rsData->Fetch())
 			"ICON" => "add",
 			"DEFAULT" => true,
 			"TEXT" => GetMessage("MOD_INSTALL_BUTTON"),
-			"ACTION" => $lAdmin->ActionRedirect($APPLICATION->GetCurPage()."?id=".htmlspecialchars($info["MODULE_ID"])."&lang=".LANG."&install=Y&".bitrix_sessid_get()),
+			"ACTION" => $lAdmin->ActionRedirect($APPLICATION->GetCurPage()."?id=".$info["MODULE_ID"]."&lang=".LANG."&install=Y&".bitrix_sessid_get()),
 		);
 		$arActions[] = array(
 			"ICON" => "delete",
 			"DEFAULT" => false,
 			"TEXT" => GetMessage("MOD_SMP_DELETE"),
-			"ACTION" => $lAdmin->ActionRedirect($APPLICATION->GetCurPage()."?id=".htmlspecialchars($info["MODULE_ID"])."&lang=".LANG."&clear=Y&".bitrix_sessid_get()),
+			"ACTION" => $lAdmin->ActionRedirect($APPLICATION->GetCurPage()."?id=".$info["MODULE_ID"]."&lang=".LANG."&clear=Y&".bitrix_sessid_get()),
 		);
 	}
 	$row->AddActions($arActions);
@@ -253,7 +253,7 @@ while($info = $rsData->Fetch())
 {
 	$row =& $lAdmin1->AddRow($info["ID"], $info);
 	
-	$row->AddViewField("NAME", "<b>".htmlspecialchars($info["NAME"])."</b> (".htmlspecialchars($info["ID"]).")<br />".htmlspecialchars($info["DESCRIPTION"]));
+	$row->AddViewField("NAME", "<b>".htmlspecialcharsbx($info["NAME"])."</b> (".htmlspecialcharsbx($info["ID"]).")<br />".htmlspecialcharsbx($info["DESCRIPTION"]));
 	$row->AddViewField("PARTNER", $info["PARTNER"]);
 	
 	$arActions = Array();

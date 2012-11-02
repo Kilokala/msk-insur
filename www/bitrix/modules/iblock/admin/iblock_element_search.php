@@ -358,10 +358,10 @@ while($arRes = $rsData->GetNext())
 }
 
 $lAdmin->AddFooter(
-        array(
-                array("title"=>GetMessage("MAIN_ADMIN_LIST_SELECTED"), "value"=>$rsData->SelectedRowsCount()),
-                array("counter"=>true, "title"=>GetMessage("MAIN_ADMIN_LIST_CHECKED"), "value"=>"0"),
-        )
+	array(
+		array("title"=>GetMessage("MAIN_ADMIN_LIST_SELECTED"), "value"=>$rsData->SelectedRowsCount()),
+		array("counter"=>true, "title"=>GetMessage("MAIN_ADMIN_LIST_CHECKED"), "value"=>"0"),
+	)
 );
 
 if($m)
@@ -598,13 +598,13 @@ function SelAll()
 	<tr>
 		<td nowrap><?echo GetMessage("IBLOCK_FIELD_NAME")?>:</td>
 		<td nowrap>
-		   <input type="text" name="filter_name" value="<?echo htmlspecialcharsex($filter_name)?>" size="30">
+			<input type="text" name="filter_name" value="<?echo htmlspecialcharsex($filter_name)?>" size="30">
 		</td>
 	</tr>
 	<tr>
 		<td nowrap><?echo GetMessage("IBLOCK_ELSEARCH_DESC")?></td>
 		<td nowrap>
-		   <input type="text" name="filter_intext" size="50" value="<?echo htmlspecialcharsex($filter_intext)?>" size="30">&nbsp;<?=ShowFilterLogicHelp()?>
+			<input type="text" name="filter_intext" size="50" value="<?echo htmlspecialcharsex($filter_intext)?>" size="30">&nbsp;<?=ShowFilterLogicHelp()?>
 		</td>
 	</tr>
 	<?

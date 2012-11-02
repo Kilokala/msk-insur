@@ -552,7 +552,7 @@ if ($_REQUEST['action'] && check_bitrix_sessid())
 				{
 					while($obBucket->FileExists($name))
 					{
-						echo 'window.open("'.htmlspecialchars($obBucket->GetFileSRC(array("URN" => $name))).'");'."\n";
+						echo 'window.open("'.htmlspecialcharsbx($obBucket->GetFileSRC(array("URN" => $name))).'");'."\n";
 						$name = CTar::getNextName($name);
 					}
 				}
@@ -562,7 +562,7 @@ if ($_REQUEST['action'] && check_bitrix_sessid())
 		{
 			while(file_exists(DOCUMENT_ROOT.$name))
 			{
-				echo 'window.open("'.htmlspecialchars($name).'");'."\n";
+				echo 'window.open("'.htmlspecialcharsbx($name).'");'."\n";
 				$name = CTar::getNextName($name);
 			}
 		}
@@ -585,16 +585,16 @@ if ($_REQUEST['action'] && check_bitrix_sessid())
 			{
 				$obBucket = new CCloudStorageBucket($BUCKET_ID);
 				if ($obBucket->Init())
-					$url = htmlspecialchars($obBucket->GetFileSRC(array("URN" => $name)));
+					$url = htmlspecialcharsbx($obBucket->GetFileSRC(array("URN" => $name)));
 			}
 		}
 		else
 		{
 			$host = COption::GetOptionString('main', 'server_name', $_SERVER['HTTP_HOST']);
-			$url = 'http://'.htmlspecialchars($host.$name);
+			$url = 'http://'.htmlspecialcharsbx($host.$name);
 		}
 		if ($url)
-			echo 'window.prompt("'.GetMessage("MAIN_DUMP_USE_THIS_LINK").' restore.php", "'.htmlspecialchars($url).'");'."\n";
+			echo 'window.prompt("'.GetMessage("MAIN_DUMP_USE_THIS_LINK").' restore.php", "'.htmlspecialcharsbx($url).'");'."\n";
 		echo '
 			EndDump();
 		</script>';
@@ -603,7 +603,7 @@ if ($_REQUEST['action'] && check_bitrix_sessid())
 	elseif ($_REQUEST['action'] == 'restore')
 	{
 		if (!copy($f = DOCUMENT_ROOT.BX_ROOT.'/modules/main/admin/restore.php', DOCUMENT_ROOT.'/restore.php'))
-			RaiseErrorAndDie(GetMessage("MAIN_DUMP_ERR_COPY_FILE").htmlspecialchars($f));
+			RaiseErrorAndDie(GetMessage("MAIN_DUMP_ERR_COPY_FILE").htmlspecialcharsbx($f));
 
 		$url = '';
 		$name = $path.'/'.$_REQUEST['f_id'];
@@ -613,11 +613,11 @@ if ($_REQUEST['action'] && check_bitrix_sessid())
 			{
 				$obBucket = new CCloudStorageBucket($BUCKET_ID);
 				if ($obBucket->Init())
-					$url = 'arc_down_url='.htmlspecialchars($obBucket->GetFileSRC(array("URN" => $name)));
+					$url = 'arc_down_url='.htmlspecialcharsbx($obBucket->GetFileSRC(array("URN" => $name)));
 			}
 		}
 		else
-			$url = 'local_arc_name='.htmlspecialchars($name);
+			$url = 'local_arc_name='.htmlspecialcharsbx($name);
 		if ($url)
 			echo '<script>document.location = "/restore.php?Step=1&'.$url.'";</script>';
 		echo '<script>EndDump();</script>';
@@ -702,7 +702,7 @@ if ($arID = $lAdmin->GroupAction())
 						{
 							if (!rename(DOCUMENT_ROOT.$path.'/'.$ID, DOCUMENT_ROOT.$path.'/'.$new_name))
 							{
-								$lAdmin->AddGroupError(GetMessage("MAIN_DUMP_ERR_FILE_RENAME").htmlspecialchars($ID), $ID);
+								$lAdmin->AddGroupError(GetMessage("MAIN_DUMP_ERR_FILE_RENAME").htmlspecialcharsbx($ID), $ID);
 								break;
 							}
 
@@ -741,7 +741,7 @@ if (($arAllBucket = GetBucketList()) && $_REQUEST['mode'])
 					'DATE' => '',
 					'PERMISSION' => 'X',
 					'BUCKET_ID' => $arBucket['ID'],
-					'PLACE' => htmlspecialchars($arBucket['BUCKET'].' ('.$arBucket['SERVICE_ID'].')')
+					'PLACE' => htmlspecialcharsbx($arBucket['BUCKET'].' ('.$arBucket['SERVICE_ID'].')')
 
 				);
 			}
@@ -783,7 +783,7 @@ while($Elem = $rsDirContent->NavNext(true, "f_"))
 	$BUCKET_ID = intval($f_BUCKET_ID);
 	$row =& $lAdmin->AddRow($BUCKET_ID.'_'.$f_NAME, $Elem);
 
-	$c = $arParts[$f_NAME];
+	$c = $arParts[$BUCKET_ID.$f_NAME];
 	if ($c > 1)
 	{
 		$parts = ' ('.GetMessage("MAIN_DUMP_PARTS").$c.')';
@@ -830,7 +830,7 @@ while($Elem = $rsDirContent->NavNext(true, "f_"))
 				foreach($arWriteBucket as $f)
 					$arActions[] = array(
 						"ICON" => "clouds",
-						"TEXT" => GetMessage("MAIN_DUMP_SEND_CLOUD").htmlspecialchars('"'.$f['BUCKET'].'"'),
+						"TEXT" => GetMessage("MAIN_DUMP_SEND_CLOUD").htmlspecialcharsbx('"'.$f['BUCKET'].'"'),
 						"ACTION" => "if(confirm('".GetMessage("MAIN_DUMP_SEND_FILE_CLOUD")."?')) AjaxSend('?f_id=".Urlencode($f_NAME)."&process=Y&action=cloud_send&dump_bucket_id=".$f['ID']."&".bitrix_sessid_get()."')"
 					);
 			}
@@ -842,7 +842,7 @@ while($Elem = $rsDirContent->NavNext(true, "f_"))
 				$arActions[] = array(
 					"ICON" => "rename",
 					"TEXT" => GetMessage("MAIN_DUMP_RENAME"),
-					"ACTION" => "if(name=prompt('".GetMessage("MAIN_DUMP_ARC_NAME_W_O_EXT")."','".htmlspecialchars($arName['name'])."')) tbl_dump.GetAdminList('/bitrix/admin/dump.php?ID=".Urlencode($f_NAME)."&action=rename&lang=".LANG."&".bitrix_sessid_get()."&BUCKET_ID=".$BUCKET_ID."&name='+name);"
+					"ACTION" => "if(name=prompt('".GetMessage("MAIN_DUMP_ARC_NAME_W_O_EXT")."','".htmlspecialcharsbx($arName['name'])."')) tbl_dump.GetAdminList('/bitrix/admin/dump.php?ID=".Urlencode($f_NAME)."&action=rename&lang=".LANG."&".bitrix_sessid_get()."&BUCKET_ID=".$BUCKET_ID."&name='+name);"
 				);
 			}
 			$arActions[] = array(
@@ -896,18 +896,19 @@ echo BeginNote();
 echo GetMessage("MAIN_DUMP_HEADER_MSG");
 echo EndNote();
 
-CAdminFileDialog::ShowScript(Array
-    (
-	"event" => "__bx_select_dir",
-	"arResultDest" => Array("FUNCTION_NAME" => "mnu_SelectValue"),
-	"arPath" => Array('PATH'=>"/"),
-	"select" => 'D',
-	"operation" => 'O',
-	"showUploadTab" => false,
-	"showAddToMenuTab" => false,
-	"allowAllFiles" => true,
-	"SaveConfig" => true 
-    )
+CAdminFileDialog::ShowScript(
+	Array
+	(
+		"event" => "__bx_select_dir",
+		"arResultDest" => Array("FUNCTION_NAME" => "mnu_SelectValue"),
+		"arPath" => Array('PATH'=>"/"),
+		"select" => 'D',
+		"operation" => 'O',
+		"showUploadTab" => false,
+		"showAddToMenuTab" => false,
+		"allowAllFiles" => true,
+		"SaveConfig" => true 
+	)
 );		
 ?>
 <script language="JavaScript">
@@ -1045,7 +1046,7 @@ function SetMode(ob)
 var stop;
 function StartDump()
 {
-	queryString='?lang=<?echo htmlspecialchars(LANG)?>';
+	queryString='?lang=<?echo htmlspecialcharsbx(LANG)?>';
 	queryString+='&process=Y';
 	queryString+='&action=start';
 
@@ -1191,17 +1192,23 @@ function RefreshList()
 				<?
 					echo '<option value="0">'.GetMessage("MAIN_DUMP_LOCAL_DISK").'</option>';
 					foreach($arWriteBucket as $f)
-						echo '<option value="'.$f['ID'].'" '.(IntOption("dump_bucket_id") == $f['ID'] ? "selected" : "").'>'.htmlspecialchars($f['BUCKET'].' ('.$f['SERVICE_ID'].')').'</option>';
+						echo '<option value="'.$f['ID'].'" '.(IntOption("dump_bucket_id") == $f['ID'] ? "selected" : "").'>'.htmlspecialcharsbx($f['BUCKET'].' ('.$f['SERVICE_ID'].')').'</option>';
 				?>
 				</select>
 			</td>
 		</tr>
+	<?
+	}
+
+	if ($arAllBucket)
+	{
+	?>
 		<tr>
 			<td valign=top><?=GetMessage("MAIN_DUMP_ARC_FROM_CLOUD")?></td>
 			<td>
 				<?
 					foreach($arAllBucket as $arBucket)
-						echo '<div><label><input type="checkbox" id="dump_cloud_'.$arBucket['ID'].'" OnClick="CheckActiveStart()" '.(IntOption("dump_cloud_".$arBucket['ID']) ? "checked" : "").'> '.htmlspecialchars($arBucket['BUCKET'].' ('.$arBucket['SERVICE_ID'].')').'</label></div>';
+						echo '<div><label><input type="checkbox" id="dump_cloud_'.$arBucket['ID'].'" OnClick="CheckActiveStart()" '.(IntOption("dump_cloud_".$arBucket['ID']) ? "checked" : "").'> '.htmlspecialcharsbx($arBucket['BUCKET'].' ('.$arBucket['SERVICE_ID'].')').'</label></div>';
 				?>
 			</td>
 		</tr>
@@ -1242,7 +1249,7 @@ function RefreshList()
 				{
 					$path = rtrim(str_replace('\\','/',$path),'/');
 					list($k,$v) = each($val);
-					echo '<option value="'.htmlspecialchars($k).'"'.($path == DOCUMENT_ROOT ? ' selected' : '').'>'.htmlspecialchars($v).'</option>';
+					echo '<option value="'.htmlspecialcharsbx($k).'"'.($path == DOCUMENT_ROOT ? ' selected' : '').'>'.htmlspecialcharsbx($v).'</option>';
 				}
 			?>
 			</select>
@@ -1283,7 +1290,7 @@ function RefreshList()
 				$i++;
 				echo
 				'<tr><td>
-					<input name="arMask[]" id="mnu_FILES_'.$i.'" value="'.htmlspecialchars($mask).'" '.(!$bMask||$bNoFiles?'disabled':'').' size=30>'.
+					<input name="arMask[]" id="mnu_FILES_'.$i.'" value="'.htmlspecialcharsbx($mask).'" '.(!$bMask||$bNoFiles?'disabled':'').' size=30>'.
 					'<input type="button" id="mnu_FILES_btn_'.$i.'" '.(!$bMask||$bNoFiles?'disabled':'').' value="..." onclick="showMenu(this, \''.$i.'\')">'.
 				'</tr>';
 			}
@@ -1958,7 +1965,7 @@ class CTar
 		$chk = $data['devmajor'].$data['devminor'];
 
 		if (!is_numeric(trim($data['checksum'])) || $chk!='' && $chk!=0)
-			return $this->Error('TAR_ERR_FORMAT',($this->Block-1).'<hr>Header: <br>'.htmlspecialchars($str)); // быстрая проверка
+			return $this->Error('TAR_ERR_FORMAT',($this->Block-1).'<hr>Header: <br>'.htmlspecialcharsbx($str)); // быстрая проверка
 
 		$header['filename'] = trim($data['prefix'].'/'.$data['filename'],'/');
 		$header['mode'] = OctDec($data['mode']);
@@ -1992,7 +1999,7 @@ class CTar
 			return $this->Error('TAR_EMPTY_FILE',($this->Block-1));
 
 		if (!$this->checkCRC($str, $data))
-			return $this->Error('TAR_ERR_CRC',htmlspecialchars($header['filename']));
+			return $this->Error('TAR_ERR_CRC',htmlspecialcharsbx($header['filename']));
 
 		$this->header = $header;
 
@@ -2026,15 +2033,15 @@ class CTar
 				if ($header['type']==5) // dir
 				{
 					if(!file_exists($f) && !self::xmkdir($f))
-						return $this->Error('TAR_ERR_FOLDER_CREATE',htmlspecialchars($f));
+						return $this->Error('TAR_ERR_FOLDER_CREATE',htmlspecialcharsbx($f));
 					//chmod($f, $header['mode']);
 				}
 				else // file
 				{
 					if (!self::xmkdir($dirname = dirname($f)))
-						return $this->Error('TAR_ERR_FOLDER_CREATE'.htmlspecialchars($dirname));
+						return $this->Error('TAR_ERR_FOLDER_CREATE'.htmlspecialcharsbx($dirname));
 					elseif (($rs = fopen($f, 'wb'))===false)
-						return $this->Error('TAR_ERR_FILE_CREATE',htmlspecialchars($f));
+						return $this->Error('TAR_ERR_FILE_CREATE',htmlspecialcharsbx($f));
 				}
 			}
 			else
@@ -2051,7 +2058,7 @@ class CTar
 			if (!$rs)
 			{
 				if (($rs = fopen($f, 'ab'))===false)
-					return $this->Error('TAR_ERR_FILE_OPEN',htmlspecialchars($f));
+					return $this->Error('TAR_ERR_FILE_OPEN',htmlspecialcharsbx($f));
 			}
 
 			$i = 0;
@@ -2073,7 +2080,7 @@ class CTar
 
 			//chmod($f, $header['mode']);
 			if (($s=filesize($f)) != $header['size'])
-				return $this->Error('TAR_ERR_FILE_SIZE',htmlspecialchars($header['filename']).' (actual: '.$s.'  expected: '.$header['size'].')');
+				return $this->Error('TAR_ERR_FILE_SIZE',htmlspecialcharsbx($header['filename']).' (actual: '.$s.'  expected: '.$header['size'].')');
 		}
 
 		if ($this->header['type']==5)
@@ -2202,7 +2209,7 @@ class CTar
 		if ($path == '')
 			return true;
 		if (strlen($path)>512)
-			return $this->Error('TAR_PATH_TOO_LONG',htmlspecialchars($path));
+			return $this->Error('TAR_PATH_TOO_LONG',htmlspecialcharsbx($path));
 
 		$ar = array();
 
@@ -2250,7 +2257,7 @@ class CTar
 			if ($ar['type']==0 && $info['size']>0) // File
 			{
 				if (!($rs = fopen($f, 'rb')))
-					return $this->Error('TAR_ERR_FILE_READ',htmlspecialchars($f));
+					return $this->Error('TAR_ERR_FILE_READ',htmlspecialcharsbx($f));
 
 				if ($this->ReadBlockCurrent)
 					fseek($rs, $this->ReadBlockCurrent * 512);
@@ -2265,7 +2272,7 @@ class CTar
 					if (!$this->writeBlock($str))
 					{
 						fclose($rs);
-						return $this->Error('TAR_ERR_FILE_WRITE',htmlspecialchars($f));
+						return $this->Error('TAR_ERR_FILE_WRITE',htmlspecialcharsbx($f));
 					}
 
 					if ($this->ReadBlockMax && ++$i >= $this->ReadBlockMax)
@@ -2280,7 +2287,7 @@ class CTar
 			return true;
 		}
 		else
-			return $this->Error('TAR_ERR_FILE_NO_ACCESS',htmlspecialchars($f));
+			return $this->Error('TAR_ERR_FILE_NO_ACCESS',htmlspecialcharsbx($f));
 	}
 
 	# }

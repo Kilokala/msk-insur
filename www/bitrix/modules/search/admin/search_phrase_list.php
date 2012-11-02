@@ -108,7 +108,7 @@ $lAdmin->AddHeaders($arHeaders);
 $i=0;
 while($arRes = $rsData->NavNext(true, "f_"))
 {
-        $row =& $lAdmin->AddRow($f_ID, $arRes);
+	$row =& $lAdmin->AddRow($f_ID, $arRes);
 	if($_REQUEST["mode"] != "excel")
 		$row->AddViewField("TIMESTAMP_X", str_replace(" ", "&nbsp;", $f_TIMESTAMP_X));
 	$row->AddViewField("URL_TO", ($f_URL_TO_SITE_ID? "[".$f_URL_TO_SITE_ID."]&nbsp;": "")."<a ".($f_URL_TO_404=="Y"? 'class="search_attention"': '')." title=\"".GetMessage("SEARCH_PHL_LINK_OPEN")."\" href=\"$f_URL_TO\">".TruncateText(InsertSpaces($f_URL_TO,50,"<wbr>"),100)."</a>&nbsp;");
@@ -131,15 +131,15 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admi
 <form name="form1" method="GET" action="<?=$APPLICATION->GetCurPage()?>">
 <?
 $oFilter = new CAdminFilter(
-        $sTableID."_filter",
-        array(
+	$sTableID."_filter",
+	array(
 		"find_tags" => GetMessage("SEARCH_PHL_TAGS"),
 		"find_id" => GetMessage("SEARCH_PHL_ID"),
 		"find_dates" => GetMessage("SEARCH_PHL_DATES", array("#DATE_FORMAT#" => CLang::GetDateFormat("SHORT"))),
 		"find_site_id" => GetMessage("SEARCH_PHL_SITE_ID"),
 		"find_url_to" => GetMessage("SEARCH_PHL_URL_TO"),
 		"find_stat_sess_id" => GetMessage("SEARCH_PHL_STAT_SESS_ID"),
-        )
+	)
 );
 
 $oFilter->Begin();

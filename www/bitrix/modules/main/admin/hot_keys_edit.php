@@ -25,7 +25,7 @@ if($_SERVER['REQUEST_METHOD']=="POST" && ($_POST['save']<>"" || $_POST['apply']<
 			"NAME"=>$_REQUEST["NAME"],
 			"COMMENTS" => $_REQUEST["COMMENTS"],
 			"TITLE_OBJ"=>$_REQUEST["TITLE_OBJ"],
-        	"URL"=>$_REQUEST["URL"],
+			"URL"=>$_REQUEST["URL"],
 	);
 
 	if($ID>0)
@@ -122,7 +122,7 @@ $tabControl = new CAdminTabControl("tabControl", $aTabs);
 <input type="hidden" name="IS_CUSTOM" value=<?=$str_IS_CUSTOM?>>
 <input type="hidden" name="lang" value="<?=LANGUAGE_ID?>">
 <?if($_REQUEST["addhk"]<>""):?>
-<input type="hidden" name="addhk" value="<?= htmlspecialchars($_REQUEST["addhk"])?>">
+<input type="hidden" name="addhk" value="<?= htmlspecialcharsbx($_REQUEST["addhk"])?>">
 <?endif;?>
 <?
 $tabControl->Begin();

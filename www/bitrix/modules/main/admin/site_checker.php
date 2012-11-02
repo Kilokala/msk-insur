@@ -5,9 +5,9 @@
 # http://www.bitrixsoft.com                  #
 # mailto:admin@bitrixsoft.com                #
 ##############################################
-ini_set("track_errors", "1");
-ini_set('display_errors', 1);
-error_reporting(E_ALL &~E_NOTICE);
+@ini_set("track_errors", "1");
+@ini_set('display_errors', 1);
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 $message = null;
 
 # NO AUTH TESTS
@@ -86,7 +86,7 @@ if ($_REQUEST['unique_id'])
 		if ($max)
 		{
 			for($i=1;$i<=$max;$i++)
-			       $a[] = str_repeat(chr($i),1024*1024); // 1 Mb
+				$a[] = str_repeat(chr($i),1024*1024); // 1 Mb
 
 			echo "SUCCESS";
 		}
@@ -241,7 +241,7 @@ if ($_POST['access_check'])
 					<?=bitrix_sessid_post();?>
 					<input type=hidden name=cnt_total value="<?=$cnt_total?>">
 					<input type=hidden name=check_type value="<?=$check_type?>">
-					<input type=hidden name=break_point value="<?=htmlspecialchars($sNextPath)?>">
+					<input type=hidden name=break_point value="<?=htmlspecialcharsbx($sNextPath)?>">
 				</form>
 				<?
 				CAdminMessage::ShowMessage(array(
@@ -711,13 +711,13 @@ if(!isset($strTicketError))
 <input type="hidden" name="license_key" value="<?=(LICENSE_KEY == "DEMO"? "DEMO" : md5("BITRIX".LICENSE_KEY."LICENCE"))?>">
 <input type="hidden" name="test_file_name" value="<?=$oTest->LogFile;?>">
 <input type="hidden" name="test_file_contents" value="">
-<input type="hidden" name="ticket_title" value="<?=GetMessage('SC_RUS_L1').' '.htmlspecialchars($_SERVER['HTTP_HOST'])?>">
+<input type="hidden" name="ticket_title" value="<?=GetMessage('SC_RUS_L1').' '.htmlspecialcharsbx($_SERVER['HTTP_HOST'])?>">
 <input type="hidden" name="BX_UTF" value="<?=(defined('BX_UTF') && BX_UTF==true)?'Y':'N'?>">
 <input type="hidden" name="tabControl_active_tab" value="edit5">
 <tr>
 	<td valign="top"><span class="required">*</span><?=GetMessage("SC_TIK_DESCR")?><br>
 			<small><?=GetMessage("SC_TIK_DESCR_DESCR")?></small></td>
-	<td valign="top"><textarea name="ticket_text" rows="6" cols="60"><?= htmlspecialchars($ticket_text)?></textarea></td>
+	<td valign="top"><textarea name="ticket_text" rows="6" cols="60"><?= htmlspecialcharsbx($ticket_text)?></textarea></td>
 </tr>
 <tr>
 	<td valign="top"><label for="ticket_test"><?=GetMessage("SC_TIK_ADD_TEST")?></label></td>
@@ -728,7 +728,7 @@ if(!isset($strTicketError))
 		<td valign="top"><?=GetMessage("SC_TIK_LAST_ERROR")?></td>
 		<td valign="top">
 			<?=GetMessage("SC_TIK_LAST_ERROR_ADD")?>
-			<input type="hidden" name="last_error_query" value="<?= htmlspecialchars($_REQUEST["last_error_query"])?>">
+			<input type="hidden" name="last_error_query" value="<?= htmlspecialcharsbx($_REQUEST["last_error_query"])?>">
 		</td>
 	</tr>
 <?endif;?>
@@ -1205,9 +1205,9 @@ class CSiteCheckerTest
 		if (($sp = ini_get("upload_tmp_dir")))
 		{
 			if (!file_exists($sp))
-				return $this->Result(false,GetMessage('SC_NO_TMP_FOLDER').' <i>('.htmlspecialchars($sp).')</i>');
+				return $this->Result(false,GetMessage('SC_NO_TMP_FOLDER').' <i>('.htmlspecialcharsbx($sp).')</i>');
 			elseif (!is_writable($sp))
-				return $this->Result(false,GetMessage('SC_TMP_FOLDER_PERMS').' <i>('.htmlspecialchars($sp).')</i>');
+				return $this->Result(false,GetMessage('SC_TMP_FOLDER_PERMS').' <i>('.htmlspecialcharsbx($sp).')</i>');
 		}
 
 		$binaryData = '';
@@ -1533,7 +1533,7 @@ class CSiteCheckerTest
 
 	function check_getimagesize()
 	{
-		$file = $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/fileman/install/components/bitrix/player/mediaplayer/player.swf';
+		$file = $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/fileman/install/components/bitrix/player/mediaplayer/player';
 		if (!file_exists($file))
 			return $this->Result(null, "File not found: ".$file);
 
@@ -1679,7 +1679,7 @@ class CSiteCheckerTest
 		if (count($arDocRoot) == 1)
 		{
 			if ($root = $arDocRoot[0])
-				$strError = GetMessage('SC_PATH_FAIL_SET').' <i>'.htmlspecialchars($root).'</i><br>';
+				$strError = GetMessage('SC_PATH_FAIL_SET').' <i>'.htmlspecialcharsbx($root).'</i><br>';
 		}
 		else
 		{
@@ -1688,7 +1688,7 @@ class CSiteCheckerTest
 				if ($root)
 				{
 					if (!is_readable($root.'/bitrix'))
-						$strError .= GetMessage('SC_NO_ROOT_ACCESS').' <i>'.htmlspecialchars($root).'/bitrix</i><br>';
+						$strError .= GetMessage('SC_NO_ROOT_ACCESS').' <i>'.htmlspecialcharsbx($root).'/bitrix</i><br>';
 				}
 			}
 		}
@@ -1759,7 +1759,7 @@ class CSiteCheckerTest
 				$cur = 0;
 
 			if ($cur != $val)
-				$strError .=  GetMessage('SC_ERR_PHP_PARAM', array('#PARAM#' => $param, '#CUR#' => $cur ? htmlspecialchars($cur) : 'off', '#REQ#' => $val ? 'on' : 'off'))."<br>\n";
+				$strError .=  GetMessage('SC_ERR_PHP_PARAM', array('#PARAM#' => $param, '#CUR#' => $cur ? htmlspecialcharsbx($cur) : 'off', '#REQ#' => $val ? 'on' : 'off'))."<br>\n";
 		}
 		if ($strError)
 			return $this->Result(false, $strError);
@@ -1789,7 +1789,7 @@ class CSiteCheckerTest
 		if ($host != 'localhost' && !preg_match('#^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$#',$host))
 		{
 			if (!preg_match('#^[a-z0-9\-\.]{2,192}\.(xn--)?[a-z0-9]{2,63}$#i', $host))
-				$strError .= GetMessage("SC_TEST_DOMAIN_VALID", array('#VAL#' => htmlspecialchars($_SERVER['HTTP_HOST'])))."<br>\n";
+				$strError .= GetMessage("SC_TEST_DOMAIN_VALID", array('#VAL#' => htmlspecialcharsbx($_SERVER['HTTP_HOST'])))."<br>\n";
 		}
 		if ($strError)
 			return $this->Result(false, $strError);

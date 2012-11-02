@@ -17,7 +17,7 @@ while($zr = $z->Fetch())
 {
 	$ar = array();
 	$ar["ID"] = intval($zr["ID"]);
-	$ar["NAME"] = htmlspecialchars($zr["NAME"]);
+	$ar["NAME"] = htmlspecialcharsbx($zr["NAME"]);
 	$arGROUPS[] = $ar;
 }
 
@@ -58,7 +58,7 @@ if ($GROUP_DEFAULT_TASK == '')
 	<td width="50%"><?
 	$arTasksInModule = CTask::GetTasksInModules(true,$module_id,'module');
 	$arTasks = $arTasksInModule[$module_id];
-	echo SelectBoxFromArray("GROUP_DEFAULT_TASK", $arTasks, htmlspecialchars($GROUP_DEFAULT_TASK));
+	echo SelectBoxFromArray("GROUP_DEFAULT_TASK", $arTasks, htmlspecialcharsbx($GROUP_DEFAULT_TASK));
 	?><?=bitrix_sessid_post()?></td>
 </tr>
 <?

@@ -316,8 +316,8 @@
 			{
 				case 'src':
 				case 'href':
-				 	if(!preg_match("#^(http://|https://|ftp://|file://|mailto:|callto:|\#|/)+#i".BX_UTF_PCRE_MODIFIER,$attrValue))
-				 		$arAttr[3] = "http://".$arAttr[3];
+					if(!preg_match("#^(http://|https://|ftp://|file://|mailto:|callto:|\#|/)#i".BX_UTF_PCRE_MODIFIER,$attrValue))
+						$arAttr[3] = "http://".$arAttr[3];
 
 					$valid = (!preg_match("#javascript:|data:|[^\w".$this->localAlph.":/\.=@;,!~\*\&\#\)(%\s\+\$\?\-]#i".BX_UTF_PCRE_MODIFIER,$attrValue)) ? true : false;
 					break;
@@ -450,7 +450,7 @@
 			for($i=0; $i<count($seg); $i++)
 			{
 				if($seg[$i]['segType'] == 'text' && $this->bHtmlSpecChars)
-					$seg[$i]['value'] = htmlspecialchars($seg[$i]['value'],ENT_QUOTES,LANG_CHARSET);
+					$seg[$i]['value'] = htmlspecialcharsbx($seg[$i]['value'],ENT_QUOTES,LANG_CHARSET);
 				elseif($seg[$i]['segType'] == 'tag')
 				{
 					//find tag type (open/close), tag name, attributies
@@ -502,7 +502,7 @@
 								if(in_array(strtolower($arTagAttr[1]), $this->arHtmlTags[$seg[$i]['tagName']]))
 									if($this->IsValidAttr($arTagAttr))
 										if($this->bHtmlSpecChars)
-											$attr[strtolower($arTagAttr[1])] = htmlspecialchars($arTagAttr[3], ENT_QUOTES,LANG_CHARSET);
+											$attr[strtolower($arTagAttr[1])] = htmlspecialcharsbx($arTagAttr[3], ENT_QUOTES,LANG_CHARSET);
 										else
 											$attr[strtolower($arTagAttr[1])] = $arTagAttr[3];
 

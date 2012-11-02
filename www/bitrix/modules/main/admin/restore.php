@@ -1,6 +1,6 @@
 <?
 # define('VMBITRIX', 'defined');
-error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 
 if (version_compare(phpversion(),'5.0.0','<'))
 	die('PHP5 is required');
@@ -43,7 +43,7 @@ else
 
 #@set_time_limit(0);
 ob_start();
- 
+
 if (@preg_match('#ru#i',$_SERVER['HTTP_ACCEPT_LANGUAGE']))
 	$lang = 'ru';
 elseif (@preg_match('#de#i',$_SERVER['HTTP_ACCEPT_LANGUAGE']))
@@ -2214,9 +2214,9 @@ function img($name)
 
 function bx_accelerator_reset()
 {
-        if(function_exists("accelerator_reset"))
-                accelerator_reset();
-        elseif(function_exists("wincache_refresh_if_changed"))
-                wincache_refresh_if_changed();
+	if(function_exists("accelerator_reset"))
+		accelerator_reset();
+	elseif(function_exists("wincache_refresh_if_changed"))
+		wincache_refresh_if_changed();
 }
 ?>

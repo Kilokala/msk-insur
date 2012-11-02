@@ -25,7 +25,7 @@ for($i = 0, $l=count($modules);$i < $l;$i++)
 }
 
 /***************************************************************************
-				   Handling GET | POST
+Handling GET | POST
 ****************************************************************************/
 
 $ID = intval($ID);
@@ -165,18 +165,18 @@ if($message)
 <?=bitrix_sessid_post()?>
 <input type="hidden" name="lang" value="<?echo LANG?>">
 <input type="hidden" name="ID" value="<?echo $ID?>">
-<?if(strlen($COPY_ID)>0):?><input type="hidden" name="COPY_ID" value="<?echo htmlspecialchars($COPY_ID)?>"><?endif?>
+<?if(strlen($COPY_ID)>0):?><input type="hidden" name="COPY_ID" value="<?echo htmlspecialcharsbx($COPY_ID)?>"><?endif?>
 <?
 $tabControl->Begin();
 
 $tabControl->BeginNextTab();
 if (isset($_POST['NAME']))
 {
-	$str_NAME = htmlspecialchars($_POST['NAME']);
-	$str_DESCRIPTION = htmlspecialchars($_POST['DESCRIPTION']);
-	$str_MODULE_ID = htmlspecialchars($_POST['MODULE_ID']); 
-	$str_BINDING = htmlspecialchars($_POST['BINDING']); 
-	$str_LETTER = htmlspecialchars($_POST['LETTER']);
+	$str_NAME = htmlspecialcharsbx($_POST['NAME']);
+	$str_DESCRIPTION = htmlspecialcharsbx($_POST['DESCRIPTION']);
+	$str_MODULE_ID = htmlspecialcharsbx($_POST['MODULE_ID']); 
+	$str_BINDING = htmlspecialcharsbx($_POST['BINDING']); 
+	$str_LETTER = htmlspecialcharsbx($_POST['LETTER']);
 }
 
 $dbOperations = COperation::GetList();
@@ -230,7 +230,6 @@ ksort($arOperations);
 		<select name="MODULE_ID" id="__module_id_select">
 			<option value="main" <? echo ($str_MODULE_ID == 'main') ? 'selected' : '';?>><?=GetMessage('KERNEL')?></option>
 		<?
-		//$modules = COperation::GetAllowedModules();
 		for($i = 0, $l=count($modules);$i < $l;$i++):
 			$MID = $modules[$i];
 			$def = ($str_MODULE_ID == $MID) ? $str_LETTER : false;
@@ -241,7 +240,7 @@ ksort($arOperations);
 				continue;
 			?>
 			<script>arModules.push('<?=$MID?>');</script>
-			<option value="<?=htmlspecialchars($MID)?>"<?echo ($str_MODULE_ID == $MID? ' selected' : '');?>><?=htmlspecialchars($m->MODULE_NAME);?></option>
+			<option value="<?=htmlspecialcharsbx($MID)?>"<?echo ($str_MODULE_ID == $MID? ' selected' : '');?>><?=htmlspecialcharsbx($m->MODULE_NAME);?></option>
 		<?endfor;?>
 		</select>
 		</td>
@@ -307,7 +306,7 @@ ksort($arOperations);
 						<input type="checkbox" name="OPERATION_ID[]" id="OPERATION_ID_<?=$ind ?>" value="<?=$arOperation["ID"]?>" <? echo (in_array($arOperation["ID"], $arTaskOperations)) ? " checked" : ''?>>
 						<script>
 						arOperations['<?=$ind?>'] = {
-							name : '<?=$name?>',
+							name : '<?=CUtil::JSEscape($name)?>',
 							module_id : '<?=$arOperation["MODULE_ID"]?>',
 							binding : '<?=$arOperation["BINDING"]?>'
 						}
@@ -381,7 +380,7 @@ ksort($arOperations);
 			{
 				ch = document.getElementById('OPERATION_ID_'+i);
 				var module_id = __module_id_select.value;
-				if (arOperations[i].binding == this.value  && arOperations[i].module_id == module_id)
+				if (arOperations[i].binding == this.value && arOperations[i].module_id == module_id)
 				{
 					document.getElementById('operation_row_'+i).style.display = (jsUtils.IsIE() ? 'block' : 'table-row');
 					if (arOperations[i].was_checked)

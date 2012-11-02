@@ -21,7 +21,7 @@ $isAdmin = $USER->CanDoOperation('edit_other_settings') || $USER->CanDoOperation
 IncludeModuleLangFile(__FILE__);
 $aMsg=array(); $message=null;
 /***************************************************************************
-                                  Функции
+			Helper functions
 ***************************************************************************/
 
 function SaveFileLang($strFileName, $strContent)
@@ -55,6 +55,7 @@ if(!$bNew)
 
 if($REQUEST_METHOD=="POST" && (strlen($save)>0 || strlen($apply)>0) && $isAdmin && check_bitrix_sessid())
 {
+
 	$em = new CEventMessage;
 	$arFields = Array(
 		"ACTIVE"			=> $_POST["ACTIVE"],
@@ -66,6 +67,7 @@ if($REQUEST_METHOD=="POST" && (strlen($save)>0 || strlen($apply)>0) && $isAdmin 
 		"FORMAT_DATETIME"	=> trim($_POST["FORMAT_DATETIME"]),
 		"WEEK_START"		=> intval($_POST["WEEK_START"]),
 		"CHARSET"			=> $_POST["CHARSET"],
+		"FORMAT_NAME"		=> CSite::GetNameFormatByValue($_POST["FORMAT_NAME"]),
 		"SITE_NAME"			=> $_POST["SITE_NAME"],
 		"SERVER_NAME"		=> $_POST["SERVER_NAME"],
 		"EMAIL"				=> $_POST["EMAIL"],
@@ -214,6 +216,7 @@ if($bNew && $COPY_ID == '')
 	$str_FORMAT_DATE = (LANGUAGE_ID == 'ru'? 'DD.MM.YYYY' : 'MM/DD/YYYY');
 	$str_FORMAT_DATETIME = (LANGUAGE_ID == 'ru'? 'DD.MM.YYYY HH:MI:SS' : 'MM/DD/YYYY HH:MI:SS');
 
+	$str_FORMAT_NAME = CSite::GetDefaultNameFormat();
 	$str_WEEK_START = GetMessage('SITE_EDIT_WEEK_START_DEFAULT');
 	if (!$str_WEEK_START && $str_WEEK_START !== '0')
 		$str_WEEK_START = 1;
@@ -239,8 +242,9 @@ elseif(!$bNew)
 if($bVarsFromForm)
 {
 	$DB->InitTableVarsForEdit("b_lang", "", "str_");
-	$str_DOMAINS = htmlspecialchars($DOMAINS);
-	$str_SERVER_NAME = htmlspecialchars($_POST["SERVER_NAME"]);
+	$str_DOMAINS = htmlspecialcharsbx($DOMAINS);
+	$str_SERVER_NAME = htmlspecialcharsbx($_POST["SERVER_NAME"]);
+	$str_FORMAT_NAME = CSite::GetNameFormatByValue($_POST["FORMAT_NAME"]);
 }
 
 $APPLICATION->SetTitle(($bNew? GetMessage("NEW_SITE_TITLE") : GetMessage("EDIT_SITE_TITLE", array("#ID#"=>$str_LID))));
@@ -308,7 +312,7 @@ $limitSitesCount = IntVal(COption::GetOptionInt("main", "PARAM_MAX_SITES", 100))
 <input type="hidden" name="new" value="Y">
 <?endif?>
 <?if($COPY_ID <> ''):?>
-<input type="hidden" name="COPY" value="<?echo htmlspecialchars($COPY_ID)?>">
+<input type="hidden" name="COPY" value="<?echo htmlspecialcharsbx($COPY_ID)?>">
 <?endif?>
 <?
 $tabControl->Begin();
@@ -385,6 +389,10 @@ for ($i = 0; $i < 7; $i++)
 		</select></td>
 	</tr>
 	<tr valign="top">
+		<td><span class="required">*</span><? echo GetMessage('FORMAT_NAME')?></td>
+		<td><?echo CSite::SelectBoxName("FORMAT_NAME", $str_FORMAT_NAME);?></td>
+	</tr>
+	<tr valign="top">
 		<td><span class="required">*</span><? echo GetMessage('CHARSET')?></td>
 		<td><input type="text" name="CHARSET" size="30" maxlength="50" value="<?echo $str_CHARSET?>"></td>
 	</tr>
@@ -405,7 +413,7 @@ for ($i = 0; $i < 7; $i++)
 		<?echo GetMessage("MAIN_DOC_ROOT_TIPS")?>
 		</td>
 		<td><input type="text" name="DOC_ROOT" size="30" value="<?echo $str_DOC_ROOT?>">
-		 [<a title="<?=GetMessage('MAIN_DOC_ROOT_INS')?>" href="javascript:void(0)" onClick="document.bform.DOC_ROOT.value='<?=htmlspecialchars(CUtil::addslashes($_SERVER["DOCUMENT_ROOT"]))?>'; BX.fireEvent(document.bform.DOC_ROOT, 'change')"><?echo GetMessage("MAIN_DOC_ROOT_SET")?></a>]
+		[<a title="<?=GetMessage('MAIN_DOC_ROOT_INS')?>" href="javascript:void(0)" onClick="document.bform.DOC_ROOT.value='<?=htmlspecialcharsbx(CUtil::addslashes($_SERVER["DOCUMENT_ROOT"]))?>'; BX.fireEvent(document.bform.DOC_ROOT, 'change')"><?echo GetMessage("MAIN_DOC_ROOT_SET")?></a>]
 		</td>
 	</tr>
 	<?if($bNew):?>

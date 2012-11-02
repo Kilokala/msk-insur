@@ -61,11 +61,11 @@ if($_SERVER['REQUEST_METHOD']=="POST" && ($_POST['save']<>"" || $_POST['apply']<
 }
 
 // default value
-$str_NAME 			= isset($_REQUEST["NAME"]) ? htmlspecialchars($_REQUEST["NAME"]) : GetMessage("RATING_RULE_DEF_NAME");
-$str_ENTITY_TYPE_ID = isset($_REQUEST["ENTITY_TYPE_ID"]) ? htmlspecialchars($_REQUEST["ENTITY_TYPE_ID"]) : 'USER';
+$str_NAME 			= isset($_REQUEST["NAME"]) ? htmlspecialcharsbx($_REQUEST["NAME"]) : GetMessage("RATING_RULE_DEF_NAME");
+$str_ENTITY_TYPE_ID = isset($_REQUEST["ENTITY_TYPE_ID"]) ? htmlspecialcharsbx($_REQUEST["ENTITY_TYPE_ID"]) : 'USER';
 $str_ACTIVE 		= isset($_REQUEST["ACTIVE"]) && $_REQUEST["ACTIVE"] == 'Y' ? 'Y' : 'N';
-$str_CONDITION_NAME = isset($_REQUEST["CONDITION_NAME"]) ? htmlspecialchars($_REQUEST["CONDITION_NAME"]) : 'RATING';
-$str_ACTION_NAME	= isset($_REQUEST["ACTION_NAME"]) ? htmlspecialchars($_REQUEST["ACTION_NAME"]) : 'ADD_TO_GROUP';
+$str_CONDITION_NAME = isset($_REQUEST["CONDITION_NAME"]) ? htmlspecialcharsbx($_REQUEST["CONDITION_NAME"]) : 'RATING';
+$str_ACTION_NAME	= isset($_REQUEST["ACTION_NAME"]) ? htmlspecialcharsbx($_REQUEST["ACTION_NAME"]) : 'ADD_TO_GROUP';
 $bTypeChange 		= isset($_POST["action"]) && $_POST["action"] == 'type_changed' ? true : false;
 
 //when creating a new rule, default check on
@@ -134,7 +134,7 @@ $tabControl->BeginEpilogContent();
 	<input type="hidden" name="lang" value="<?=LANGUAGE_ID?>">
 	<input type="hidden" name="action" value="" id="action">
 <?if($_REQUEST["addurl"]<>""):?>
-	<input type="hidden" name="addurl" value="<?echo htmlspecialchars($_REQUEST["addurl"])?>">
+	<input type="hidden" name="addurl" value="<?echo htmlspecialcharsbx($_REQUEST["addurl"])?>">
 <?endif;?>
 <?
 $tabControl->EndEpilogContent();
@@ -187,7 +187,7 @@ $conditionCount = count($arCurrentCondition['FIELDS']);
 				<td width="25%">
 					<?=SelectBoxFromArray("CONDITION_NAME", $arConditionName, $str_CONDITION_NAME, "", "onChange=\"jsTypeChanged('rating_rule_form')\"");?>
 				</td>
-				<td style="font-size:1em;"  rowspan="<?=$conditionCount+1?>">
+				<td style="font-size:1em;" rowspan="<?=$conditionCount+1?>">
 				<? if(isset($arCurrentCondition['DESC'])): ?>
 					<p><?=$arCurrentCondition['DESC']?></p>
 				<? endif; ?>
@@ -311,8 +311,8 @@ $conditionCount = count($arCurrentCondition['FIELDS']);
 						<?
 					}
 				}
-		    ?>
-		    </table>
+			?>
+			</table>
 		</td>
 	</tr>
 <?
@@ -342,7 +342,7 @@ if (!isset($arCurrentCondition['HIDE_ACTION']) || !$arCurrentCondition['HIDE_ACT
 					<td width="25%">
 						<?=SelectBoxFromArray("ACTION_NAME", $arActionName, $str_ACTION_NAME, "", "style=\"width: 300px\" onChange=\"jsTypeChanged('rating_rule_form')\"");?>
 					</td>
-					<td style="font-size:1em;"  rowspan="<?=$actionCount+1?>">
+					<td style="font-size:1em;" rowspan="<?=$actionCount+1?>">
 					<? if(isset($arCurrentAction['DESC'])): ?>
 						<p><?=$arCurrentAction['DESC']?></p>
 					<? else: ?>
@@ -460,19 +460,19 @@ if (!isset($arCurrentCondition['HIDE_ACTION']) || !$arCurrentCondition['HIDE_ACT
 					}
 
 				// define a default value
-				$strFieldValue  = isset($_REQUEST["ACTIVATE"]) && $_REQUEST["ACTIVATE"] == 'Y' ? 'Y' : (isset($str_ACTIVATE) ? $str_ACTIVATE : 'N');
+				$strFieldValue = isset($_REQUEST["ACTIVATE"]) && $_REQUEST["ACTIVATE"] == 'Y' ? 'Y' : (isset($str_ACTIVATE) ? $str_ACTIVATE : 'N');
 				if ($ID == 0 && empty($_POST))
 					$strFieldValue = $arCurrentAction['ACTIVATE_DEFAULT'];
-				 ?>
+				?>
 
 				<?
 				// define a default value
-				$strFieldValue  = isset($_REQUEST["DEACTIVATE"]) && $_REQUEST["DEACTIVATE"] == 'Y' ? 'Y' : (isset($str_DEACTIVATE) ? $str_DEACTIVATE : 'N');
+				$strFieldValue = isset($_REQUEST["DEACTIVATE"]) && $_REQUEST["DEACTIVATE"] == 'Y' ? 'Y' : (isset($str_DEACTIVATE) ? $str_DEACTIVATE : 'N');
 				if ($ID == 0 && empty($_POST))
 					$strFieldValue = $arCurrentAction['DEACTIVATE_DEFAULT'];
 				?>
 
-				 </table>
+				</table>
 			</td>
 		</tr>
 	<?

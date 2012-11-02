@@ -96,7 +96,7 @@ $lAdmin->NavText($rsData->GetNavPrint(GetMessage("SEARCH_PHS_PHRASES")));
 
 while($arRes = $rsData->NavNext(true, "f_"))
 {
-        $row =& $lAdmin->AddRow($f_ID, $arRes);
+	$row =& $lAdmin->AddRow($f_ID, $arRes);
 }
 
 $lAdmin->AddFooter(array(
@@ -115,14 +115,14 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admi
 <form name="form1" method="GET" action="<?=$APPLICATION->GetCurPage()?>">
 <?
 $oFilter = new CAdminFilter(
-        $sTableID."_filter",
-        array(
+	$sTableID."_filter",
+	array(
 		"find_id" => GetMessage("SEARCH_PHS_ID"),
 		"find_dates" => GetMessage("SEARCH_PHS_DATES", array("#DATE_FORMAT#" => CLang::GetDateFormat("SHORT"))),
 		"find_site_id" => GetMessage("SEARCH_PHS_SITE_ID"),
 		"find_url_to" => GetMessage("SEARCH_PHS_URL_TO"),
 		"find_stat_sess_id" => GetMessage("SEARCH_PHS_STAT_SESS_ID"),
-        )
+	)
 );
 
 $oFilter->Begin();

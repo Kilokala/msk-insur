@@ -91,7 +91,7 @@ window.bxClockLoaders.push("bxShowClock_<?=$arParams['inputId']?>('<?=$arParams[
 				var oScript = document.body.appendChild(document.createElement('script'));
 				oScript.src = '/bitrix/js/main/utils.js';
 				if (document.attachEvent && navigator.userAgent.toLowerCase().indexOf('opera') == -1)
-					oScript.onreadystatechange = function(){if (oSript.readyState == 'loaded'){bxc_load_css();}};
+					oScript.onreadystatechange = function(){if (oScript.readyState == 'loaded'){bxc_load_css();}};
 				else
 					oScript.onload = function(){setTimeout(bxc_load_css, 50);};
 			}, 50);

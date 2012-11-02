@@ -93,7 +93,7 @@ $lAdmin->EndPrologContent();
 
 $lAdmin->BeginEpilogContent();
 ?>
-	<input type="hidden" name="query" id="query" value="<?=htmlspecialchars($query)?>">
+	<input type="hidden" name="query" id="query" value="<?=htmlspecialcharsbx($query)?>">
 <?
 $lAdmin->EndEpilogContent();
 
@@ -130,7 +130,7 @@ $editTab->BeginNextTab();
 <tr valign="top">
 	<td width="100%" colspan="2">
 	<input type="hidden" name="lang" value="<?=LANG?>">
-	<textarea cols="60" name="sql" id="sql" rows="15" wrap="OFF" style="width:100%;"><? echo htmlspecialchars($query); ?></textarea><br />	</td>
+	<textarea cols="60" name="sql" id="sql" rows="15" wrap="OFF" style="width:100%;"><? echo htmlspecialcharsbx($query); ?></textarea><br />	</td>
 </tr>
 <?$editTab->Buttons();?>
 <input <?if (!$isAdmin) echo "disabled"?> type="button" accesskey="x" name="execute" value="<?echo GetMessage("SQL_EXECUTE")?>" onclick="return __FSQLSubmit();">

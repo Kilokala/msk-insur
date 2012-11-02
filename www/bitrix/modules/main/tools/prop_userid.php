@@ -28,7 +28,7 @@ class CIBlockPropertyUserID
 		$arUser = $cache[$value];
 		if($arUser)
 		{
-			return "[<a title='".GetMessage("MAIN_EDIT_USER_PROFILE")."' href='user_edit.php?ID=".$arUser["ID"]."&lang=".LANG."'>".$arUser["ID"]."</a>] (".htmlspecialchars($arUser["LOGIN"]).") ".htmlspecialchars($arUser["NAME"])." ".htmlspecialchars($arUser["LAST_NAME"]);
+			return "[<a title='".GetMessage("MAIN_EDIT_USER_PROFILE")."' href='user_edit.php?ID=".$arUser["ID"]."&lang=".LANG."'>".$arUser["ID"]."</a>] (".htmlspecialcharsbx($arUser["LOGIN"]).") ".htmlspecialcharsbx($arUser["NAME"])." ".htmlspecialcharsbx($arUser["LAST_NAME"]);
 		}
 		else
 			return "&nbsp;";
@@ -49,14 +49,14 @@ class CIBlockPropertyUserID
 		if ($default_value == $USER->GetID())
 		{
 			$select = "CU";
-			$res = "[<a title='".GetMessage("MAIN_EDIT_USER_PROFILE")."'  href='/bitrix/admin/user_edit.php?ID=".$USER->GetID()."&lang=".LANG."'>".$USER->GetID()."</a>] (".htmlspecialchars($USER->GetLogin()).") ".htmlspecialchars($USER->GetFirstName())." ".htmlspecialchars($USER->GetLastName());
+			$res = "[<a title='".GetMessage("MAIN_EDIT_USER_PROFILE")."'  href='/bitrix/admin/user_edit.php?ID=".$USER->GetID()."&lang=".LANG."'>".$USER->GetID()."</a>] (".htmlspecialcharsbx($USER->GetLogin()).") ".htmlspecialcharsbx($USER->GetFirstName())." ".htmlspecialcharsbx($USER->GetLastName());
 		}
 		elseif ($default_value > 0)
 		{
 			$select = "SU";
 			$rsUsers = CUser::GetList($by, $order, array("ID" => $default_value));
 			if ($arUser = $rsUsers->Fetch())
-				$res = "[<a title='".GetMessage("MAIN_EDIT_USER_PROFILE")."'  href='/bitrix/admin/user_edit.php?ID=".$arUser["ID"]."&lang=".LANG."'>".$arUser["ID"]."</a>] (".htmlspecialchars($arUser["LOGIN"]).") ".htmlspecialchars($arUser["NAME"])." ".htmlspecialchars($arUser["LAST_NAME"]);
+				$res = "[<a title='".GetMessage("MAIN_EDIT_USER_PROFILE")."'  href='/bitrix/admin/user_edit.php?ID=".$arUser["ID"]."&lang=".LANG."'>".$arUser["ID"]."</a>] (".htmlspecialcharsbx($arUser["LOGIN"]).") ".htmlspecialcharsbx($arUser["NAME"])." ".htmlspecialcharsbx($arUser["LAST_NAME"]);
 			else
 				$res = "&nbsp;".GetMessage("MAIN_NOT_FOUND");
 		}
@@ -70,16 +70,16 @@ class CIBlockPropertyUserID
 			$strHTMLControlName["FORM_NAME"] = "form_element";
 
 		ob_start();
-		?><select id="SELECT<?=htmlspecialchars($strHTMLControlName["VALUE"])?>" name="SELECT<?=htmlspecialchars($strHTMLControlName["VALUE"])?>" onchange="if(this.value == 'none')
+		?><select id="SELECT<?=htmlspecialcharsbx($strHTMLControlName["VALUE"])?>" name="SELECT<?=htmlspecialcharsbx($strHTMLControlName["VALUE"])?>" onchange="if(this.value == 'none')
 						{
-							var v=document.getElementById('<?=htmlspecialchars($strHTMLControlName["VALUE"])?>');
+							var v=document.getElementById('<?=htmlspecialcharsbx($strHTMLControlName["VALUE"])?>');
 							v.value = '';
 							v.readOnly = true;
 							document.getElementById('FindUser<?=$name_x?>').disabled = true;
 						}
 						else
 						{
-							var v=document.getElementById('<?=htmlspecialchars($strHTMLControlName["VALUE"])?>');
+							var v=document.getElementById('<?=htmlspecialcharsbx($strHTMLControlName["VALUE"])?>');
 							v.value = this.value == 'CU'?'<?=$USER->GetID()?>':'';
 							v.readOnly = false;
 							document.getElementById('FindUser<?=$name_x?>').disabled = false;
@@ -88,7 +88,7 @@ class CIBlockPropertyUserID
 					<option value="CU"<?if($select=="CU")echo " selected"?>><?=GetMessage("IBLOCK_PROP_USERID_CURR")?></option>
 					<option value="SU"<?if($select=="SU")echo " selected"?>><?=GetMessage("IBLOCK_PROP_USERID_OTHR")?></option>
 				</select>&nbsp;
-				<?echo FindUserIDNew(htmlspecialchars($strHTMLControlName["VALUE"]), $value["VALUE"], $res, htmlspecialcharsEx($strHTMLControlName["FORM_NAME"]), $select);
+				<?echo FindUserIDNew(htmlspecialcharsbx($strHTMLControlName["VALUE"]), $value["VALUE"], $res, htmlspecialcharsEx($strHTMLControlName["FORM_NAME"]), $select);
 			$return = ob_get_contents();
 			ob_end_clean();
 		return  $return;
@@ -151,7 +151,7 @@ function Ch".$tag_name_x."()
 	if (
 		document.".$form_name."
 		&& document.".$form_name."['".$tag_name_escaped."']
-		&& tv".$tag_name_x."
+		&& typeof tv".$tag_name_x." != 'undefined'
 		&& tv".$tag_name_x." != document.".$form_name."['".$tag_name_escaped."'].value
 	)
 	{
@@ -167,7 +167,7 @@ function Ch".$tag_name_x."()
 			}
 			else
 			{
-				DV_".$tag_name_x.".innerHTML = '".CUtil::JSEscape("[<a title=\"".GetMessage("MAIN_EDIT_USER_PROFILE")."\" class=\"tablebodylink\" href=\"/bitrix/admin/user_edit.php?ID=".$USER->GetID()."&lang=".LANG."\">".$USER->GetID()."</a>] (".htmlspecialchars($USER->GetLogin()).") ".htmlspecialchars($USER->GetFirstName())." ".htmlspecialchars($USER->GetLastName()))."';
+				DV_".$tag_name_x.".innerHTML = '".CUtil::JSEscape("[<a title=\"".GetMessage("MAIN_EDIT_USER_PROFILE")."\" class=\"tablebodylink\" href=\"/bitrix/admin/user_edit.php?ID=".$USER->GetID()."&lang=".LANG."\">".$USER->GetID()."</a>] (".htmlspecialcharsbx($USER->GetLogin()).") ".htmlspecialcharsbx($USER->GetFirstName())." ".htmlspecialcharsbx($USER->GetLastName()))."';
 				document.getElementById('SELECT".$tag_name_escaped."').value = 'CU';
 			}
 

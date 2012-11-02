@@ -322,7 +322,8 @@ class CFilemanUtils
 				'AskNewName' => 'FM_PACK_ASK_NEW_NAME',
 				'PackPermsError' => 'FM_UTIL_PACK_PERMS_ERROR',
 				'PackFinishing' => 'FM_UTIL_PACK_FINISH',
-				'PackCancel' => 'FM_UTIL_PACK_CANCEL'
+				'PackCancel' => 'FM_UTIL_PACK_CANCEL',
+				'PackFNameError' => 'FM_UTIL_PACK_FNAME_ERROR'				
 			));
 		}
 
@@ -475,7 +476,7 @@ var FM_MESS = {0:0<?foreach($arLangMess as $m1 => $m2){echo ', '.$m1." : '".adds
 				<td class="bxfm-d-label"><label for="bx_copy_to"><?= GetMessage("FM_COPY_TO")?>:</label></td>
 				<td class="bxfm-d-value">
 				<div style="float: left; width: 285px;">
-					<input id="bx_copy_to" style="width: 260px;" value="/" /><input type="button" value="..." title="<?= GetMessage('FD_OPEN_DIR')?>" onclick="FMFD_CopyMoveOpen(true, {site: window.oBXFMCopy.oSiteSel.value, path: window.oBXFMCopy.oCopyTo.pInput.value});"  />
+					<input id="bx_copy_to" style="width: 255px;" value="/" /><input type="button" value="..." title="<?= GetMessage('FD_OPEN_DIR')?>" onclick="FMFD_CopyMoveOpen(true, {site: window.oBXFMCopy.oSiteSel.value, path: window.oBXFMCopy.oCopyTo.pInput.value});"  />
 				</div>
 				<div class="bxfm-site-sel" id="bx_copy_site_sel"></div>
 				</td>
@@ -539,9 +540,10 @@ CAdminFileDialog::ShowScript(Array
 ?>
 		</div>
 		<div id="bx_copy_ask_dialog" class="bx-copy-cont">
-		<div style="margin: 0 20px 0 20px; width: 460px; padding: 10px 0 5px;">
+		<div style="margin: 0 70px 0 70px; width: 460px; padding: 10px 0 5px;">
 		<?= GetMessage("FM_UTIL_FILE_EXIST", array("#NAME#" => "<span id='bx_copy_ask_file_name'>#NAME#</span>", "#FOLDER#" => "<span id='bx_copy_ask_folder'>#FOLDER#</span>"))?>:
 		</div>
+		<div style="margin: 0 50px;">
 		<table  class="bx-copy-compare-tbl">
 			<tr class="bx-copy-title">
 				<td><?= GetMessage("FM_UTIL_NEW_FILE")?>:</td>
@@ -568,6 +570,7 @@ CAdminFileDialog::ShowScript(Array
 				<td><?= GetMessage("FM_UTIL_DATE")?>: <span id="bx_copy_ask_date2"></span></td>
 			</tr>
 		</table>
+		</div>
 		</div>
 		<?
 		$searchTabControl->BeginNextTab();
@@ -676,6 +679,8 @@ CAdminFileDialog::ShowScript(Array
 		if (!$USER->CanDoOperation('fileman_view_file_structure'))
 			return;
 
+		$io = CBXVirtualIo::GetInstance();
+
 		CUtil::JSPostUnescape();
 		switch($action)
 		{
@@ -767,12 +772,14 @@ CAdminFileDialog::ShowScript(Array
 
 				if (isset($_POST["packTo"]))
 				{
-					if (strpos($_POST["packTo"],"/") === false)
-						$pack_to = "/".$_POST["packTo"];
-					else
+					if (substr($_POST["packTo"], 0, 1) == "/")
 						$pack_to = $_POST["packTo"];
+					else
+						$pack_to = "/".$_POST["packTo"];
 				}
 
+				$pack_to = RemoveScriptExtension($pack_to);	
+				
 				//check writing permissions
 				if (!$USER->CanDoFileOperation('fm_create_new_file', $pack_to))
 				{
@@ -783,9 +790,19 @@ CAdminFileDialog::ShowScript(Array
 					<?
 					return;
 				}
+				
+				if(IsFileUnsafe($pack_to) || CFileMan::CheckFileName(GetFileName($pack_to)) !== true)
+				{
+					?>
+					<script>
+						window.BXFM_archiveFNameError = true;
+					</script>
+					<?
+					return;
+				}
 
 				//ask if the file already exists
-				if (file_exists($_SERVER["DOCUMENT_ROOT"].$pack_to))
+				if (file_exists($io->GetPhysicalName($_SERVER["DOCUMENT_ROOT"].$pack_to)))
 				{
 					if  (empty($startFile))
 					{
@@ -798,8 +815,8 @@ CAdminFileDialog::ShowScript(Array
 									{
 										name: "<?= CUtil::JSEscape(basename($pack_to))?>",
 										path: "<?= CUtil::JSEscape($pack_to)?>",
-										size: "<?= CFileMan::GetStrFileSize(filesize($_SERVER['DOCUMENT_ROOT'].$pack_to))?>",
-										date: "<?= date(CDatabase::DateFormatToPHP(CLang::GetDateFormat('FULL')), filemtime($_SERVER['DOCUMENT_ROOT'].$pack_to)+CTimeZone::GetOffset())?>"
+										size: "<?= CFile::FormatSize(filesize($io->GetPhysicalName($_SERVER['DOCUMENT_ROOT'].$pack_to)))?>",
+										date: "<?= date(CDatabase::DateFormatToPHP(CLang::GetDateFormat('FULL')), filemtime($io->GetPhysicalName($_SERVER['DOCUMENT_ROOT'].$pack_to))+CTimeZone::GetOffset())?>"
 									}
 								};
 							</script>
@@ -851,7 +868,7 @@ CAdminFileDialog::ShowScript(Array
 							window.fmPackLastFile = '';
 							window.fmPackSuccess = true;
 							</script>
-						<?					
+						<?
 							break;
 						case IBXArchive::StatusError:
 						$arErrors = $packarc->GetErrors();
@@ -878,6 +895,14 @@ CAdminFileDialog::ShowScript(Array
 			case "unpack":
 
 				global $USER;
+
+				if (isset($_POST["packTo"]))
+				{
+					if (substr($_POST["packTo"], 0, 1) == "/")
+						$pack_to = $_POST["packTo"];
+					else
+						$pack_to = "/".$_POST["packTo"];
+				}
 
 				if (!($USER->CanDoFileOperation('fm_create_new_file', $_POST["packTo"]) ||
 				$USER->CanDoFileOperation('fm_create_new_folder', $_POST["packTo"])))
@@ -907,7 +932,7 @@ CAdminFileDialog::ShowScript(Array
 							)
 						);
 
-					$uRes = $arc->Unpack($_SERVER["DOCUMENT_ROOT"].$_POST["packTo"]);
+					$uRes = $arc->Unpack($_SERVER["DOCUMENT_ROOT"].$pack_to);
 
 					if (!$uRes)
 					{
@@ -971,6 +996,19 @@ CAdminFileDialog::ShowScript(Array
 			$arRes[] = array("name" => $arPathes[$i]);
 
 		return $arRes;
+	}
+
+	function GetModifyTime($path)
+	{
+		$path = CBXVirtualIoFileSystem::ConvertCharset($path);
+
+		if (file_exists($path))
+		{			
+			$stat = stat($path);
+			return $stat["mtime"];
+		}
+
+		return null;
 	}
 }
 
@@ -1235,7 +1273,7 @@ class CFilemanSearch
 			'b_dir' => $bIsDir,
 			'time' => $time,
 			'str_date' => date(CDatabase::DateFormatToPHP(CLang::GetDateFormat("FULL")), $time),
-			'str_size' => $bIsDir ? "" : CFileMan::GetStrFileSize($size),
+			'str_size' => $bIsDir ? "" : CFile::FormatSize($size),
 			'type_src' => "/bitrix/images/fileman/types/".($bIsDir ? "folder" : CFileMan::GetFileTypeEx($file)).".gif",
 			'repl_count' => $replFileCount // used only in replace-mode to count matches
 		);
@@ -1278,7 +1316,7 @@ class CFilemanSearch
 	{
 		global $DB;
 
-		// TODO: проверить инициализацию $searchRes
+		// TODO: check $searchRes initialization
 		$arFields = array(
 			'SESS_ID' => $searchSess,
 			'F_PATH' => $searchRes[$i]['path'],
@@ -1663,11 +1701,12 @@ class CFilemanCopy
 				$strWarn = "";
 
 				// Check if file already exists in destination folder
-				if ($io->FileExists($absPathTo.$name_i) && $bDir_i == $io->DirectoryExists($absPathTo.$name_i))
+				if ($io->FileExists($absPathTo.$name_i) || ( $bDir_i == $io->DirectoryExists($absPathTo.$name_i) && $bDir_i))
 				{
 					$fTmp = $io->GetFile($absPathTo.$name_i);
 					$fTmp1 = $io->GetFile($absPath_i);
 					$altName = CFilemanCopy::GetAltFileName($absPathTo, $name_i, $bDir_i);
+
 					if ($caseOption == 'ask')
 					{
 						?><script>
@@ -1676,16 +1715,16 @@ class CFilemanCopy
 								name: "<?= CUtil::JSEscape($name_i)?>",
 								path: "<?= CUtil::JSEscape($pathTo.$name_i)?>",
 								bDir: <?= $bDir_i ? "true" : "false"?>,
-								size: "<?= $bDir_i ? '-' : CFileMan::GetStrFileSize($fTmp->GetFileSize())?>",
-								date: "<?= date(CDatabase::DateFormatToPHP(CLang::GetDateFormat("FULL")), $fTmp->GetModificationTime()+CTimeZone::GetOffset())?>"
+								size: "<?= $bDir_i ? '-' : CFile::FormatSize($fTmp->GetFileSize())?>",
+								date: "<?= date(CDatabase::DateFormatToPHP(CLang::GetDateFormat("FULL")), CFilemanUtils::GetModifyTime($absPathTo.$name_i)+CTimeZone::GetOffset())?>"								
 							},
 							fileNew: {
 								alt_name: "<?= CUtil::JSEscape($altName)?>",
 								name: "<?= CUtil::JSEscape($name_i)?>",
 								path: "<?= CUtil::JSEscape($filePath)?>",
 								bDir: <?= $bDir_i ? "true" : "false"?>,
-								size: "<?= $bDir_i ? '-' : CFileMan::GetStrFileSize($fTmp1->GetFileSize())?>",
-								date: "<?= date(CDatabase::DateFormatToPHP(CLang::GetDateFormat("FULL")), $fTmp1->GetModificationTime()+CTimeZone::GetOffset())?>"
+								size: "<?= $bDir_i ? '-' : CFile::FormatSize($fTmp1->GetFileSize())?>",
+								date: "<?= date(CDatabase::DateFormatToPHP(CLang::GetDateFormat("FULL")), CFilemanUtils::GetModifyTime($absPath_i)+CTimeZone::GetOffset())?>"
 							}
 						};
 						</script><?
@@ -1736,15 +1775,15 @@ class CFilemanCopy
 					elseif ($Params['bSearch'] && $Params['ssess'] && !$Params['bCopy'])
 						CFilemanSearch::DelFromSearchResult($Params['ssess'], $filePath);
 				}
-				
+
 				$module_id = "fileman";
 				if(COption::GetOptionString($module_id, "log_page", "Y")=="Y" && $log)
-				{	
+				{
 					$res_log['copy_to'] = substr($pathTo, 1);
 					$res_log['path'] = substr($filePath, 1);
 					if ($Params['bCopy'] == "copy")
 					{
-						if (!$bDir_i)							
+						if (!$bDir_i)
 							CEventLog::Log(
 								"content",
 								"FILE_COPY",
@@ -1752,14 +1791,14 @@ class CFilemanCopy
 								"",
 								serialize($res_log)
 							);
-						else							
+						else
 							CEventLog::Log(
 								"content",
 								"SECTION_COPY",
 								"fileman",
 								"",
 								serialize($res_log)
-							);						
+							);
 					}
 					else
 					{

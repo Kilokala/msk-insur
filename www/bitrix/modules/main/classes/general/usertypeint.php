@@ -108,7 +108,7 @@ class CUserTypeInteger
 	function GetEditFormHTML($arUserField, $arHtmlControl)
 	{
 		if($arUserField["ENTITY_VALUE_ID"]<1 && strlen($arUserField["SETTINGS"]["DEFAULT_VALUE"])>0)
-			$arHtmlControl["VALUE"] = htmlspecialchars($arUserField["SETTINGS"]["DEFAULT_VALUE"]);
+			$arHtmlControl["VALUE"] = htmlspecialcharsbx($arUserField["SETTINGS"]["DEFAULT_VALUE"]);
 		return '<input type="text" '.
 			'name="'.$arHtmlControl["NAME"].'" '.
 			'size="'.$arUserField["SETTINGS"]["SIZE"].'" '.

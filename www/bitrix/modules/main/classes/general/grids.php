@@ -4,6 +4,7 @@ IncludeModuleLangFile(__FILE__);
 class CGridOptions
 {
 	protected $grid_id;
+	protected $all_options;
 	protected $options;
 	protected $filter;
 
@@ -14,9 +15,21 @@ class CGridOptions
 		$this->filter = array();
 
 		$aOptions = CUserOptions::GetOption("main.interface.grid", $this->grid_id, array());
-		if(is_array($aOptions["views"]) && array_key_exists($aOptions["current_view"], $aOptions["views"]))
+
+		if(!is_array($aOptions["views"]))
+			$aOptions["views"] = array();
+		if(!is_array($aOptions["filters"]))
+			$aOptions["filters"] = array();
+		if(!array_key_exists("default", $aOptions["views"]))
+			$aOptions["views"]["default"] = array("columns"=>"");
+		if($aOptions["current_view"] == '' || !array_key_exists($aOptions["current_view"], $aOptions["views"]))
+			$aOptions["current_view"] = "default";
+
+		$this->all_options = $aOptions;
+
+		if(array_key_exists($aOptions["current_view"], $aOptions["views"]))
 			$this->options = $aOptions["views"][$aOptions["current_view"]];
-		if($this->options["saved_filter"] <> '' && is_array($aOptions["filters"]) && array_key_exists($this->options["saved_filter"], $aOptions["filters"]))
+		if($this->options["saved_filter"] <> '' && array_key_exists($this->options["saved_filter"], $aOptions["filters"]))
 			if(is_array($aOptions["filters"][$this->options["saved_filter"]]["fields"]))
 				$this->filter = $aOptions["filters"][$this->options["saved_filter"]]["fields"];
 	}
@@ -33,34 +46,32 @@ class CGridOptions
 			"vars" => $arParams["vars"],
 		);
 
-		$uniq = md5($this->grid_id.":".$GLOBALS["APPLICATION"]->GetCurPage());
-
 		$key = '';
 		if(isset($_REQUEST[$arParams["vars"]["by"]]))
 		{
-			$_SESSION["SESS_SORT_BY"][$uniq] = $_REQUEST[$arParams["vars"]["by"]];
+			$_SESSION["main.interface.grid"][$this->grid_id]["sort_by"] = $_REQUEST[$arParams["vars"]["by"]];
 		}
-		elseif(!isset($_SESSION["SESS_SORT_BY"][$uniq]))
+		elseif(!isset($_SESSION["main.interface.grid"][$this->grid_id]["sort_by"]))
 		{
 			if($this->options["sort_by"] <> '')
 				$key = $this->options["sort_by"];
 		}
-		if(isset($_SESSION["SESS_SORT_BY"][$uniq]))
-			$key = $_SESSION["SESS_SORT_BY"][$uniq];
+		if(isset($_SESSION["main.interface.grid"][$this->grid_id]["sort_by"]))
+			$key = $_SESSION["main.interface.grid"][$this->grid_id]["sort_by"];
 
 		if($key <> '')
 		{
 			if(isset($_REQUEST[$arParams["vars"]["order"]]))
 			{
-				$_SESSION["SESS_SORT_ORDER"][$uniq] = $_REQUEST[$arParams["vars"]["order"]];
+				$_SESSION["main.interface.grid"][$this->grid_id]["sort_order"] = $_REQUEST[$arParams["vars"]["order"]];
 			}
-			elseif(!isset($_SESSION["SESS_SORT_ORDER"][$uniq]))
+			elseif(!isset($_SESSION["main.interface.grid"][$this->grid_id]["sort_order"]))
 			{
 				if($this->options["sort_order"] <> '')
 					$arResult["sort"] = array($key => $this->options["sort_order"]);
 			}
-			if(isset($_SESSION["SESS_SORT_ORDER"][$uniq]))
-				$arResult["sort"] = array($key => $_SESSION["SESS_SORT_ORDER"][$uniq]);
+			if(isset($_SESSION["main.interface.grid"][$this->grid_id]["sort_order"]))
+				$arResult["sort"] = array($key => $_SESSION["main.interface.grid"][$this->grid_id]["sort_order"]);
 		}
 
 		return $arResult;
@@ -87,7 +98,6 @@ class CGridOptions
 
 	public function GetFilter($arFilter)
 	{
-		$uniq = md5($this->grid_id.":".$GLOBALS["APPLICATION"]->GetCurPage());
 		$aRes = array();
 		foreach($arFilter as $field)
 		{
@@ -101,10 +111,10 @@ class CGridOptions
 				}
 				else
 				{
-					unset($_SESSION["GRID_FILTER"][$uniq][$field["id"]."_datesel"]);
-					unset($_SESSION["GRID_FILTER"][$uniq][$field["id"]."_from"]);
-					unset($_SESSION["GRID_FILTER"][$uniq][$field["id"]."_to"]);
-					unset($_SESSION["GRID_FILTER"][$uniq][$field["id"]."_days"]);
+					unset($_SESSION["main.interface.grid"][$this->grid_id]["filter"][$field["id"]."_datesel"]);
+					unset($_SESSION["main.interface.grid"][$this->grid_id]["filter"][$field["id"]."_from"]);
+					unset($_SESSION["main.interface.grid"][$this->grid_id]["filter"][$field["id"]."_to"]);
+					unset($_SESSION["main.interface.grid"][$this->grid_id]["filter"][$field["id"]."_days"]);
 				}
 				continue;
 			}
@@ -119,14 +129,14 @@ class CGridOptions
 				if($_REQUEST[$field["id"]."_from"] <> '')
 					$aRes[$field["id"]."_from"] = $_REQUEST[$field["id"]."_from"];
 				else
-					unset($_SESSION["GRID_FILTER"][$uniq][$field["id"]."_from"]);
+					unset($_SESSION["main.interface.grid"][$this->grid_id]["filter"][$field["id"]."_from"]);
 			}
 			if(isset($_REQUEST[$field["id"]."_to"]))
 			{
 				if($_REQUEST[$field["id"]."_to"] <> '')
 					$aRes[$field["id"]."_to"] = $_REQUEST[$field["id"]."_to"];
 				else
-					unset($_SESSION["GRID_FILTER"][$uniq][$field["id"]."_to"]);
+					unset($_SESSION["main.interface.grid"][$this->grid_id]["filter"][$field["id"]."_to"]);
 			}
 
 			//filtered outside, we don't control the filter field value
@@ -145,15 +155,15 @@ class CGridOptions
 				if(is_array($_REQUEST[$field["id"]]) && !empty($_REQUEST[$field["id"]]) && $_REQUEST[$field["id"]][0] <> '' || !is_array($_REQUEST[$field["id"]]) && $_REQUEST[$field["id"]] <> '')
 					$aRes[$field["id"]] = $_REQUEST[$field["id"]];
 				else
-					unset($_SESSION["GRID_FILTER"][$uniq][$field["id"]]);
+					unset($_SESSION["main.interface.grid"][$this->grid_id]["filter"][$field["id"]]);
 			}
 		}
 		if(!empty($aRes))
-			$_SESSION["GRID_FILTER"][$uniq] = $aRes;
+			$_SESSION["main.interface.grid"][$this->grid_id]["filter"] = $aRes;
 		elseif($_REQUEST["clear_filter"] <> '')
-			$_SESSION["GRID_FILTER"][$uniq] = array();
-		elseif(is_array($_SESSION["GRID_FILTER"][$uniq]))
-			return $_SESSION["GRID_FILTER"][$uniq];
+			$_SESSION["main.interface.grid"][$this->grid_id]["filter"] = array();
+		elseif(is_array($_SESSION["main.interface.grid"][$this->grid_id]["filter"]))
+			return $_SESSION["main.interface.grid"][$this->grid_id]["filter"];
 		elseif(!empty($this->filter))
 		{
 			foreach($arFilter as $field)
@@ -174,10 +184,90 @@ class CGridOptions
 					$aRes[$field["id"]] = $this->filter[$field["id"]];
 			}
 			if(!empty($aRes))
-				$_SESSION["GRID_FILTER"][$uniq] = $aRes;
+				$_SESSION["main.interface.grid"][$this->grid_id]["filter"] = $aRes;
 		}
 
 		return $aRes;
+	}
+
+	public function Save()
+	{
+		CUserOptions::SetOption("main.interface.grid", $this->grid_id, $this->all_options);
+	}
+
+	public function SetColumns($columns)
+	{
+		$aColsTmp = explode(",", $columns);
+		$aCols = array();
+		foreach($aColsTmp as $col)
+			if(($col = trim($col)) <> "")
+				$aCols[] = $col;
+		$this->all_options["views"][$this->all_options["current_view"]]["columns"] = implode(",", $aCols);
+	}
+
+	public function SetTheme($theme)
+	{
+		$this->all_options["theme"] = $theme;
+	}
+
+	public function SetViewSettings($view_id, $settings)
+	{
+		$this->all_options["views"][$view_id] = array(
+			"name"=>$settings["name"],
+			"columns"=>$settings["columns"],
+			"sort_by"=>$settings["sort_by"],
+			"sort_order"=>$settings["sort_order"],
+			"page_size"=>$settings["page_size"],
+			"saved_filter"=>$settings["saved_filter"],
+		);
+	}
+
+	public function DeleteView($view_id)
+	{
+		unset($this->all_options["views"][$view_id]);
+	}
+	
+	public function SetView($view_id)
+	{
+		if(!array_key_exists($view_id, $this->all_options["views"]))
+			$view_id = "default";
+
+		$this->all_options["current_view"] = $view_id;
+		
+		//get sorting from view, not session
+		if($this->all_options["views"][$view_id]["sort_by"] <> '')
+			unset($_SESSION["main.interface.grid"][$this->grid_id]["sort_by"]);
+
+		if($this->all_options["views"][$view_id]["sort_order"] <> '')
+			unset($_SESSION["main.interface.grid"][$this->grid_id]["sort_order"]);
+	}
+	
+	public function SetFilterRows($rows)
+	{
+		$aColsTmp = explode(",", $rows);
+		$aCols = array();
+		foreach($aColsTmp as $col)
+			if(($col = trim($col)) <> "")
+				$aCols[] = $col;
+		$this->all_options["filter_rows"] = implode(",", $aCols);
+	}
+
+	public function SetFilterSettings($filter_id, $settings)
+	{
+		$this->all_options["filters"][$filter_id] = array(
+			"name"=>$settings["name"],
+			"fields"=>$settings['fields'],
+		);
+	}
+
+	public function DeleteFilter($filter_id)
+	{
+		unset($this->all_options["filters"][$filter_id]);
+	}
+
+	public function SetFilterSwitch($show)
+	{
+		$this->all_options["filter_shown"] = ($show == "Y"? "Y":"N");
 	}
 
 	public static function CalcDates($field_id, $aInput, &$aRes)

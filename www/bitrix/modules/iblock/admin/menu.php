@@ -93,11 +93,11 @@ function _get_sections_menu($arType, $arIBlock, $DEPTH_LEVEL, $SECTION_ID, $arSe
 		$arSections[] = _get_elements_menu($arType, $arIBlock, $SECTION_ID);
 
 	$rsSections = CIBlockSection::GetList(
-		 Array("left_margin"=>"ASC"),
-		 Array(
-		 	"IBLOCK_ID" => $arIBlock["ID"],
+		Array("left_margin"=>"ASC"),
+		Array(
+			"IBLOCK_ID" => $arIBlock["ID"],
 			"SECTION_ID" => $SECTION_ID,
-	 	),
+		),
 		false,
 		array("ID", "IBLOCK_SECTION_ID", "NAME", "LEFT_MARGIN", "RIGHT_MARGIN")
 	);

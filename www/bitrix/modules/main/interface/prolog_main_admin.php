@@ -14,7 +14,7 @@ if($arDirect["DIRECTION"] == "N")
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html<?=$direction?>>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=<?=htmlspecialchars(LANG_CHARSET)?>">
+<meta http-equiv="Content-Type" content="text/html; charset=<?=htmlspecialcharsbx(LANG_CHARSET)?>">
 <title><?echo COption::GetOptionString("main","site_name", $_SERVER["SERVER_NAME"])?> - <?echo htmlspecialcharsex($APPLICATION->GetTitle(false, true))?></title>
 <?
 $APPLICATION->AddBufferContent(array($adminPage, "ShowCSS"));
@@ -205,7 +205,7 @@ if ($APPLICATION->GetCurPage(true) != "/bitrix/admin/index.php")
 		<tr>
 			<td><div class="page-title-icon" id="<?echo ($bShowAdminMenu? $adminMenu->ActiveIcon():"default_page_icon")?>"></div></td>
 			<td width="100%"><h1><?echo htmlspecialcharsex($APPLICATION->GetTitle(false, true))?></h1></td>
-			<td><a id="navchain-link" href="<?echo htmlspecialchars($_SERVER["REQUEST_URI"])?>" title="<?echo GetMessage("MAIN_PR_ADMIN_CUR_LINK")?>"></a></td>
+			<td><a id="navchain-link" href="<?echo htmlspecialcharsbx($_SERVER["REQUEST_URI"])?>" title="<?echo GetMessage("MAIN_PR_ADMIN_CUR_LINK")?>"></a></td>
 		</tr>
 	</table>
 	</div>

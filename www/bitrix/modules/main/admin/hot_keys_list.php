@@ -40,8 +40,8 @@ if ($isAdmin)
 		foreach($FIELDS as $ID=>$arFields)
 		{
 			$ID = IntVal($ID);
-		   	if($ID <= 0)
-		   		continue;
+			if($ID <= 0)
+				continue;
 			if(!$hotKeyCodes->Update($ID, $arFields))
 			{
 				$e = $APPLICATION->GetException();
@@ -61,10 +61,10 @@ if ($isAdmin)
 
 		foreach($arID as $ID)
 		{
-		   	$ID = IntVal($ID);
+			$ID = IntVal($ID);
 
-		   	if($ID <= 0)
-		   		continue;
+			if($ID <= 0)
+				continue;
 			switch($_REQUEST['action'])
 			{
 				case "delete":
@@ -178,19 +178,19 @@ $oFilter = new CAdminFilter(
 <?$oFilter->Begin();?>
 <tr>
 	<td><?=GetMessage("HK_NAME").":"?></td>
-	<td><input type="text" name="find_name" size="40" value="<?= htmlspecialchars($find_name)?>"><?=ShowFilterLogicHelp()?></td>
+	<td><input type="text" name="find_name" size="40" value="<?= htmlspecialcharsbx($find_name)?>"><?=ShowFilterLogicHelp()?></td>
 </tr>
 <tr>
 	<td><?=GetMessage("HK_CLASS_NAME").":"?></td>
-	<td><input type="text" name="find_class_name" size="40" value="<?= htmlspecialchars($find_class_name)?>"><?=ShowFilterLogicHelp()?></td>
+	<td><input type="text" name="find_class_name" size="40" value="<?= htmlspecialcharsbx($find_class_name)?>"><?=ShowFilterLogicHelp()?></td>
 </tr>
 <tr>
 	<td><?=GetMessage("HK_CODE").":"?></td>
-	<td><input type="text" name="find_code" size="40" value="<?= htmlspecialchars($find_code)?>"><?=ShowFilterLogicHelp()?></td>
+	<td><input type="text" name="find_code" size="40" value="<?= htmlspecialcharsbx($find_code)?>"><?=ShowFilterLogicHelp()?></td>
 </tr>
 <tr>
 	<td><?=GetMessage("HK_URL").":"?></td>
-	<td><input type="text" name="find_url" size="40" value="<?= htmlspecialchars($find_url)?>"><?=ShowFilterLogicHelp()?></td>
+	<td><input type="text" name="find_url" size="40" value="<?= htmlspecialcharsbx($find_url)?>"><?=ShowFilterLogicHelp()?></td>
 </tr>
 <tr>
 	<td><?=GetMessage("HK_FLT_IS_CUSTOM").":"?></td>

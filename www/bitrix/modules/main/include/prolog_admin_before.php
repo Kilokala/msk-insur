@@ -10,14 +10,15 @@ unset($_FILES["BX_STATE"]);
 define("NEED_AUTH", true);
 define("ADMIN_SECTION", true);
 
+if (isset($_REQUEST['bxpublic']) && $_REQUEST['bxpublic'] == 'Y')
+	define('BX_PUBLIC_MODE', 1);
+
 require_once(dirname(__FILE__)."/../include.php");
 if(!headers_sent())
 	header("Content-type: text/html; charset=".LANG_CHARSET);
 
-if ($_REQUEST['bxpublic'] == 'Y')
+if (defined('BX_PUBLIC_MODE') && BX_PUBLIC_MODE == 1)
 {
-	define('BX_PUBLIC_MODE', 1);
-
 	if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		require_once($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/interface/init_jspopup.php");
 }

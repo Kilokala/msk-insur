@@ -33,11 +33,11 @@ $documentRoot = CSite::GetSiteDocRoot($site);
 
 //Check path permissions
 if (!$io->FileExists($documentRoot.$path) && !$io->DirectoryExists($documentRoot.$path))
-	$popupWindow->ShowError(GetMessage("ACCESS_EDIT_FILE_NOT_FOUND")." (".htmlspecialchars($path).")");
+	$popupWindow->ShowError(GetMessage("ACCESS_EDIT_FILE_NOT_FOUND")." (".htmlspecialcharsbx($path).")");
 elseif (!$USER->CanDoFileOperation('fm_edit_existent_folder', array($site, $path)))
 	$popupWindow->ShowError(GetMessage("FOLDER_EDIT_ACCESS_DENIED"));
 elseif (!$USER->CanDoFileOperation('fm_edit_permission', array($site, $path)))
-	$popupWindow->ShowError(GetMessage("EDIT_ACCESS_TO_DENIED")." \"".htmlspecialchars($path)."\"");
+	$popupWindow->ShowError(GetMessage("EDIT_ACCESS_TO_DENIED")." \"".htmlspecialcharsbx($path)."\"");
 
 //Lang
 if (!isset($_REQUEST["lang"]) || strlen($_REQUEST["lang"]) <= 0)
@@ -211,7 +211,7 @@ if ($strWarning != "")
 	$popupWindow->ShowValidationError($strWarning);
 ?>
 
-<p><b><?=($isFolder ? GetMessage("EDIT_ACCESS_TO_FOLDER") : GetMessage("EDIT_ACCESS_TO_FILE"))?></b> <?=htmlspecialchars($path);?></p>
+<p><b><?=($isFolder ? GetMessage("EDIT_ACCESS_TO_FOLDER") : GetMessage("EDIT_ACCESS_TO_FILE"))?></b> <?=htmlspecialcharsbx($path);?></p>
 
 <?
 $popupWindow->EndDescription();

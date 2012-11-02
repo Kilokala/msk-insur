@@ -578,26 +578,30 @@ if($lAdmin->EditAction())
 				//	output an error if not found or found less or equal then zero
 				$bError = false;
 				$arBaseGroup = CCatalogGroup::GetBaseGroup();
-				if (isset($arPrice[$arBaseGroup['ID']]))
-				{
-					if ($arPrice[$arBaseGroup['ID']] <= 0)
-					{
-						$bError = true;
-						$lAdmin->AddUpdateError($elID.': '.GetMessage('IB_CAT_NO_BASE_PRICE'), $elID);
-					}
-				}
-				else
-				{
-					$arBasePrice = CPrice::GetBasePrice(
-						$elID,
-						$CATALOG_QUANTITY_FROM[$elID][$arBaseGroup['ID']],
-						$CATALOG_QUANTITY_FROM[$elID][$arBaseGroup['ID']]
-					);
 
-					if (!is_array($arBasePrice) || $arBasePrice['PRICE'] <= 0)
+				if (COption::GetOptionString('catalog','save_product_without_price','N') != 'Y')
+				{
+					if (isset($arPrice[$arBaseGroup['ID']]))
 					{
-						$bError = true;
-						$lAdmin->AddGroupError($elID.': '.GetMessage('IB_CAT_NO_BASE_PRICE'), $elID);
+						if ($arPrice[$arBaseGroup['ID']] <= 0)
+						{
+							$bError = true;
+							$lAdmin->AddUpdateError($elID.': '.GetMessage('IB_CAT_NO_BASE_PRICE'), $elID);
+						}
+					}
+					else
+					{
+						$arBasePrice = CPrice::GetBasePrice(
+							$elID,
+							$CATALOG_QUANTITY_FROM[$elID][$arBaseGroup['ID']],
+							$CATALOG_QUANTITY_FROM[$elID][$arBaseGroup['ID']]
+						);
+
+						if (!is_array($arBasePrice) || $arBasePrice['PRICE'] <= 0)
+						{
+							$bError = true;
+							$lAdmin->AddGroupError($elID.': '.GetMessage('IB_CAT_NO_BASE_PRICE'), $elID);
+						}
 					}
 				}
 
@@ -639,7 +643,7 @@ if($lAdmin->EditAction())
 							}
 
 							$arPrFilter = array(
-						                "PRODUCT_ID" => $elID,
+								"PRODUCT_ID" => $elID,
 							);
 							if(DoubleVal($arPrice[$arCatalogGroup["ID"]])>0)
 							{
@@ -1451,7 +1455,7 @@ while($arRes = $rsData->NavNext(true, "f_"))
 {
 	$arRes_orig = $arRes;
 	// in workflow mode show latest changes
- 	if($bWorkFlow)
+	if($bWorkFlow)
 	{
 		$LAST_ID = CIBlockElement::WF_GetLast($arRes['ID']);
 		if($LAST_ID!=$arRes['ID'])

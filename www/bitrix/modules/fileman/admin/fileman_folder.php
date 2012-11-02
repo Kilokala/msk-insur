@@ -9,6 +9,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/fileman/include.php");
 IncludeModuleLangFile(__FILE__);
 
 ClearVars("g_");
+$ind=0;
 
 $strWarning = "";
 $strNotice = "";
@@ -25,7 +26,7 @@ $arParsedPath = CFileMan::ParsePath(Array($site, $path), true, false, "", $logic
 $abs_path = $DOC_ROOT.$path;
 $arPath = Array($site, $path);
 
-// проверим права на доступ в эту папку
+// let's check rights on this folder
 if(!$USER->CanDoFileOperation('fm_edit_existent_folder',$arPath))
 	$strWarning = GetMessage("ACCESS_DENIED");
 else if(!$io->DirectoryExists($abs_path))
@@ -44,7 +45,7 @@ else
 		}
 		return Array();
 	}
-	//возьмем массив прав доступа для всей папки
+	// let's get array of access rights for whole folder
 	$CUR_PERM = GetAccessArrTmp($arParsedPath["PREV"]);
 
 	if($REQUEST_METHOD=="POST" && strlen($save)>0 && strlen($propeditmore)<=0 && check_bitrix_sessid())
@@ -79,9 +80,9 @@ else
 			CFileman::DeleteFile(Array($site, $path."/.section.php"));
 
 		if($USER->CanDoFileOperation('fm_edit_permission',$arPath))
-		{
+		{			
 			$arPermissions=Array();
-			$db_groups = CGroup::GetList($order="sort", $by="asc");
+			$db_groups = CGroup::GetList($order="sort", $by="asc");			
 			while($arGroup = $db_groups->Fetch())
 			{
 				$gperm = isset($_POST["g_".$arGroup["ID"]]) ? $_POST["g_".$arGroup["ID"]] : '';
@@ -105,9 +106,9 @@ else
 						else
 							$gperm = 'T_'.$gperm;
 					}
-				}
+				}				
 					$arPermissions[$arGroup["ID"]] = $gperm;
-			}
+			}			
 			//$gperm = $g_ALL;
 			$gperm = $_POST['g_ALL'];
 			if ($gperm == 'NOT_REF')
@@ -121,7 +122,7 @@ else
 				else
 					$gperm = 'T_'.$gperm;
 			}
-			$arPermissions["*"] = $gperm;
+			$arPermissions["*"] = $gperm;			
 			$APPLICATION->SetFileAccessPermission(Array($site, $path), $arPermissions);
 		}
 
@@ -396,9 +397,9 @@ $tabControl->Begin();
 					'title' => GetMessage("FILEMAN_FOLDER_ACCESS_INHERIT"),
 					'letter' => 'N'
 				);
-
+				
 				//**** Inherit access level *******
-				if($path=="")
+				if($path=="/")
 					$inh_perm = $CUR_PERM["/"]["*"];
 				else
 					$inh_perm = $CUR_PERM[$arParsedPath["LAST"]]["*"];
@@ -433,7 +434,7 @@ $tabControl->Begin();
 				while($db_groups->ExtractFields("g_")):
 					if($g_ANONYMOUS=="Y")
 						$anonym = $g_NAME;
-					if($path=="")
+					if($path=="/")
 						$perm = $CUR_PERM["/"][$g_ID];
 					else
 						$perm = $CUR_PERM[$arParsedPath["LAST"]][$g_ID];
@@ -500,6 +501,9 @@ $tabControl->Begin();
 						?>
 							<option value="<?=$id?>"<?if($id == $inh_taskId) echo" selected";?>>
 							<?echo htmlspecialchars($ar['title'])?>
+							<?if($id=="NOT_REF")
+								echo "[".$arPermTypes[$pr_taskId]['title']."]";?>	
+							</option>						
 						<?endforeach;?>
 						</select>
 					</td>

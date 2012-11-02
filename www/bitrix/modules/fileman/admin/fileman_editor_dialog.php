@@ -81,7 +81,7 @@ function OnSave()
 </div>
 <?$dialogHTML = ob_get_contents(); ob_end_flush();?>
 
-<?elseif($name == "link"):?>
+<?elseif($name == "editlink"):?>
 <script>
 var pElement = null;
 var curLinkType = 't1';
@@ -945,7 +945,7 @@ function OnLoad()
 			if(v.substr(-2, 2) == "px")
 				v = v.substr(0, v.length-2);
 
-		 	BX("bx_width").value = v
+			BX("bx_width").value = v
 		}
 
 		v = GAttr(pElement, "height");

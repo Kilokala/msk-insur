@@ -4,8 +4,8 @@ IncludeModuleLangFile(__FILE__);
 
 class CHotKeysCode
 {
-    private $arList;
-    protected $hkCacheTtl = 3600;
+	private $arList;
+	protected $hkCacheTtl = 3600;
 
 	public function GetByID($ID)
 	{
@@ -326,23 +326,23 @@ class CHotKeys
 	protected static $codes;
 	protected static $instance;
 	protected static $optUse; //Global settings option
-    protected $arList; //For Cache //private
+	protected $arList; //For Cache //private
 	protected $arServSymb = array(
-							8=>"Back Space",	9=>"Tab",	13=>"Enter",	16=>"Shift",	17=>"Ctrl",	18=>"Alt",	19=>"Pause",
-							20=>"Caps Lock",	27=>"ESC",	32=>"Space bar",	33=>"Page Up",	34=>"Page Down",	35=>"End",
-							36=>"Home",	37=>"Left",	38=>"Up",	39=>"Right",	40=>"Down",	45=>"Insert",	46=>"Delete",	96=>"0 (ext)",
-							97=>"1 (ext)",	98=>"2 (ext)",	99=>"3 (ext)",	100=>"4 (ext)",	101=>"5 (ext)",	102=>"6 (ext)",	105=>"9 (ext)",
-							106=>"* (ext)",	107=>"+ (ext)",	104=>"8 (ext)",	103=>"7 (ext)",	110=>". (ext)",	111=>"/ (ext)",	112=>"F1",
-							113=>"F2",	114=>"F3",	115=>"F4",	116=>"F5",	117=>"F6",	118=>"F7",	119=>"F8",	120=>"F9",	121=>"F10",
-							122=>"F11",	123=>"F12",	144=>"Num Lock",	186=>";",	188=>",",	190=>".",	191=>"/",	192=>"`",	219=>"[",
-							220=>"|",	221=>"]",	222=>"'",	189=>"-",	187=>"+",145=>"Scrol Lock",
-							);
+		8=>"Back Space",	9=>"Tab",	13=>"Enter",	16=>"Shift",	17=>"Ctrl",	18=>"Alt",	19=>"Pause",
+		20=>"Caps Lock",	27=>"ESC",	32=>"Space bar",	33=>"Page Up",	34=>"Page Down",	35=>"End",
+		36=>"Home",	37=>"Left",	38=>"Up",	39=>"Right",	40=>"Down",	45=>"Insert",	46=>"Delete",	96=>"0 (ext)",
+		97=>"1 (ext)",	98=>"2 (ext)",	99=>"3 (ext)",	100=>"4 (ext)",	101=>"5 (ext)",	102=>"6 (ext)",	105=>"9 (ext)",
+		106=>"* (ext)",	107=>"+ (ext)",	104=>"8 (ext)",	103=>"7 (ext)",	110=>". (ext)",	111=>"/ (ext)",	112=>"F1",
+		113=>"F2",	114=>"F3",	115=>"F4",	116=>"F5",	117=>"F6",	118=>"F7",	119=>"F8",	120=>"F9",	121=>"F10",
+		122=>"F11",	123=>"F12",	144=>"Num Lock",	186=>";",	188=>",",	190=>".",	191=>"/",	192=>"`",	219=>"[",
+		220=>"|",	221=>"]",	222=>"'",	189=>"-",	187=>"+",145=>"Scrol Lock",
+	);
 
 	public static $ExpImpFileName;
 
-    private function __construct() { }
-    private function __clone()    { }
-    private function __wakeup()   { }
+	private function __construct() { }
+	private function __clone() { }
+	private function __wakeup() { }
 
 	public static function GetInstance()
 	{
@@ -442,7 +442,7 @@ class CHotKeys
 	{
 		$found=false;
 
-		if(!is_array($arCode)) 	//|| !is_array($this->arList)
+		if(!is_array($arCode)) //|| !is_array($this->arList)
 			return false;
 
 		if (is_array($this->arList))
@@ -520,7 +520,7 @@ class CHotKeys
 		$space=($forHint ? "&nbsp;" : " ");
 
 		if(is_array($arHK))
-			return " (".$space.htmlspecialchars($this->ShowHKAsChar($arHK["KEYS_STRING"]),ENT_QUOTES).$space.") ";
+			return " (".$space.htmlspecialcharsbx($this->ShowHKAsChar($arHK["KEYS_STRING"]),ENT_QUOTES).$space.") ";
 
 		return "";
 	}
@@ -569,11 +569,11 @@ class CHotKeys
 			else
 				$code ="";
 
-			$retStr.=' BXHotKeys.Add("'.htmlspecialchars($arExec["KEYS_STRING"]).'","'.$code.'",'.intval($arExec["CODE_ID"]).", '".strip_tags(addslashes($arExec["NAME"]),"<b>")."', ".intval($arExec["HK_ID"])."); ";
+			$retStr.=' BXHotKeys.Add("'.htmlspecialcharsbx($arExec["KEYS_STRING"]).'","'.$code.'",'.intval($arExec["CODE_ID"]).", '".strip_tags(addslashes($arExec["NAME"]),"<b>")."', ".intval($arExec["HK_ID"])."); ";
 		}
 
 		if($checkHK==true)
-			$retStr = ' if(window.BXHotKeys!==undefined)  { '.$retStr.' } ';
+			$retStr = ' if(window.BXHotKeys!==undefined) { '.$retStr.' } ';
 
 		if($scriptTags==true)
 			$retStr = '<script type="text/javascript">'.$retStr.'</script>';
@@ -699,10 +699,10 @@ class CHotKeys
 		unset($_SESSION["hasHotKeys"]);
 
 		$arPrepFields = array(
-			        	"KEYS_STRING"=>$arFields["KEYS_STRING"],
-			        	"CODE_ID"=>intval($arFields["CODE_ID"]),
-			        	"USER_ID"=>intval($arFields["USER_ID"]),
-					);
+			"KEYS_STRING"=>$arFields["KEYS_STRING"],
+			"CODE_ID"=>intval($arFields["CODE_ID"]),
+			"USER_ID"=>intval($arFields["USER_ID"]),
+		);
 
 		return $DB->Add("b_hot_keys",$arPrepFields);
 	}
@@ -757,9 +757,9 @@ class CHotKeys
 		while($arHK=$listRes->Fetch())
 		{
 			$arPrepFields = array(
-	        	"KEYS_STRING"=>$arHK["KEYS_STRING"],
-	        	"CODE_ID"=>$arHK["CODE_ID"],
-	        	"USER_ID"=>$uid
+				"KEYS_STRING"=>$arHK["KEYS_STRING"],
+				"CODE_ID"=>$arHK["CODE_ID"],
+				"USER_ID"=>$uid
 			);
 
 			$insRes = $DB->Add("b_hot_keys",$arPrepFields);
@@ -794,7 +794,7 @@ class CHotKeys
 		if(intval($charCode)<256)
 		{
 			if(!($codeSymb=$this->arServSymb[intval($charCode)]))
-		 		$codeSymb=Chr($charCode);
+				$codeSymb=Chr($charCode);
 		}
 		else
 			$codeSymb = html_entity_decode("&#".$charCode.";", ENT_NOQUOTES,LANG_CHARSET);
@@ -814,7 +814,7 @@ class CHotKeys
 			return false;
 
 		global $USER;
-		$htmlOut= 	"<script type='text/javascript'>
+		$htmlOut= "<script type='text/javascript'>
 					BXHotKeys.MesNotAssign = '".GetMessage("HK_NOT_ASSIGN")."';
 					BXHotKeys.MesClToChange = '".GetMessage("HK_CLICK_TO_CHANGE")."';
 					BXHotKeys.MesClean = '".GetMessage("HK_CLEAN")."';
@@ -1080,7 +1080,7 @@ class CHotKeys
 		return $tmpExportFile;
 	}
 	/**
-	 * Imports hot keys from file  and binds them to user
+	 * Imports hot keys from file and binds them to user
 	 * @param string $filename - absolute path to file with serialized data
 	 * @param int $userID - user's id wich recieves our hot-keys from file
 	 * @return int count added hot keys
@@ -1148,9 +1148,9 @@ class CHotKeys
 
 
 			$resHK = $this->GetList(array(),array(
-			    		    				"CODE_ID"=>$codeID,
-			        						"USER_ID"=>intval($userID)
-			        						));
+				"CODE_ID"=>$codeID,
+				"USER_ID"=>intval($userID)
+			));
 			$arHK = $resHK->Fetch();
 
 			//if this code alredy binding to some keys for this user
@@ -1158,17 +1158,17 @@ class CHotKeys
 			{
 				$hkID = $arHK['ID'];
 				$this->Update( $hkID, array(
-								        	"KEYS_STRING"=>$arHotKey["KEYS_STRING"],
-						    		    	"CODE_ID"=>$codeID,
-						        			"USER_ID"=>intval($userID)
-												));
+					"KEYS_STRING"=>$arHotKey["KEYS_STRING"],
+					"CODE_ID"=>$codeID,
+					"USER_ID"=>intval($userID)
+				));
 			}
 			else
 				$hkID = $this->Add( array(
-				        	"KEYS_STRING"=>$arHotKey["KEYS_STRING"],
-		    		    	"CODE_ID"=>$codeID,
-		        			"USER_ID"=>intval($userID)
-							));
+					"KEYS_STRING"=>$arHotKey["KEYS_STRING"],
+					"CODE_ID"=>$codeID,
+					"USER_ID"=>intval($userID)
+				));
 
 			if($hkID)
 				$added++;

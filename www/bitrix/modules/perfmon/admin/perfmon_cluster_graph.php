@@ -27,7 +27,7 @@ $arResp=Array();
 $arPages=Array();
 
 /******************************************************
-                Get graph data
+		Get graph data
 *******************************************************/
 $i=1;
 $rsData = CPerfCluster::GetList(array("ID"=>"ASC"));
@@ -72,7 +72,7 @@ else
 }
 
 /******************************************************
-                send image
+		send image
 *******************************************************/
 
 ShowImageHeader($ImageHandle);

@@ -390,6 +390,7 @@ class CCloudStorageService_OpenStackStorage
 			if(substr($filePath, 0, strlen($arBucket["PREFIX"])+2) != "/".$arBucket["PREFIX"]."/")
 				$filePath = "/".$arBucket["PREFIX"]."/".ltrim($filePath, "/");
 		}
+		$filePath = CCloudUtil::URLEncode($filePath, LANG_CHARSET);
 
 		$obRequest = $this->SendRequest(
 			$arBucket["SETTINGS"],
@@ -410,6 +411,7 @@ class CCloudStorageService_OpenStackStorage
 			if(substr($filePath, 0, strlen($arBucket["PREFIX"])+2) != "/".$arBucket["PREFIX"]."/")
 				$filePath = "/".$arBucket["PREFIX"]."/".ltrim($filePath, "/");
 		}
+		$filePath = CCloudUtil::URLEncode($filePath, LANG_CHARSET);
 
 		$obRequest = $this->SendRequest(
 			$arBucket["SETTINGS"],

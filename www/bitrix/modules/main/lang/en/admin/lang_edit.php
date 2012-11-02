@@ -30,4 +30,5 @@ $MESS["DIRECTION_LTR"] = "Left-to-right";
 $MESS["DIRECTION_RTL"] = "Right-to-left";
 $MESS["LANG_EDIT_WEEK_START_DEFAULT"] = "0";
 $MESS["LANG_EDIT_WEEK_START"] = "First day of the week:";
+$MESS["FORMAT_NAME"] = "Name format";
 ?>

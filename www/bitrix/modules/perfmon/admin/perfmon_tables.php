@@ -216,7 +216,7 @@ if(strlen($strLastTables) > 0)
 		foreach($arLastTables as $i => $table_name)
 			$arLastTables[$i] = array("NAME" => '<a href="perfmon_table.php?lang='.LANGUAGE_ID.'&amp;table_name='.urlencode($table_name).'">'.$table_name.'</a>');
 
-		 $sTableID2= "t_perfmon_recent_tables";
+		$sTableID2= "t_perfmon_recent_tables";
 
 		$lAdmin2 = new CAdminList($sTableID2);
 

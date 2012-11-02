@@ -246,7 +246,7 @@ if($bCloudsBrowse && CModule::IncludeModule('clouds'))
 		}
 		else
 		{
-			echo "<font color=\"#FF0000\">".htmlspecialchars($functionError)."</font>";
+			echo "<font color=\"#FF0000\">".htmlspecialcharsbx($functionError)."</font>";
 		}
 	}
 
@@ -742,7 +742,7 @@ var FD_MESS =
 			for($j=0; $j<count($aMenuLinksTmp); $j++)
 			{
 				$aMenuLinksItem = $aMenuLinksTmp[$j];
-				$arItems[] = htmlspecialchars($aMenuLinksItem[0]);
+				$arItems[] = htmlspecialcharsbx($aMenuLinksItem[0]);
 			}
 			$arAllItems[$key] = $arItems;
 			if($strSelected == "")
@@ -1050,7 +1050,7 @@ arFDPermission['<?=$path_js?>'] = {
 			if (!$USER->CanDoFileOperation('fm_create_new_folder', $arPath))
 				$strWarning = GetMessage("ACCESS_DENIED");
 			else if(!$io->DirectoryExists($abs_path))
-				$strWarning = GetMessage("FD_FOLDER_NOT_FOUND", array('#PATH#' => addslashes(htmlspecialchars($path))));
+				$strWarning = GetMessage("FD_FOLDER_NOT_FOUND", array('#PATH#' => addslashes(htmlspecialcharsbx($path))));
 			else
 			{
 				if (strlen($dirname) > 0 && ($mess = self::CheckFileName($dirname)) !== true)
@@ -1102,7 +1102,7 @@ arFDPermission['<?=$path_js?>'] = {
 
 			//Check access to folder or file
 			if (!$type) // Not found
-				$strWarning = GetMessage("FD_ELEMENT_NOT_FOUND", array('#PATH#' => addslashes(htmlspecialchars($path))));
+				$strWarning = GetMessage("FD_ELEMENT_NOT_FOUND", array('#PATH#' => addslashes(htmlspecialcharsbx($path))));
 			elseif (!$USER->CanDoFileOperation('fm_delete_'.$type, $arPath)) // Access denied
 				$strWarning = GetMessage("ACCESS_DENIED");
 			else // Ok, delete it!
@@ -1154,10 +1154,6 @@ arFDPermission['<?=$path_js?>'] = {
 			if ($io->FileExists($oldAbsPath))
 				$type = 'file';
 
-			$ext1 = GetFileExtension($oldName);
-			$ext2 = GetFileExtension($name);
-			$ScriptExt = GetScriptFileExt();
-
 			if (
 				$type == 'file' &&
 				!$USER->CanDoOperation('edit_php') &&
@@ -1167,13 +1163,13 @@ arFDPermission['<?=$path_js?>'] = {
 					substr($name, 0, 1) == "."
 					||
 					(
-						in_array($ext1, $ScriptExt) &&
-						!in_array($ext2, $ScriptExt)
+						HasScriptExtension($oldName) &&
+						!HasScriptExtension($name)
 					)
 					||
 					(
-						in_array($ext2, $ScriptExt) &&
-						!in_array($ext1, $ScriptExt)
+						HasScriptExtension($name) &&
+						!HasScriptExtension($oldName)
 					)
 				)
 			)
@@ -1181,7 +1177,7 @@ arFDPermission['<?=$path_js?>'] = {
 				$strWarning = GetMessage("ACCESS_DENIED");
 			}
 			elseif (!$type)
-				$strWarning = GetMessage("FD_ELEMENT_NOT_FOUND", array('#PATH#' => addslashes(htmlspecialchars($path))));
+				$strWarning = GetMessage("FD_ELEMENT_NOT_FOUND", array('#PATH#' => addslashes(htmlspecialcharsbx($path))));
 			elseif (!$USER->CanDoFileOperation('fm_rename_'.$type,$arPath1) || !$USER->CanDoFileOperation('fm_rename_'.$type,$arPath2))
 				$strWarning = GetMessage("ACCESS_DENIED");
 			else
@@ -1357,48 +1353,50 @@ arFDPermission['<?=$path_js?>'] = {
 			if (strlen($filename) > 0 && ($mess = self::CheckFileName($filename)) !== true)
 				$strWarning = $mess;
 
-			$fn = $io->ExtractNameFromPath($pathto);
-			if($APPLICATION->GetFileAccessPermission(array($site, $pathto)) > "R" &&
-				($USER->IsAdmin() || (!HasScriptExtension($fn) && substr($fn, 0, 1) != ".")) &&
-				strlen($strWarning) == 0
-			)
+			if($strWarning == '')
 			{
-				if(!$io->FileExists($rootPath.$pathto) || $_REQUEST["rewrite"] == "Y")
+				$fn = $io->ExtractNameFromPath($pathto);
+				if($APPLICATION->GetFileAccessPermission(array($site, $pathto)) > "R" &&
+					($USER->IsAdmin() || (!HasScriptExtension($fn) && substr($fn, 0, 1) != "." && $io->ValidateFilenameString($fn)))
+				)
 				{
-					//************************** Quota **************************//
-					$bQuota = true;
-					if(COption::GetOptionInt("main", "disk_space") > 0)
+					if(!$io->FileExists($rootPath.$pathto) || $_REQUEST["rewrite"] == "Y")
 					{
-						$bQuota = false;
-						$quota = new CDiskQuota();
-						if ($quota->checkDiskQuota(array("FILE_SIZE"=>filesize($F["tmp_name"]))))
-							$bQuota = true;
-					}
-					//************************** Quota **************************//
-					if ($bQuota)
-					{
-						$io->Copy($F["tmp_name"], $rootPath.$pathto);
-						$flTmp = $io->GetFile($rootPath.$pathto);
-						$flTmp->MarkWritable();
-
+						//************************** Quota **************************//
+						$bQuota = true;
 						if(COption::GetOptionInt("main", "disk_space") > 0)
-							CDiskQuota::updateDiskQuota("file", $flTmp->GetFileSize(), "copy");
-
-						$buffer = 'setTimeout(function(){parent.oBXDialogControls.Uploader.OnAfterUpload("'.$filename.'", '.($upload_and_open == "Y" ? 'true' : 'false').');}, 50);';
+						{
+							$bQuota = false;
+							$quota = new CDiskQuota();
+							if ($quota->checkDiskQuota(array("FILE_SIZE"=>filesize($F["tmp_name"]))))
+								$bQuota = true;
+						}
+						//************************** Quota **************************//
+						if ($bQuota)
+						{
+							$io->Copy($F["tmp_name"], $rootPath.$pathto);
+							$flTmp = $io->GetFile($rootPath.$pathto);
+							$flTmp->MarkWritable();
+	
+							if(COption::GetOptionInt("main", "disk_space") > 0)
+								CDiskQuota::updateDiskQuota("file", $flTmp->GetFileSize(), "copy");
+	
+							$buffer = 'setTimeout(function(){parent.oBXDialogControls.Uploader.OnAfterUpload("'.$filename.'", '.($upload_and_open == "Y" ? 'true' : 'false').');}, 50);';
+						}
+						else
+						{
+							$strWarning = $quota->LAST_ERROR;
+						}
 					}
 					else
 					{
-						$strWarning = $quota->LAST_ERROR;
+						$strWarning = GetMessage("FD_LOAD_EXIST_ALERT");
 					}
 				}
 				else
 				{
-					$strWarning = GetMessage("FD_LOAD_EXIST_ALERT");
+					$strWarning = GetMessage("FD_LOAD_DENY_ALERT");
 				}
-			}
-			elseif(strlen($strWarning) == 0)
-			{
-				$strWarning = GetMessage("FD_LOAD_DENY_ALERT");
 			}
 		}
 		else
@@ -1406,7 +1404,7 @@ arFDPermission['<?=$path_js?>'] = {
 			$strWarning = GetMessage("FD_LOAD_ERROR_ALERT");
 		}
 
-		if (strlen($strWarning) > 0)
+		if ($strWarning <> '')
 			$buffer = 'alert("'.addslashes(htmlspecialcharsex($strWarning)).'");';
 
 		return '<script>'.$buffer.'</script>';

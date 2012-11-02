@@ -212,7 +212,7 @@ while($arRes = $rsData->NavNext(true, "f_"))
 	if(IntVal($f_ID)>2 && $USER->CanDoOperation('edit_groups'))
 	{
 		$arActions[] = array("ICON"=>"edit", "TEXT"=>GetMessage("MAIN_ADMIN_MENU_EDIT"), "ACTION"=>$lAdmin->ActionRedirect("group_edit.php?ID=".$f_ID));
-		$arActions[] = array("ICON"=>"copy", "TEXT"=>GetMessage("MAIN_ADMIN_MENU_COPY"), "ACTION"=>$lAdmin->ActionRedirect("group_edit.php?".htmlspecialchars("COPY_ID=").$f_ID));
+		$arActions[] = array("ICON"=>"copy", "TEXT"=>GetMessage("MAIN_ADMIN_MENU_COPY"), "ACTION"=>$lAdmin->ActionRedirect("group_edit.php?COPY_ID=".$f_ID));
 		$arActions[] = array("SEPARATOR"=>true);
 		$arActions[] = array("ICON"=>"delete", "TEXT"=>GetMessage("MAIN_ADMIN_MENU_DELETE"), "ACTION"=>"if(confirm('".GetMessage('CONFIRM_DEL_GROUP')."')) ".$lAdmin->ActionDoGroup($f_ID, "delete"));
 	}
@@ -277,7 +277,7 @@ $oFilter->Begin();
 <tr>
 	<td><b><?=GetMessage("MAIN_FLT_SEARCH")?></b></td>
 	<td nowrap>
-		<input type="text" size="25" name="find" value="<?echo htmlspecialchars($find)?>" title="<?=GetMessage("MAIN_FLT_SEARCH_TITLE")?>">
+		<input type="text" size="25" name="find" value="<?echo htmlspecialcharsbx($find)?>" title="<?=GetMessage("MAIN_FLT_SEARCH_TITLE")?>">
 		<select name="find_type">
 			<option value="name"<?if($find_type=="name") echo " selected"?>><?=GetMessage('F_NAME')?></option>
 			<option value="id"<?if($find_type=="id") echo " selected"?>><?=GetMessage('MAIN_F_ID')?></option>
@@ -286,30 +286,30 @@ $oFilter->Begin();
 </tr>
 <tr>
 	<td nowrap><?echo GetMessage("MAIN_F_ID")?>:</td>
-	<td nowrap><input type="text" name="find_id" value="<?echo htmlspecialchars($find_id)?>" size="47"><?=ShowFilterLogicHelp()?></td>
+	<td nowrap><input type="text" name="find_id" value="<?echo htmlspecialcharsbx($find_id)?>" size="47"><?=ShowFilterLogicHelp()?></td>
 </tr>
 <tr>
 	<td width="0%" nowrap><?echo GetMessage("MAIN_F_TIMESTAMP")." (".CLang::GetDateFormat("SHORT")."):"?></td>
-	<td width="0%" nowrap><?echo CalendarPeriod("find_timestamp_1", htmlspecialchars($find_timestamp_1), "find_timestamp_2", htmlspecialchars($find_timestamp_2), "find_form","Y")?></td>
+	<td width="0%" nowrap><?echo CalendarPeriod("find_timestamp_1", htmlspecialcharsbx($find_timestamp_1), "find_timestamp_2", htmlspecialcharsbx($find_timestamp_2), "find_form","Y")?></td>
 </tr>
 <tr>
 	<td nowrap><?echo GetMessage("MAIN_F_ACTIVE")?>:</td>
 	<td nowrap><?
 		$arr = array("reference"=>array(GetMessage("MAIN_YES"), GetMessage("MAIN_NO")), "reference_id"=>array("Y","N"));
-		echo SelectBoxFromArray("find_active", $arr, htmlspecialchars($find_active), GetMessage("MAIN_ALL"));
+		echo SelectBoxFromArray("find_active", $arr, htmlspecialcharsbx($find_active), GetMessage("MAIN_ALL"));
 		?></td>
 </tr>
 <tr>
 	<td nowrap><?echo GetMessage("F_NAME")?>:</td>
-	<td nowrap><input type="text" name="find_name" value="<?echo htmlspecialchars($find_name)?>" size="47"><?=ShowFilterLogicHelp()?></td>
+	<td nowrap><input type="text" name="find_name" value="<?echo htmlspecialcharsbx($find_name)?>" size="47"><?=ShowFilterLogicHelp()?></td>
 </tr>
 <tr>
 	<td nowrap><?echo GetMessage("MAIN_F_DESCRIPTION")?>:</td>
-	<td nowrap><input type="text" name="find_description" value="<?echo htmlspecialchars($find_description)?>" size="47"><?=ShowFilterLogicHelp()?></td>
+	<td nowrap><input type="text" name="find_description" value="<?echo htmlspecialcharsbx($find_description)?>" size="47"><?=ShowFilterLogicHelp()?></td>
 </tr>
 <tr>
 	<td><?echo GetMessage("MAIN_F_USERS")?>:</td>
-	<td><?echo GetMessage("group_admin_flt_from")?>&nbsp;<input type="text" name="find_users_1" size="10" value="<?echo htmlspecialchars($find_users_1)?>">&nbsp;<?echo GetMessage("group_admin_flt_to")?>&nbsp;<input type="text" name="find_users_2" size="10" value="<?echo htmlspecialchars($find_users_2)?>"></td>
+	<td><?echo GetMessage("group_admin_flt_from")?>&nbsp;<input type="text" name="find_users_1" size="10" value="<?echo htmlspecialcharsbx($find_users_1)?>">&nbsp;<?echo GetMessage("group_admin_flt_to")?>&nbsp;<input type="text" name="find_users_2" size="10" value="<?echo htmlspecialcharsbx($find_users_2)?>"></td>
 </tr>
 <?
 $oFilter->Buttons(array("table_id"=>$sTableID, "url"=>$APPLICATION->GetCurPage(), "form"=>"find_form"));

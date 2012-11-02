@@ -1,0 +1,73 @@
+2012-11-02 17:34:34 -  - exec CUpdateClientPartner::GetUpdatesList
+2012-11-02 17:34:34 -  - exec CUpdateClientPartner::__CollectRequestData
+2012-11-02 17:34:34 -  - utf=Y&lang=ru&stable=Y&CANGZIP=Y&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&LICENSE_KEY=X&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&TYPENC=D&CLIENT_PHPVER=5.3.3&dbv=5.1.61&instm=main%2C11.5.9%2CY%3Bcompression%2C11.0.0%2CN%3Bclouds%2C11.5.3%2CN%3Bperfmon%2C11.5.1%2CN%3Bsearch%2C11.5.2%2CN%3Bsocialservices%2C11.0.1%2CN%3Biblock%2C11.5.2%2CN%3Bfileman%2C11.5.11%2CN%3Bbitrixcloud%2C11.5.2%2CN%3Bseo%2C11.5.0%2CN%3Bbitrix.sitecorporate%2C11.5.2%2CN&reqm=bitrix.sitecorporate%2Cbeono.mastercomponent
+2012-11-02 17:34:34 -  - exec CUpdateClientPartner::GetHTTPPage
+2012-11-02 17:34:35 -  - TIME GetUpdatesList(request) 0.539 sec
+2012-11-02 17:34:35 -  - exec CUpdateClientPartner::ParseServerData
+2012-11-02 17:34:39 -  - exec CUpdateClientPartner::LoadModulesUpdates
+2012-11-02 17:34:39 -  - exec CUpdateClientPartner::__CollectRequestData
+2012-11-02 17:34:39 -  - utf=Y&lang=ru&stable=Y&CANGZIP=Y&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&LICENSE_KEY=X&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&TYPENC=D&CLIENT_PHPVER=5.3.3&dbv=5.1.61&instm=main%2C11.5.9%2CY%3Bcompression%2C11.0.0%2CN%3Bclouds%2C11.5.3%2CN%3Bperfmon%2C11.5.1%2CN%3Bsearch%2C11.5.2%2CN%3Bsocialservices%2C11.0.1%2CN%3Biblock%2C11.5.2%2CN%3Bfileman%2C11.5.11%2CN%3Bbitrixcloud%2C11.5.2%2CN%3Bseo%2C11.5.0%2CN%3Bbitrix.sitecorporate%2C11.5.2%2CN&reqm=beono.mastercomponent&lim=Y
+2012-11-02 17:34:39 -  - exec CUpdateClientPartner::GetHTTPPage
+2012-11-02 17:34:39 -  - TIME LoadModulesUpdates(request) 0.545 sec
+2012-11-02 17:34:39 -  - exec CUpdateClientPartner::ParseServerData
+2012-11-02 17:34:39 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:34:39 -  - exec CUpdateClientPartner::LoadModulesUpdates
+2012-11-02 17:34:39 -  - exec CUpdateClientPartner::__CollectRequestData
+2012-11-02 17:34:39 -  - exec CUpdateClientPartner::ParseServerData
+2012-11-02 17:34:40 - DOWNLOAD - Time - 0.44755697250366 sec
+2012-11-02 17:34:40 -  - exec CUpdateClientPartner::UnGzipArchive
+2012-11-02 17:34:40 -  - TIME UnGzipArchive 0.005 sec
+2012-11-02 17:34:40 -  - TIME UpdateStepModules 0.008 sec
+2012-11-02 17:34:40 - UPD_SUCCESS - Updated: beono.mastercomponent
+2012-11-02 17:34:40 -  - exec CUpdateClientPartner::LoadModulesUpdates
+2012-11-02 17:34:40 -  - exec CUpdateClientPartner::__CollectRequestData
+2012-11-02 17:34:40 -  - utf=Y&lang=ru&stable=Y&CANGZIP=Y&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&LICENSE_KEY=X&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&TYPENC=D&CLIENT_PHPVER=5.3.3&dbv=5.1.61&instm=main%2C11.5.9%2CY%3Bcompression%2C11.0.0%2CN%3Bclouds%2C11.5.3%2CN%3Bperfmon%2C11.5.1%2CN%3Bsearch%2C11.5.2%2CN%3Bbeono.mastercomponent%2C1.0.3%2CN%3Bsocialservices%2C11.0.1%2CN%3Biblock%2C11.5.2%2CN%3Bfileman%2C11.5.11%2CN%3Bbitrixcloud%2C11.5.2%2CN%3Bseo%2C11.5.0%2CN%3Bbitrix.sitecorporate%2C11.5.2%2CN&reqm=beono.mastercomponent&lim=Y
+2012-11-02 17:34:40 -  - exec CUpdateClientPartner::GetHTTPPage
+2012-11-02 17:34:40 -  - TIME LoadModulesUpdates(request) 0.273 sec
+2012-11-02 17:34:40 -  - exec CUpdateClientPartner::ParseServerData
+2012-11-02 17:34:40 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:34:40 -  - exec CUpdateClientPartner::LoadModulesUpdates
+2012-11-02 17:34:40 -  - exec CUpdateClientPartner::__CollectRequestData
+2012-11-02 17:34:40 -  - exec CUpdateClientPartner::ParseServerData
+2012-11-02 17:34:41 - DOWNLOAD - Time - 0.6971001625061 sec
+2012-11-02 17:34:41 -  - exec CUpdateClientPartner::UnGzipArchive
+2012-11-02 17:34:41 -  - TIME UnGzipArchive 0.005 sec
+2012-11-02 17:34:41 - CSURUS1 - Run updater '/bitrix/updates/update_m1351863281/beono.mastercomponent/updater1.0.4.php'
+2012-11-02 17:34:41 -  - TIME UpdateStepModules 0.009 sec
+2012-11-02 17:34:41 - UPD_SUCCESS - Updated: beono.mastercomponent (1.0.4)<br><li>Убраны лишние символы попадающие в вывод
+2012-11-02 17:34:41 -  - exec CUpdateClientPartner::LoadModulesUpdates
+2012-11-02 17:34:41 -  - exec CUpdateClientPartner::__CollectRequestData
+2012-11-02 17:34:41 -  - utf=Y&lang=ru&stable=Y&CANGZIP=Y&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&LICENSE_KEY=X&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&TYPENC=D&CLIENT_PHPVER=5.3.3&dbv=5.1.61&instm=main%2C11.5.9%2CY%3Bcompression%2C11.0.0%2CN%3Bclouds%2C11.5.3%2CN%3Bperfmon%2C11.5.1%2CN%3Bsearch%2C11.5.2%2CN%3Bbeono.mastercomponent%2C1.0.4%2CN%3Bsocialservices%2C11.0.1%2CN%3Biblock%2C11.5.2%2CN%3Bfileman%2C11.5.11%2CN%3Bbitrixcloud%2C11.5.2%2CN%3Bseo%2C11.5.0%2CN%3Bbitrix.sitecorporate%2C11.5.2%2CN&reqm=beono.mastercomponent&lim=Y
+2012-11-02 17:34:41 -  - exec CUpdateClientPartner::GetHTTPPage
+2012-11-02 17:34:45 -  - TIME LoadModulesUpdates(request) 3.46 sec
+2012-11-02 17:34:45 -  - exec CUpdateClientPartner::ParseServerData
+2012-11-02 17:34:45 - LMU01 - LoadModulesUpdates-Step
+2012-11-02 17:34:45 -  - exec CUpdateClientPartner::LoadModulesUpdates
+2012-11-02 17:34:45 -  - exec CUpdateClientPartner::__CollectRequestData
+2012-11-02 17:34:45 -  - exec CUpdateClientPartner::ParseServerData
+2012-11-02 17:34:45 - DOWNLOAD - Time - 0.49633002281189 sec
+2012-11-02 17:34:45 -  - exec CUpdateClientPartner::UnGzipArchive
+2012-11-02 17:34:45 -  - TIME UnGzipArchive 0.005 sec
+2012-11-02 17:34:45 - CSURUS1 - Run updater '/bitrix/updates/update_m1351863285/beono.mastercomponent/updater1.0.5.php'
+2012-11-02 17:34:45 -  - TIME UpdateStepModules 0.008 sec
+2012-11-02 17:34:45 - UPD_SUCCESS - Updated: beono.mastercomponent (1.0.5)<br><li>Добавление кнопки в панель публичной части перенесено на событие OnPanelCreate
+2012-11-02 17:34:45 -  - exec CUpdateClientPartner::LoadModulesUpdates
+2012-11-02 17:34:45 -  - exec CUpdateClientPartner::__CollectRequestData
+2012-11-02 17:34:45 -  - utf=Y&lang=ru&stable=Y&CANGZIP=Y&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&LICENSE_KEY=X&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&TYPENC=D&CLIENT_PHPVER=5.3.3&dbv=5.1.61&instm=main%2C11.5.9%2CY%3Bcompression%2C11.0.0%2CN%3Bclouds%2C11.5.3%2CN%3Bperfmon%2C11.5.1%2CN%3Bsearch%2C11.5.2%2CN%3Bbeono.mastercomponent%2C1.0.5%2CN%3Bsocialservices%2C11.0.1%2CN%3Biblock%2C11.5.2%2CN%3Bfileman%2C11.5.11%2CN%3Bbitrixcloud%2C11.5.2%2CN%3Bseo%2C11.5.0%2CN%3Bbitrix.sitecorporate%2C11.5.2%2CN&reqm=beono.mastercomponent&lim=Y
+2012-11-02 17:34:45 -  - exec CUpdateClientPartner::GetHTTPPage
+2012-11-02 17:34:46 -  - TIME LoadModulesUpdates(request) 0.851 sec
+2012-11-02 17:34:46 -  - exec CUpdateClientPartner::ParseServerData
+2012-11-02 17:34:46 - STEP - Finish - NOUPDATES
+2012-11-02 17:34:46 - STEP - Finish - NOUPDATES
+2012-11-02 17:34:48 -  - exec CUpdateClientPartner::GetUpdatesList
+2012-11-02 17:34:48 -  - exec CUpdateClientPartner::__CollectRequestData
+2012-11-02 17:34:48 -  - utf=Y&lang=ru&stable=Y&CANGZIP=Y&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&LICENSE_KEY=X&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&TYPENC=D&CLIENT_PHPVER=5.3.3&dbv=5.1.61&instm=main%2C11.5.9%2CY%3Bcompression%2C11.0.0%2CN%3Bclouds%2C11.5.3%2CN%3Bperfmon%2C11.5.1%2CN%3Bsearch%2C11.5.2%2CN%3Bbeono.mastercomponent%2C1.0.5%2CN%3Bsocialservices%2C11.0.1%2CN%3Biblock%2C11.5.2%2CN%3Bfileman%2C11.5.11%2CN%3Bbitrixcloud%2C11.5.2%2CN%3Bseo%2C11.5.0%2CN%3Bbitrix.sitecorporate%2C11.5.2%2CN&reqm=beono.mastercomponent%2Cbitrix.sitecorporate
+2012-11-02 17:34:48 -  - exec CUpdateClientPartner::GetHTTPPage
+2012-11-02 17:34:59 -  - TIME GetUpdatesList(request) 10.764 sec
+2012-11-02 17:34:59 -  - exec CUpdateClientPartner::ParseServerData
+2012-11-02 17:35:41 -  - exec CUpdateClientPartner::GetUpdatesList
+2012-11-02 17:35:41 -  - exec CUpdateClientPartner::__CollectRequestData
+2012-11-02 17:35:41 -  - utf=Y&lang=ru&stable=Y&CANGZIP=Y&SUPD_DBS=MYSQL&XE=N&CLIENT_SITE=www.msk-in.customers&LICENSE_KEY=X&SUPD_STS=1&SUPD_URS=0&SUPD_URSA=1&TYPENC=D&CLIENT_PHPVER=5.3.3&dbv=5.1.61&instm=main%2C11.5.9%2CY%3Bcompression%2C11.0.0%2CN%3Bclouds%2C11.5.3%2CN%3Bperfmon%2C11.5.1%2CN%3Bsearch%2C11.5.2%2CN%3Bbeono.mastercomponent%2C1.0.5%2CN%3Bsocialservices%2C11.0.1%2CN%3Biblock%2C11.5.2%2CN%3Bfileman%2C11.5.11%2CN%3Bbitrixcloud%2C11.5.2%2CN%3Bseo%2C11.5.0%2CN%3Bbitrix.sitecorporate%2C11.5.2%2CN&reqm=beono.mastercomponent%2Cbitrix.sitecorporate
+2012-11-02 17:35:41 -  - exec CUpdateClientPartner::GetHTTPPage
+2012-11-02 17:35:46 -  - TIME GetUpdatesList(request) 5.511 sec
+2012-11-02 17:35:46 -  - exec CUpdateClientPartner::ParseServerData

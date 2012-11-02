@@ -20,7 +20,7 @@ $modules = COperation::GetAllowedModules();
 for($i = 0, $l=count($modules);$i < $l;$i++)
 	IncludeModuleLangFile($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/".$modules[$i]."/admin/task_description.php");
 /***************************************************************************
-			   GET | POST handlers
+GET | POST handlers
 ****************************************************************************/
 $strError="";
 $ID=intval($ID);
@@ -64,7 +64,7 @@ $arBXGroupPolicy = array(
 		"MAX_STORE_NUM" => 20,
 		"STORE_IP_MASK" => "255.0.0.0",
 		"STORE_TIMEOUT" => 60*24*93, //minutes
-		"CHECKWORD_TIMEOUT" => 60*24*185,  //minutes
+		"CHECKWORD_TIMEOUT" => 60*24*185, //minutes
 		"PASSWORD_LENGTH" => 6,
 		"PASSWORD_UPPERCASE" => "N",
 		"PASSWORD_LOWERCASE" => "N",
@@ -78,7 +78,7 @@ $arBXGroupPolicy = array(
 		"MAX_STORE_NUM" => 10,
 		"STORE_IP_MASK" => "255.255.0.0",
 		"STORE_TIMEOUT" => 60*24*30, //minutes
-		"CHECKWORD_TIMEOUT" => 60*24*1,  //minutes
+		"CHECKWORD_TIMEOUT" => 60*24*1, //minutes
 		"PASSWORD_LENGTH" => 8,
 		"PASSWORD_UPPERCASE" => "Y",
 		"PASSWORD_LOWERCASE" => "Y",
@@ -92,7 +92,7 @@ $arBXGroupPolicy = array(
 		"MAX_STORE_NUM" => 1,
 		"STORE_IP_MASK" => "255.255.255.255",
 		"STORE_TIMEOUT" => 60*24*3, //minutes
-		"CHECKWORD_TIMEOUT" => 60,  //minutes
+		"CHECKWORD_TIMEOUT" => 60, //minutes
 		"PASSWORD_LENGTH" => 10,
 		"PASSWORD_UPPERCASE" => "Y",
 		"PASSWORD_LOWERCASE" => "Y",
@@ -317,7 +317,7 @@ elseif($USER->CanDoOperation('edit_groups'))
 else
 	$APPLICATION->SetTitle(GetMessage("EDIT_GROUP_TITLE_VIEW", array("#ID#" => $ID)));
 /***************************************************************************
-			   HTML form
+HTML form
 ****************************************************************************/
 
 require($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/include/prolog_admin_after.php");
@@ -374,7 +374,7 @@ $context->Show();
 <?=bitrix_sessid_post()?>
 <input type="hidden" name="lang" value="<?echo LANG?>">
 <input type="hidden" name="ID" value="<?echo $ID?>">
-<?if(strlen($COPY_ID)>0):?><input type="hidden" name="COPY_ID" value="<?echo htmlspecialchars($COPY_ID)?>"><?endif?>
+<?if(strlen($COPY_ID)>0):?><input type="hidden" name="COPY_ID" value="<?echo htmlspecialcharsbx($COPY_ID)?>"><?endif?>
 <?
 $tabControl->Begin();
 
@@ -458,13 +458,13 @@ $tabControl->BeginNextTab();
 							if (array_key_exists($arUsers["ID"], $str_USER_ID))
 								echo " checked";
 							?> OnChange="CatGroupsActivate(this, <?=$ind?>)"></td>
-					<td><label for="USER_ID_ACT_ID_<?=$ind?>">[<a href="/bitrix/admin/user_edit.php?ID=<?=$arUsers["ID"]?>&lang=<?=LANGUAGE_ID?>" title="<?=GetMessage("MAIN_VIEW_USER")?>"><?=$arUsers["ID"]?></a>] (<?=htmlspecialchars($arUsers["LOGIN"])?>) <?=htmlspecialchars($arUsers["NAME"])?> <?=htmlspecialchars($arUsers["LAST_NAME"])?></label></td>
+					<td><label for="USER_ID_ACT_ID_<?=$ind?>">[<a href="/bitrix/admin/user_edit.php?ID=<?=$arUsers["ID"]?>&lang=<?=LANGUAGE_ID?>" title="<?=GetMessage("MAIN_VIEW_USER")?>"><?=$arUsers["ID"]?></a>] (<?=htmlspecialcharsbx($arUsers["LOGIN"])?>) <?=htmlspecialcharsbx($arUsers["NAME"])?> <?=htmlspecialcharsbx($arUsers["LAST_NAME"])?></label></td>
 					<td nowrap>
 
 						<?=GetMessage('USER_GROUP_DATE_FROM')?>
-						<?=CalendarDate("USER_ID_FROM_".$ind, (array_key_exists($arUsers["ID"], $str_USER_ID) ? htmlspecialchars($str_USER_ID[$arUsers["ID"]]["DATE_ACTIVE_FROM"]) : ""), "form1", "10", (array_key_exists($arUsers["ID"], $str_USER_ID) ? " " : " disabled"))?>
+						<?=CalendarDate("USER_ID_FROM_".$ind, (array_key_exists($arUsers["ID"], $str_USER_ID) ? htmlspecialcharsbx($str_USER_ID[$arUsers["ID"]]["DATE_ACTIVE_FROM"]) : ""), "form1", "10", (array_key_exists($arUsers["ID"], $str_USER_ID) ? " " : " disabled"))?>
 						<?=GetMessage('USER_GROUP_DATE_TO')?>
-						<?=CalendarDate("USER_ID_TO_".$ind, (array_key_exists($arUsers["ID"], $str_USER_ID) ? htmlspecialchars($str_USER_ID[$arUsers["ID"]]["DATE_ACTIVE_TO"]) : ""), "form1", "10", (array_key_exists($arUsers["ID"], $str_USER_ID) ? " " : " disabled"))?>
+						<?=CalendarDate("USER_ID_TO_".$ind, (array_key_exists($arUsers["ID"], $str_USER_ID) ? htmlspecialcharsbx($str_USER_ID[$arUsers["ID"]]["DATE_ACTIVE_TO"]) : ""), "form1", "10", (array_key_exists($arUsers["ID"], $str_USER_ID) ? " " : " disabled"))?>
 
 					</td>
 				</tr>
@@ -704,12 +704,12 @@ $tabControl->BeginNextTab();
 				{
 				case "checkbox":
 					?>
-					<input type="checkbox" onclick="gpSync();" id="gp_<?= $key ?>" name="gp_<?= $key ?>" value="<?= htmlspecialchars($arControl[1]) ?>" <?if($curVal === $arControl[1]) echo "checked"?> <?if ($curValParent) echo "disabled";?>>
+					<input type="checkbox" onclick="gpSync();" id="gp_<?= $key ?>" name="gp_<?= $key ?>" value="<?= htmlspecialcharsbx($arControl[1]) ?>" <?if($curVal === $arControl[1]) echo "checked"?> <?if ($curValParent) echo "disabled";?>>
 					<?
 					break;
 				default:
 					?>
-					<input type="text" onchange="gpSync();" name="gp_<?= $key ?>" value="<?= htmlspecialchars($curVal) ?>" size="<?echo ($arControl[1] > 0? $arControl[1]: "30")?>" <?if ($curValParent) echo "disabled";?>>
+					<input type="text" onchange="gpSync();" name="gp_<?= $key ?>" value="<?= htmlspecialcharsbx($curVal) ?>" size="<?echo ($arControl[1] > 0? $arControl[1]: "30")?>" <?if ($curValParent) echo "disabled";?>>
 					<?
 				}
 				?>
@@ -791,7 +791,7 @@ $tabControl->BeginNextTab();
 					$bSel = (in_array($arRes['ID'], $_REQUEST["subordinate_groups"]));
 				else
 					$bSel = (in_array($arRes['ID'], $arSubordinateGroups) || $arRes['ID'] == 2);
-				?><option value="<?=$arRes['ID']?>"<?echo ($bSel? ' selected' : '')?>><? echo '['.$arRes['ID'].'] '.htmlspecialchars($arRes['NAME'])?></option><?
+				?><option value="<?=$arRes['ID']?>"<?echo ($bSel? ' selected' : '')?>><? echo '['.$arRes['ID'].'] '.htmlspecialcharsbx($arRes['NAME'])?></option><?
 			}
 			?>
 			</select>
@@ -907,7 +907,7 @@ $tabControl->BeginNextTab();
 				}
 
 				?><td <?if ($use_padding):?>style="padding: 3px;"<?endif;?>><?
-					echo SelectBoxFromArray("RIGHTS_".$MID."[]", $ar, htmlspecialchars($v), GetMessage("DEFAULT"));
+					echo SelectBoxFromArray("RIGHTS_".$MID."[]", $ar, htmlspecialcharsbx($v), GetMessage("DEFAULT"));
 				?></td>
 				<td></td><?
 				
@@ -954,7 +954,7 @@ $tabControl->BeginNextTab();
 								<? echo SelectBoxFromArray("SITES_".$MID."[]", $arSites, $site_selected, GetMessage("SITE_SELECT")); ?>
 								</td><?
 								?><td style="padding: 3px;"><?
-									echo SelectBoxFromArray("RIGHTS_".$MID."[]", $arRightsUseSites, htmlspecialchars($v), GetMessage("DEFAULT"));
+									echo SelectBoxFromArray("RIGHTS_".$MID."[]", $arRightsUseSites, htmlspecialcharsbx($v), GetMessage("DEFAULT"));
 								?></td>
 								<td style="padding: 3px;"><a href="javascript:void(0)" onClick="settingsDeleteRow(this)"><img src="/bitrix/themes/.default/images/actions/delete_button.gif" border="0" width="20" height="20"></a></td>
 							</tr><?					
