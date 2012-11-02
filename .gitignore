@@ -1,7 +1,7 @@
 
 ./.logs
-./bitrix/cache
-./bitrix/managed_cache
-./bitrix/stack_cache
-./bitrix/backups
-./bitrix/updates
+./www/bitrix/cache
+./www/bitrix/managed_cache
+./www/bitrix/stack_cache
+./www/bitrix/backups
+./www/bitrix/updates
