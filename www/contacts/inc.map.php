@@ -1,0 +1,2 @@
+<iframe width="820" height="325" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+		src="https://maps.google.ru/maps?hl=ru&amp;q=%D0%BC%D0%BE%D1%81%D0%BA%D0%B2%D0%B0+%D1%82%D0%B2%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F+1+%D0%BA%D0%BE%D1%80%D0%BF+1&amp;ie=UTF8&amp;hq=&amp;hnear=%D0%A2%D0%B2%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F+%D1%83%D0%BB.,+1,+%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&amp;t=m&amp;z=14&amp;ll=55.763082,37.608766&amp;output=embed"></iframe>

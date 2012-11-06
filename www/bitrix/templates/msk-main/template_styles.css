@@ -39,7 +39,7 @@ body {
 		display: inline-block;
 		margin: 0 0 0 20px;
 		padding: 0 40px 0 0;
-		background: url("images/wtime.jpg") 100% 0 no-repeat;
+		background: url("/images/wtime.jpg") 100% 0 no-repeat;
 		color: #2b2a2a;
 		font: 30px/50px Arial, sans-serif;
 	}
@@ -67,7 +67,7 @@ body {
 			float: left;
 			height: 23px;
 			padding: 0 10px;
-			background: url("images/enter_d_bg.gif") 0 0 repeat;
+			background: url("/images/enter_d_bg.gif") 0 0 repeat;
 			cursor: pointer;
 		}
 			
@@ -86,7 +86,7 @@ body {
 			float: left;
 			height: 23px;
 			padding: 0 10px;
-			background: url("images/enter_l_bg.gif") 0 0 repeat;
+			background: url("/images/enter_l_bg.gif") 0 0 repeat;
 			vertical-align: top;
 			cursor: pointer;
 		}
@@ -106,7 +106,7 @@ body {
 	position: relative;
 	height: 42px;
 	margin-bottom: 20px;
-	background: url("images/menu_bg.gif") 0 0 repeat;
+	background: url("/images/menu_bg.gif") 0 0 repeat;
 	line-height: 38px;
 	font-size: 0;
 }
@@ -126,7 +126,7 @@ body {
 		height: 42px;
 		padding: 0 10px 0 0;
 		line-height: 42px;
-		background: url("images/menu_r.gif") 0 0 no-repeat;
+		background: url("/images/menu_r.gif") 0 0 no-repeat;
 		text-align: right;
 	}
 
@@ -153,11 +153,11 @@ body {
 		}
 
 		.bMenu__eItemLink:hover {
-			background: url("images/menu_bg_active.gif") 0 0 repeat-x;
+			background: url("/images/menu_bg_active.gif") 0 0 repeat-x;
 		}
 
 		.bMenu__eItemLink__mState_active {
-			background: url("images/menu_bg_active.gif") 0 0 repeat-x;
+			background: url("/images/menu_bg_active.gif") 0 0 repeat-x;
 		}
 
 		.bSubMenu {
@@ -201,7 +201,7 @@ body {
 		width: 260px;
 		height: 149px;
 		padding: 25px 20px 25px 30px;
-		background: url("images/bannerAd.png") 0 0 no-repeat;
+		background: url("/images/banner_background.png") 0 0 no-repeat;
 	}
 
 		.bBanner__eAdText {
@@ -273,7 +273,7 @@ body {
 		display: inline-block;
 		width: 14px;
 		height: 14px;
-		background: url("images/bullets.png") 0 0 no-repeat;
+		background: url("/images/bullets.png") 0 0 no-repeat;
 		cursor: pointer;
 	}
 
@@ -301,6 +301,11 @@ body {
 			color: #000;
 			font: 14px/17px Arial, sans-serif;
 		}
+		
+			.bBreadcrumbs__eFirstStepText  a {
+				color: black;
+				text-decoration: none;
+			}
 
 		.bBreadcrumbs__eFirstStepArrow {
 			display: inline-block;
@@ -316,6 +321,11 @@ body {
 		display: inline-block;
 		vertical-align: middle;
 	}
+
+		.bBreadcrumbs__eSecondStepWrapper+.bBreadcrumbs__eSecondStepWrapper{
+			margin-left: 10px;
+		}
+
 		.bBreadcrumbs__eSecondStep {
 			position: relative;
 			z-index: 3;
@@ -331,6 +341,11 @@ body {
 				color: #000;
 				font: 14px/17px Arial, sans-serif;
 			}
+			
+				.bBreadcrumbs__eSecondStepText  a {
+					color: black;
+					text-decoration: none;
+				}
 
 			.bBreadcrumbs__eSecondStepArrow {
 				width: 0;
@@ -479,7 +494,7 @@ body {
 			
 			.bContacts {
 				padding: 50px 40px 0;
-				background: #fff url("images/contactsArrow.gif") 70px 0 no-repeat;
+				background: #fff url("/images/contactsArrow.gif") 70px 0 no-repeat;
 				border-top: 10px solid #ffd800;
  			}
 
@@ -761,7 +776,7 @@ body {
 				.bVacancy__eTitle {
 					height: 37px;
 					padding-left: 20px;
-					background: #cfcfcf url("images/plus.gif") 98% 50% no-repeat;
+					background: #cfcfcf url("/images/plus.gif") 98% 50% no-repeat;
 					-webkit-border-radius: 10px;
 					-moz-border-radius: 10px;
 					border-radius: 10px;
@@ -772,7 +787,7 @@ body {
 				}
 
 				.bVacancy__eTitle__mType_active {
-					background: #ffd401 url("images/minus.gif") 98% 50% no-repeat;
+					background: #ffd401 url("/images/minus.gif") 98% 50% no-repeat;
 				}
 
 					.bVacancy__eTitleText {
@@ -839,7 +854,7 @@ body {
 						margin: 0;
 						padding: 0 0 0 15px;
 						list-style: none;
-						background: url("images/marker.gif") 0 50% no-repeat;
+						background: url("/images/marker.gif") 0 50% no-repeat;
 						font: 13px/17px Arial, sans-serif;
 					}
 
@@ -915,6 +930,10 @@ body {
 					-moz-border-radius: 2px;
 					border-radius: 2px;
 				}
+				
+					.bPageNumWrapper.bPageNumWrapper__mArrow_left {
+						text-align: left;
+					}
 
 				.bPageNumWrapper__mState_active {
 					background: #303338;
@@ -932,7 +951,7 @@ body {
 						.bPageNumWrapper__mState_active .bPageNumWrapper__eNumberText {
 							color: #ffd700;
 						}
-
+						
 					.bPageNumWrapper__eNumber {
 						width: 24px;
 						height: 24px;
@@ -945,6 +964,7 @@ body {
 							color: #fff;
 							font: 14px/24px Arial, sans-serif;
 							vertical-align: middle;
+							text-decoration: none;
 						}
 
 	.bContent__eClear {
@@ -1012,7 +1032,7 @@ body {
 		width: 16px;
 		height: 17px;
 		padding: 0 5px 0 0;
-		background: url(images/radio.png) no-repeat;
+		background: url(/images/radio.png) no-repeat;
 		vertical-align: middle;
 	}
 
@@ -1172,7 +1192,7 @@ body {
 
 		.bLatestNews__eItem {
 			padding: 10px 18px;
-			background: #cfcfcf url("images/news_arrow.png") 100% 50% no-repeat;
+			background: #cfcfcf url("/images/news_arrow.png") 100% 50% no-repeat;
 			font: 12px/14px Arial, sans-serif;
 			cursor: pointer;
 		}
@@ -1313,7 +1333,7 @@ body {
 		}
 
 			.bFooterLinks__eMenuLink {
-				padding: 0 20px;
+				padding: 0 15px;
 				color: #5a5a5a;
 				font: 12px/14px Arial, sans-serif;
 				text-decoration: none;

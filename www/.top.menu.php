@@ -1,0 +1,53 @@
+<?
+$aMenuLinks = Array(
+	Array(
+		"О компании",
+		"/about/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"КАСКО / ОСАГО",
+		"#",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"Корпоративным клиентам", 
+		"#", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Новости", 
+		"/news/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Партнеры", 
+		"#", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Акции", 
+		"/shares/",
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Контакты", 
+		"/contacts/",
+		Array(), 
+		Array(), 
+		"" 
+	)
+);
+?>
