@@ -9,7 +9,7 @@ $aMenuLinks = Array(
 	),
 	Array(
 		"Корпоративным клиентам",
-		"#",
+		"/corporate-clients/",
 		Array(),
 		Array(),
 		""
@@ -23,7 +23,7 @@ $aMenuLinks = Array(
 	),
 	Array(
 		"Партнеры", 
-		"#", 
+		"/partners/",
 		Array(), 
 		Array(), 
 		"" 
