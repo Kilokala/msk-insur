@@ -77,7 +77,18 @@ IncludeTemplateLangFile(__FILE__);
 			),
 			false
 		);?>
-		<div class="bBanner">
+		<?$APPLICATION->IncludeComponent(
+			"rm:banner",
+			"main",
+			Array(
+				"IBLOCK_TYPE" => "content",
+				"IBLOCK_ID" => "6",
+				'SECTION_ID' => '4',
+				"ITEMS_LIMIT" => "5"
+			),
+			false
+		);?>
+        <!--div class="bBanner">
 			<div class="bSliderControls">
 				<div class="bSliderControls__eBullet bSliderControls__eBullet__mState_active"></div>
 				<div class="bSliderControls__eBullet"></div>
@@ -100,7 +111,7 @@ IncludeTemplateLangFile(__FILE__);
 					<img src="/images/banner_image1.jpg" class="bBanner__eImage" width="938" height="300" alt="">
 				</div>
 			</div>
-		</div><!-- .bBanner -->
+		</div--><!-- .bBanner -->
 		<?$APPLICATION->IncludeComponent(
 			"bitrix:breadcrumb",
 			"",

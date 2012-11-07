@@ -1194,8 +1194,12 @@ body {
 			padding: 10px 18px;
 			background: #cfcfcf url("/images/news_arrow.png") 100% 50% no-repeat;
 			font: 12px/14px Arial, sans-serif;
-			cursor: pointer;
 		}
+
+			.bLatestNews__eItem  a{
+				color: black;
+				text-decoration: none;
+			}
 
 		.bLatestNews__eItem__mColor_light {
 			background-color: #f3f3f3;
@@ -1239,6 +1243,7 @@ body {
 
 				.bFeatures__eText {
 					font: 18px/20px Arial, sans-serif;
+					width: 106px;
 				}
 
 				.bFeatures__eImage {
